@@ -1,8 +1,21 @@
 var elemToDrag = null;
+var elements = new function(){};
+ 
+ 
+elements["Button"] = function element_button(e,x,y)
+{
+	b = document.createElement("button");
+	b = make_Container(b);
+	b.appendChild(document.createTextNode("Button"));
+	b.create(e,x,y)
+}
+ 
  
 function new_Screen()
 {
 	screen = document.createElement("div");
+	screen.ondragover = allowDrop;
+	screen.ondrop = drop;
 	if(landscape_mode) screen.classList.add("screenlandscape");
 	else screen.classList.add("screenportait");
 	
@@ -16,13 +29,22 @@ function moveelem(e) {
   elemToDrag.style.left = (x - elemToDrag.offsetx) + "px";
 }
 
+function getPos(el) {
+    // yay readability
+    for (var lx=0, ly=0;
+         el != null;
+         lx += el.offsetLeft, ly += el.offsetTop, el = el.offsetParent);
+    return {x: lx,y: ly};
+}
 
 function make_Container(elem)
 {
     elem.style.position = "absolute";
 
-    elem.create = function(target)
+    elem.create = function(target,x,y)
     {
+    	this.style.left = (x - getPos(target).x || this.offsetLeft) + "px"; 
+    	this.style.top = (y - getPos(target).y || this.offsetTop) + "px";
         target.appendChild(this);   
     }
 
@@ -44,6 +66,8 @@ function make_Container(elem)
 
 function allowDrop(ev) {
     ev.preventDefault();
+    ev.target.offx = ev.clientX;
+    ev.target.offy = ev.clientY;
 }
 
 function drag(ev) {
@@ -53,5 +77,5 @@ function drag(ev) {
 function drop(ev) {
     ev.preventDefault();
     var data = ev.dataTransfer.getData("ElementName");
-    //ev.target.appendChild(document.getElementById(data));
+    elements[data](ev.target,ev.target.offx,ev.target.offy);
 }

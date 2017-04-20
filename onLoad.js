@@ -39,9 +39,9 @@ function initialize(selection)
     
    grafic_elements = elementbar();
    grafic_elements.add(menubar_Item("+"));
-   grafic_elements.add(menubar_Item("Button"));
-   grafic_elements.add(menubar_Item("Label"));
-   grafic_elements.add(menubar_Item("Text Input"));
+   grafic_elements.add(elementbar_Item("Button"));
+   grafic_elements.add(elementbar_Item("Label"));
+   grafic_elements.add(elementbar_Item("Text Input"));
    grafic_elements.make_Visible();
    
    new_Screen();

@@ -1,3 +1,4 @@
+/*
 function test()
 {
    test = menubar();
@@ -23,12 +24,22 @@ function test()
    test.add(menubar_Item("Test4"));
    test.make_Visible();
 }
+*/
 
+function elementbar_Item(name,onclick)
+{
+	el = menubar_Item(name,onclick,"elItem");
+	el.draggable = true;
+	el.ondragstart = drag;
+	el.onclick = onclick;
+	return el;
+}
 
 function menubar_Item(name,onclick,classname,aktive)
 {
 	classname = classname || "menuItem";
     li = document.createElement("li");
+    li.name = name;
     li.a = document.createElement("a");
     if(aktive) li.a.classList.add("active");
     li.text = document.createTextNode(name);
