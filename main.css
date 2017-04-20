@@ -9,7 +9,9 @@ ul.menubar {
     margin: 0;
     padding: 0;
     overflow: hidden;
-    background-color: #333;
+    background-color: #474747;
+	top: 0px;
+	left 0px;
 }
 
 ul.menubar li {
@@ -22,45 +24,52 @@ ul.menubar li a {
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
+	
 }
 
 ul.menubar li a:hover:not(.active) {
-    background-color: #111;
+    background-color: #ea5a00;
 }
 
 ul.menubar li a.active {
-    background-color: #4CAF50;
+    background-color: #b43092;
 }
 
 ul.elementbar {
+	position:absolute;
+	top : 0px;
+	
 	list-style-type: none;
 	margin-top : 0px;
-	padding-top : 0px;
+	/*padding-top : 45px;*/
 	background-color: #333;
-	overflow: hidden;
-	width : 20%;
-		
+	overflow: auto;
+	
+	height: 100%;
+	padding-left:0px;
 }
 
 ul.elementbar li {
     float: top;
+	
+	
 }
 
 ul.elementbar li a {
+	width: 100%;
     display: block;
     width: 60px;
     color: white;
     text-align: center;
-    padding: 14px 16px;
+    padding: 10px;
     text-decoration: none;
+	width : 120px;
 }
 
-ul.elementbar li a:hover:not(.active) {
-    background-color: #111;
+ul.elementbar li:hover {
+  background-color: #ea5a00;
 }
 
-ul.elmentbar li a.active {
-    background-color: #4CAF50;
-}
+
 
 
