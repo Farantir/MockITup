@@ -88,6 +88,15 @@ div.screen{
 	
 }
 
+div.screen{
+	position: relative;
+	background-color: #000000;
+	height: 270px;
+	width : 480px;
+	margin-right: 200px;
+	
+}
+
 /* Landcape oder Portrait Auswahl divs */
 div.portrait {
     position: absolute;
