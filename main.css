@@ -12,11 +12,11 @@ ul.menubar {
     background-color: #333;
 }
 
-li {
+ul.menubar li {
     float: right;
 }
 
-li a {
+ul.menubar li a {
     display: block;
     color: white;
     text-align: center;
@@ -24,10 +24,43 @@ li a {
     text-decoration: none;
 }
 
-li a:hover:not(.active) {
+ul.menubar li a:hover:not(.active) {
     background-color: #111;
 }
 
-.active {
+ul.menubar li a.active {
     background-color: #4CAF50;
 }
+
+ul.elementbar {
+	list-style-type: none;
+	margin-top : 0px;
+	padding-top : 0px;
+	background-color: #333;
+	overflow: hidden;
+	width : 20%;
+		
+}
+
+ul.elementbar li {
+    float: top;
+}
+
+ul.elementbar li a {
+    display: block;
+    width: 60px;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+
+ul.elementbar li a:hover:not(.active) {
+    background-color: #111;
+}
+
+ul.elmentbar li a.active {
+    background-color: #4CAF50;
+}
+
+
