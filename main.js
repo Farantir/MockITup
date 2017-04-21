@@ -114,7 +114,7 @@ function settingsbar(parentsparent,parent)
     menu.setpos = function(x,y)
     {
         this.style.top = (y + this.parent.offsetHeight + 20) + "px";
-        this.style.left = (x + this.parent.offsetLeft) + "px";
+        this.style.left = x + "px";
     }
 
     menu.setpos(parent.offsetLeft,parent.offsetTop);
@@ -148,4 +148,9 @@ function settings_Icon(icon,onclick)
     elem.img.height = 25;
     elem.img.width = 25;
     return elem;
+}
+
+function text_input_overlay()
+{
+    
 }
