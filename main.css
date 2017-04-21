@@ -6,6 +6,8 @@ body
 }
 
 ul.menubar {
+	position:fixed ;
+	width: 100%;
     list-style-type: none;
     margin: 0;
     padding: 0;
@@ -37,7 +39,7 @@ ul.menubar li a.active {
 }
 
 ul.elementbar {
-	position:absolute;
+	position:fixed;
 	top : 0px;
 	
 	list-style-type: none;
@@ -74,7 +76,9 @@ ul.elementbar li:hover {
 
 div.screencontainer {
 	position: absolute;
-	margin-left: 160px;
+	
+    top: 145px; 
+	left: 240px;
 	
 }
 
@@ -84,8 +88,9 @@ div.screenportait{
 	background-color: #FFF;
 	height: 480px;
 	width : 270px;
-	margin-right: 150px;
+	margin-right: 100px;
 	border-style: solid;
+	margin-bottom: 100px;
 	
 }
 
@@ -95,9 +100,9 @@ div.screenlandscape{
 	background-color: #FFF;
 	height: 270px;
 	width : 480px;
-	margin-right: 150 px;
-	border-style: solid;
-	
+	margin-right: 100px;
+	border-style: solid;	
+	margin-bottom: 100px;
 }
 
 /* Landcape oder Portrait Auswahl divs */
@@ -135,7 +140,7 @@ div.createnewscreen {
 
 	vertical-align:middle;
 	text-align:center;
-	line-height: 480px;  
+	  
 	font-size: 40px;
 	
 	border-style: solid;
@@ -150,12 +155,14 @@ float: left;
 {
     height: 270px;
 	width : 480px;
+	line-height: 480px;
 }
 
 #createnewscreenportrait
 {
 	height: 480px;
 	width : 270px;
+	line-height: 270px;
 }
 
 

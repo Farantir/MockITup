@@ -11,7 +11,6 @@ var my = h / 2;
 
 $("landscape").style.top= "" + (my - 135) + "px";
 $("portrait").style.top= "" + (my - 240) + "px";
-$("screencontainer").style.top= "" + (my - 240) + "px";
 
 
 $("landscape").style.left= "" + ((mx - 240) * 0.25) + "px";
