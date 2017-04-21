@@ -35,7 +35,7 @@ function new_Screen()
 	if(landscape_mode) screen.classList.add("screenlandscape");
 	else screen.classList.add("screenportait");
 	
-	$("screencontainer").appendChild(screen);
+	$("screencontainer").insertBefore(screen,newscreenbutton);
 }
 
 function moveelem(e) 

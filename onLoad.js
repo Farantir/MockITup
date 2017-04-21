@@ -1,4 +1,5 @@
 var landscape_mode = false;
+var newscreenbutton;
 
 function portraitPosition() {
 	
@@ -42,20 +43,20 @@ function initialize(selection)
     
    //creates the menu bar containing the elements for grafik desing
    grafic_elements = elementbar();
-   grafic_elements.add(menubar_Item("+"));
+   grafic_elements.add(menubar_Item("+",null,"newelement"));
    grafic_elements.add(elementbar_Item("Button"));
    grafic_elements.add(elementbar_Item("Label"));
    grafic_elements.add(elementbar_Item("Text Input"));
    grafic_elements.make_Visible();
-   
-   //Creates the first screen of the app
-   new_Screen();
 
    //creates the "new screen" button
    if(landscape_mode) newscreenbutton = $("createnewscreenlandscape");
    else newscreenbutton = $("createnewscreenportrait");
 
-    newscreenbutton.style.display = "block"
+    newscreenbutton.style.display = "inline";
     newscreenbutton.onclick = new_Screen;
    
+   
+   //Creates the first screen of the app
+   new_Screen();
 }
