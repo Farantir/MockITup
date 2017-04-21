@@ -74,13 +74,12 @@ ul.elementbar li:hover {
 
 div.screencontainer {
 	position: absolute;
-	
 	margin-left: 160px;
 	
 }
 
 div.screenportait{
-	float:right;
+	float:left;
 	position: relative;
 	background-color: #FFF;
 	height: 480px;
@@ -91,7 +90,7 @@ div.screenportait{
 }
 
 div.screenlandscape{
-	float:right;
+	float:left;
 	position: relative;
 	background-color: #FFF;
 	height: 270px;
@@ -129,7 +128,7 @@ div.landscape {
 }
 
 div.createnewscreen {
-		float:right;
+	float:left;
 	position: relative;
 	background-color: #FFF;
     display:none;	
@@ -141,6 +140,10 @@ div.createnewscreen {
 	
 	border-style: solid;
 	
+}
+
+#screencontainer{
+float: left;	
 }
 
 #createnewscreenlandscape
