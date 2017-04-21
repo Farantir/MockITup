@@ -36,18 +36,6 @@ elements["Label"] = function element_Label(e,x,y)
 	b.create(e,x,y)
 }
 
- 
-function new_Screen()
-{
-	screen = document.createElement("div");
-	screen.ondragover = allowDrop;
-	screen.ondrop = drop;
-	if(landscape_mode) screen.classList.add("screenlandscape");
-	else screen.classList.add("screenportait");
-	
-	$("screencontainer").insertBefore(screen,newscreenbutton);
-}
-
 function moveelem(e) 
 {
   x = e.clientX;
@@ -69,8 +57,7 @@ function moveelem(e)
     if(posx<0) posx = 0;
     else if(posx > elemToDrag.fencex - elemToDrag.offsetWidth) posx = elemToDrag.fencex - elemToDrag.offsetWidth;
 
-  elemToDrag.style.top = posy + "px";
-  elemToDrag.style.left = posx + "px";
+    elemToDrag.setpos(posx,posy);
 
 }
 
@@ -86,10 +73,21 @@ function make_Container(elem)
 {
     elem.style.position = "absolute";
 
+    elem.setpos = function(x,y)
+    {
+        this.style.top = y + "px";
+        this.style.left = x + "px";
+        this.settingsbar.setpos(x,y);
+    }
+
     elem.create = function(target,x,y)
     {
     	this.style.left = (x - getPos(target).x || this.offsetLeft) + "px"; 
     	this.style.top = (y - getPos(target).y || this.offsetTop) + document.documentElement.scrollTop + "px";
+
+        this.settingsbar = settingsbar(target,this);
+        this.settingsbar.add(settings_Icon("textedit.svg",null));
+
         target.appendChild(this);   
     }
 
@@ -101,6 +99,7 @@ function make_Container(elem)
         this.fencey = this.offsetParent.clientHeight;
         this.fencex = this.offsetParent.clientWidth;
         document.body.addEventListener('mousemove', moveelem);
+        elem.settingsbar.make_Visible();
     }
 
     document.onmouseup = function()
@@ -108,6 +107,7 @@ function make_Container(elem)
         document.body.removeEventListener('mousemove', moveelem);
         elemToDrag = null;
     }
+
     return elem;
 }
 

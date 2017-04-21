@@ -26,6 +26,17 @@ function test()
 }
 */
 
+function new_Screen()
+{
+	screen = document.createElement("div");
+	screen.ondragover = allowDrop;
+	screen.ondrop = drop;
+	if(landscape_mode) screen.classList.add("screenlandscape");
+	else screen.classList.add("screenportait");
+	
+	$("screencontainer").insertBefore(screen,newscreenbutton);
+}
+
 function elementbar_Item(name,onclick)
 {
 	el = menubar_Item(name,onclick,"elItem");
@@ -91,12 +102,50 @@ function menubar(classname)
     return menu;
 }
 
-function settingsbar()
+function settingsbar(parentsparent,parent)
 {
-    
+    menu = document.createElement("div");
+    menu.ul = document.createElement("ul");
+    menu.appendChild(menu.ul);   
+    menu.classList.add("settingsbar");
+    menu.style.display = "none";
+    menu.parent = parent;
+
+    menu.setpos = function(x,y)
+    {
+        this.style.top = (y + this.parent.offsetHeight + 20) + "px";
+        this.style.left = (x + this.parent.offsetLeft) + "px";
+    }
+
+    menu.setpos(parent.offsetLeft,parent.offsetTop);
+
+    parentsparent.appendChild(menu);
+
+    menu.add = function(x)
+    {
+        this.ul.appendChild(x);
+    }
+
+    menu.make_Visible = function()
+    {
+        this.style.display = "";
+    }
+
+    menu.hide = function()
+    {
+        this.style.display = "none";
+    }
+
+    return menu;
 }
 
-function settings_Icon()
+function settings_Icon(icon,onclick)
 {
-
+    elem = document.createElement("li");
+    elem.img = document.createElement("img");
+    elem.appendChild(elem.img);
+    elem.img.src = icon;
+    elem.img.height = 25;
+    elem.img.width = 25;
+    return elem;
 }
