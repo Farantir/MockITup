@@ -28,13 +28,20 @@ function test()
 
 function new_Screen()
 {
+	screen = create_Screen();
+	$("screencontainer").insertBefore(screen,newscreenbutton);
+	screen.classList.add("screengrafikeditor");
+}
+
+function create_Screen(){
 	screen = document.createElement("div");
 	screen.ondragover = allowDrop;
 	screen.ondrop = drop;
+	
 	if(landscape_mode) screen.classList.add("screenlandscape");
 	else screen.classList.add("screenportait");
 	
-	$("screencontainer").insertBefore(screen,newscreenbutton);
+	return screen;
 }
 
 function elementbar_Item(name,onclick)

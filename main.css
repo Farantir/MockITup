@@ -194,6 +194,8 @@ div.settingsbar li {
 
 div.settingsbar img {
 	margin: 0px;
+	width: 18px;
+	height: 18px;
 }
 
 div.settingsbar li:hover {	

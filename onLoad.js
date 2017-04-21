@@ -35,9 +35,9 @@ function initialize(selection)
 	
     //creates the menu bar needet for selection of editing mode
 	default_Menu = menubar();
- 	default_Menu.add(menubar_Item("Grafik",null,null,true));
+ 	default_Menu.add(menubar_Item("Grafik",grafik,null,true));
     default_Menu.add(menubar_Item("Logik"));
-    default_Menu.add(menubar_Item("Test"));
+    default_Menu.add(menubar_Item("Test", test));
     default_Menu.make_Visible();
     
    //creates the menu bar containing the elements for grafik desing
