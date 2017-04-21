@@ -10,6 +10,22 @@ elements["Button"] = function element_button(e,x,y)
 	b.create(e,x,y)
 }
  
+elements["Text Input"] = function element_button(e,x,y)
+{
+	b = document.createElement("input");
+	b = make_Container(b);
+	//b.appendChild(document.createTextNode(""));
+	b.create(e,x,y)
+}
+
+elements["Label"] = function element_button(e,x,y)
+{
+	b = document.createElement("div");
+	b = make_Container(b);
+	b.appendChild(document.createTextNode("Label"));
+	b.create(e,x,y)
+}
+
  
 function new_Screen()
 {
@@ -22,11 +38,29 @@ function new_Screen()
 	$("screencontainer").appendChild(screen);
 }
 
-function moveelem(e) {
+function moveelem(e) 
+{
   x = e.clientX;
   y = e.clientY;
-  elemToDrag.style.top = (y - elemToDrag.offsety) + "px";
-  elemToDrag.style.left = (x - elemToDrag.offsetx) + "px";
+  posy = (y - elemToDrag.offsety);
+
+    if(posy<0)
+    { 
+        posy = 0;
+    }
+    else if(posy > elemToDrag.fencey - elemToDrag.offsetHeight) 
+    {
+        posy = elemToDrag.fencey - elemToDrag.offsetHeight;
+    } 
+
+  posx = (x - elemToDrag.offsetx);
+
+    if(posx<0) posx = 0;
+    else if(posx > elemToDrag.fencex - elemToDrag.offsetWidth) posx = elemToDrag.fencex - elemToDrag.offsetWidth;
+
+  elemToDrag.style.top = posy + "px";
+  elemToDrag.style.left = posx + "px";
+
 }
 
 function getPos(el) {
@@ -53,6 +87,8 @@ function make_Container(elem)
         elemToDrag = this;
         this.offsetx = e.pageX - this.offsetLeft; 
         this.offsety = e.pageY - this.offsetTop;
+        this.fencey = this.offsetParent.clientHeight;
+        this.fencex = this.offsetParent.clientWidth;
         document.body.addEventListener('mousemove', moveelem);
     }
 

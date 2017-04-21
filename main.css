@@ -126,29 +126,28 @@ div.landscape {
 	/*margin-top: 105px*/
 }
 
-div.createnewscreenportrait {
+div.createnewscreen {
 	position: relative;
 	background-color: #D3D3D3;
-	height: 480px;
-	width : 270px;
-	
+    display:none;	
+
 	vertical-align:middle;
 	text-align:center;
 	line-height: 480px;  
 	font-size: 40px;
 	
 }
-div.createnewscreenlandscape {
-	position: relative;
-	background-color: #D3D3D3;
-	height: 270px;
+
+#createnewscreenlandscape
+{
+    height: 270px;
 	width : 480px;
-	
-	vertical-align:middle;
-	text-align:center;
-	line-height: 270px;  
-	font-size: 40px;
-	
+}
+
+#createnewscreenportrait
+{
+	height: 480px;
+	width : 270px;
 }
 
 

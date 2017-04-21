@@ -26,17 +26,21 @@ return document.getElementById(x);
 
 function initialize(selection)
 {
+    //applys selection of landscape or portrait mode
 	landscape_mode = selection;
 
+    //hides divs for selection, they are no longer nedet
 	$("landscape").style.display = "none";
 	$("portrait").style.display = "none";
 	
+    //creates the menu bar needet for selection of editing mode
 	default_Menu = menubar();
  	default_Menu.add(menubar_Item("Grafik",null,null,true));
     default_Menu.add(menubar_Item("Logick"));
     default_Menu.add(menubar_Item("Test"));
     default_Menu.make_Visible();
     
+   //creates the menu bar containing the elements for grafik desing
    grafic_elements = elementbar();
    grafic_elements.add(menubar_Item("+"));
    grafic_elements.add(elementbar_Item("Button"));
@@ -44,5 +48,10 @@ function initialize(selection)
    grafic_elements.add(elementbar_Item("Text Input"));
    grafic_elements.make_Visible();
    
+   //Creates the first screen of the app
    new_Screen();
+
+   //creates the "new screen" button
+   $("createnewscreenlandscape").style.display = "block";
+   
 }
