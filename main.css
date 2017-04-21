@@ -165,9 +165,10 @@ float: left;
 	line-height: 480px;
 }
 
-div.settingsbar {
-	
 
+/* Settingsbar */
+div.settingsbar {
+	postition: absolute;
 }
 
 div.settingsbar li {
@@ -184,8 +185,38 @@ div.settingsbar li {
 
 div.settingsbar li:hover {	
 	color: #b43092;
-	
 }
+
+
+/* Text input */ 
+
+div.textinput {
+	postition: absolute;
+	background-color: #CCC;
+	width: 200px;
+	height: 55px;
+	text-align:center;
+	border-style:solid;
+  	border-color: #b43092;
+}
+
+div.textinput input {
+	float: top;
+	width: 95%;
+	margin-top: 5px;
+	margin-bottom: 3px;	
+}
+
+div.textinput button {
+  position: relative;
+  float: right;
+  margin-right: 5px;
+}
+
+div.textinput button:hover {
+	 color: #b43092;
+}
+
 
 
 
