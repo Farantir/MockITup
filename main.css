@@ -140,7 +140,7 @@ div.createnewscreen {
 
 	vertical-align:middle;
 	text-align:center;
-	  
+	margin-right: 100px;  
 	font-size: 40px;
 	
 	border-style: solid;
@@ -155,15 +155,38 @@ float: left;
 {
     height: 270px;
 	width : 480px;
-	line-height: 480px;
+	line-height: 270px;
 }
 
 #createnewscreenportrait
 {
 	height: 480px;
 	width : 270px;
-	line-height: 270px;
+	line-height: 480px;
 }
+
+div.settingsbar {
+	
+
+}
+
+div.settingsbar li {
+	border-radius: 10px 10px 10px 10px;
+	float: left;
+	border-style: solid;
+	border-width: medium;
+	list-style-type: none;
+	background-color: #CCC;
+    padding-left: 1px;
+	padding-right: 1px;
+	margin: 1px;
+}
+
+div.settingsbar li:hover {	
+	color: #b43092;
+	
+}
+
 
 
 /* Border Hover Animation for Divs */
