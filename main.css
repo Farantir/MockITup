@@ -207,7 +207,7 @@ div.textinput {
 	position: absolut;
 	background-color: #CCC;
 	width: 200px;
-	height: 55px;
+	height: 60px;
 	text-align:center;
 	border-style:solid;
   	border-color: #b43092;
@@ -228,6 +228,12 @@ div.textinput button {
 
 div.textinput button:hover {
 	 color: #b43092;
+}
+
+img.arrow {
+	position: absolute;
+	width: 20px;	
+	height: 20px;
 }
 
 
