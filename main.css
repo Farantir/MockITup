@@ -81,19 +81,21 @@ div.screencontainer {
 
 div.screenportait{
 	position: relative;
-	background-color: #000000;
+	background-color: #FFF;
 	height: 480px;
 	width : 270px;
 	margin-right: 200px;
+	border-style: solid;
 	
 }
 
 div.screenlandscape{
 	position: relative;
-	background-color: #000000;
+	background-color: #FFF;
 	height: 270px;
 	width : 480px;
 	margin-right: 200px;
+	border-style: solid;
 	
 }
 
@@ -122,6 +124,31 @@ div.landscape {
 	line-height: 270px;  
 	font-size: 24px;
 	/*margin-top: 105px*/
+}
+
+div.createnewscreenportrait {
+	position: relative;
+	background-color: #D3D3D3;
+	height: 480px;
+	width : 270px;
+	
+	vertical-align:middle;
+	text-align:center;
+	line-height: 480px;  
+	font-size: 40px;
+	
+}
+div.createnewscreenlandscape {
+	position: relative;
+	background-color: #D3D3D3;
+	height: 270px;
+	width : 480px;
+	
+	vertical-align:middle;
+	text-align:center;
+	line-height: 270px;  
+	font-size: 40px;
+	
 }
 
 
