@@ -150,7 +150,24 @@ function settings_Icon(icon,onclick)
     return elem;
 }
 
-function text_input_overlay()
+function text_input_overlay(target,parent)
 {
+    menu = document.createElement("div");
+    menu.classList.add("textinput");
+
+    menu.accept = document.createElement("button");
+    menu.accept.appendChild(document.createTextNode("Accept"));
+
+    menu.cancel = document.createElement("button");
+    menu.cancel.appendChild(document.createTextNode("Cancel"));
+
+    menu.input = document.createElement("input");
+
+    menu.appendChild(menu.input);
+    menu.appendChild(menu.cancel);
+    menu.appendChild(menu.accept);
+
     
+
+    menu.cancel.onclick = function(){this.remove();}
 }
