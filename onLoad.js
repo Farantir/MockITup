@@ -52,6 +52,10 @@ function initialize(selection)
    new_Screen();
 
    //creates the "new screen" button
-   $("createnewscreenlandscape").style.display = "block";
+   if(landscape_mode) newscreenbutton = $("createnewscreenlandscape");
+   else newscreenbutton = $("createnewscreenportrait");
+
+    newscreenbutton.style.display = "block"
+    newscreenbutton.onclick = new_Screen;
    
 }
