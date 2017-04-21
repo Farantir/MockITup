@@ -120,12 +120,11 @@ div.portrait {
 
 
 div.landscape {
-	position: absolut;
+	position: absolute;
 	background-color: #D3D3D3;
 	height: 270px;
 	width : 480px;
 	
-	text-align:center;
 	text-align:center;
 	line-height: 270px;  
 	font-size: 24px;
@@ -169,6 +168,16 @@ div.createnewscreen {
 /* Settingsbar */
 div.settingsbar {
 	position: absolute;
+	margin: 0px;
+	padding: 0px;
+}
+
+div.settingsbar ul {
+	postition: absolute;
+	top : 0px;
+	left: 0px;
+	margin: 0px;
+	padding: 0px;
 }
 
 div.settingsbar li {
@@ -180,7 +189,13 @@ div.settingsbar li {
 	background-color: #CCC;
     padding-left: 1px;
 	padding-right: 1px;
-	margin: 1px;
+	margin-right: 1px;
+}
+
+div.settingsbar img {
+	margin: 0px;
+	width: 18px;
+	height: 18px;
 }
 
 div.settingsbar li:hover {	
@@ -194,7 +209,7 @@ div.textinput {
 	position: absolut;
 	background-color: #CCC;
 	width: 200px;
-	height: 55px;
+	height: 60px;
 	text-align:center;
 	border-style:solid;
   	border-color: #b43092;
@@ -217,7 +232,11 @@ div.textinput button:hover {
 	 color: #b43092;
 }
 
-
+img.arrow {
+	position: absolute;
+	width: 20px;	
+	height: 20px;
+}
 
 
 /* Border Hover Animation for Divs */
