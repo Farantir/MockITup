@@ -10,15 +10,25 @@ elements["Button"] = function element_button(e,x,y)
 	b.create(e,x,y)
 }
  
-elements["Text Input"] = function element_button(e,x,y)
+elements["Text Input"] = function element_text(e,x,y)
 {
 	b = document.createElement("input");
+    b.type = "text"
 	b = make_Container(b);
 	//b.appendChild(document.createTextNode(""));
 	b.create(e,x,y)
 }
 
-elements["Label"] = function element_button(e,x,y)
+elements["Checkbox"] = function element_checkbox(e,x,y)
+{
+	b = document.createElement("input");
+    b.type = "checkbox"
+	b = make_Container(b);
+	//b.appendChild(document.createTextNode(""));
+	b.create(e,x,y)
+}
+
+elements["Label"] = function element_Label(e,x,y)
 {
 	b = document.createElement("div");
 	b = make_Container(b);
@@ -41,7 +51,8 @@ function new_Screen()
 function moveelem(e) 
 {
   x = e.clientX;
-  y = e.clientY;
+  y = e.clientY + document.documentElement.scrollTop;
+
   posy = (y - elemToDrag.offsety);
 
     if(posy<0)
@@ -78,7 +89,7 @@ function make_Container(elem)
     elem.create = function(target,x,y)
     {
     	this.style.left = (x - getPos(target).x || this.offsetLeft) + "px"; 
-    	this.style.top = (y - getPos(target).y || this.offsetTop) + "px";
+    	this.style.top = (y - getPos(target).y || this.offsetTop) + document.documentElement.scrollTop + "px";
         target.appendChild(this);   
     }
 
@@ -92,7 +103,7 @@ function make_Container(elem)
         document.body.addEventListener('mousemove', moveelem);
     }
 
-    elem.onmouseup = function()
+    document.onmouseup = function()
     {
         document.body.removeEventListener('mousemove', moveelem);
         elemToDrag = null;

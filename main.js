@@ -90,3 +90,13 @@ function menubar(classname)
 
     return menu;
 }
+
+function settingsbar()
+{
+    
+}
+
+function settings_Icon()
+{
+
+}
