@@ -120,7 +120,7 @@ div.portrait {
 
 
 div.landscape {
-	position: absolute;
+	position: absolut;
 	background-color: #D3D3D3;
 	height: 270px;
 	width : 480px;
@@ -148,7 +148,7 @@ div.createnewscreen {
 }
 
 #screencontainer{
-float: left;	
+	float: left;	
 }
 
 #createnewscreenlandscape
@@ -191,7 +191,7 @@ div.settingsbar li:hover {
 /* Text input */ 
 
 div.textinput {
-	postition: absolute;
+	position: absolut;
 	background-color: #CCC;
 	width: 200px;
 	height: 55px;
