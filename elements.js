@@ -10,15 +10,25 @@ elements["Button"] = function element_button(e,x,y)
 	b.create(e,x,y)
 }
  
-elements["Text Input"] = function element_button(e,x,y)
+elements["Text Input"] = function element_text(e,x,y)
 {
 	b = document.createElement("input");
+    b.type = "text"
 	b = make_Container(b);
 	//b.appendChild(document.createTextNode(""));
 	b.create(e,x,y)
 }
 
-elements["Label"] = function element_button(e,x,y)
+elements["Checkbox"] = function element_checkbox(e,x,y)
+{
+	b = document.createElement("input");
+    b.type = "checkbox"
+	b = make_Container(b);
+	//b.appendChild(document.createTextNode(""));
+	b.create(e,x,y)
+}
+
+elements["Label"] = function element_Label(e,x,y)
 {
 	b = document.createElement("div");
 	b = make_Container(b);
@@ -42,6 +52,7 @@ function moveelem(e)
 {
   x = e.clientX;
   y = e.clientY;
+  document.scrollTop() 
   posy = (y - elemToDrag.offsety);
 
     if(posy<0)
