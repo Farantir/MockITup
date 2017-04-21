@@ -51,8 +51,8 @@ function new_Screen()
 function moveelem(e) 
 {
   x = e.clientX;
-  y = e.clientY;
-  document.scrollTop() 
+  y = e.clientY + document.documentElement.scrollTop;
+
   posy = (y - elemToDrag.offsety);
 
     if(posy<0)
@@ -89,7 +89,7 @@ function make_Container(elem)
     elem.create = function(target,x,y)
     {
     	this.style.left = (x - getPos(target).x || this.offsetLeft) + "px"; 
-    	this.style.top = (y - getPos(target).y || this.offsetTop) + "px";
+    	this.style.top = (y - getPos(target).y || this.offsetTop) + document.documentElement.scrollTop + "px";
         target.appendChild(this);   
     }
 
@@ -103,7 +103,7 @@ function make_Container(elem)
         document.body.addEventListener('mousemove', moveelem);
     }
 
-    elem.onmouseup = function()
+    document.onmouseup = function()
     {
         document.body.removeEventListener('mousemove', moveelem);
         elemToDrag = null;
