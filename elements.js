@@ -6,6 +6,11 @@ elements["Button"] = function element_button(e,x,y)
 {
 	b = document.createElement("button");
 	b = make_Container(b);
+    
+    b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this,function(value){this.target.value = value;})}));
+    }
 	b.appendChild(document.createTextNode("Button"));
 	b.create(e,x,y)
 }
@@ -13,7 +18,7 @@ elements["Button"] = function element_button(e,x,y)
 elements["Text Input"] = function element_text(e,x,y)
 {
 	b = document.createElement("input");
-    b.type = "text"
+    b.type = "text";
 	b = make_Container(b);
 	//b.appendChild(document.createTextNode(""));
 	b.create(e,x,y)
@@ -62,7 +67,7 @@ function moveelem(e)
 }
 
 
-
+/*Calculates position of an element relative to the document origin*/
 function getPos(el) {
     // yay readability
     for (var lx=0, ly=0;
@@ -71,15 +76,18 @@ function getPos(el) {
     return {x: lx,y: ly};
 }
 
+/*Adds all functions and propaties needed for an element in the Gragik editd view*/
 function make_Container(elem)
 {
     elem.style.position = "absolute";
+    elem.settingsbar = settingsbar(elem);
+    elem.jsoncreate = function(){};
 
     elem.setpos = function(x,y)
     {
         this.style.top = y + "px";
         this.style.left = x + "px";
-        this.settingsbar.setpos(x,y);
+        this.settingsbar.setpos();
     }
 
     elem.create = function(target,x,y)
@@ -87,10 +95,14 @@ function make_Container(elem)
     	this.style.left = (x - getPos(target).x || this.offsetLeft) + "px"; 
     	this.style.top = (y - getPos(target).y || this.offsetTop) + document.documentElement.scrollTop + "px";
 
-        this.settingsbar = settingsbar(target,this);
-        this.settingsbar.add(settings_Icon("textedit.svg",null));
-
+        this.jsoncreate(target,x,y);
         target.appendChild(this);   
+
+        this.offsetx = this.offsetLeft; 
+        this.offsety = this.offsetTop;
+
+        this.settingsbar.add(settings_Icon("toggle_vis.png"));
+        elem.settingsbar.make_Visible();
     }
 
     elem.onmousedown = function(e)
@@ -101,7 +113,10 @@ function make_Container(elem)
         this.fencey = this.offsetParent.clientHeight;
         this.fencex = this.offsetParent.clientWidth;
         document.body.addEventListener('mousemove', moveelem);
+        elem.settingsbar.setpos();
         elem.settingsbar.make_Visible();
+
+        e.stopPropagation();
     }
 
     document.onmouseup = function()

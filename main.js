@@ -44,6 +44,7 @@ function create_Screen(){
 	return screen;
 }
 
+/*Creates an Item for the left bar. Needs to be added to one of those bars later on*/
 function elementbar_Item(name,onclick)
 {
 	el = menubar_Item(name,onclick,"elItem");
@@ -53,6 +54,7 @@ function elementbar_Item(name,onclick)
 	return el;
 }
 
+/*Creates an item for the top menu bar. Needs to be addet to one of those bars later on*/
 function menubar_Item(name,onclick,classname,aktive)
 {
 	classname = classname || "menuItem";
@@ -78,11 +80,13 @@ function menubar_Item(name,onclick,classname,aktive)
     return li;
 }
 
+/*Creats an empty side menu bar*/
 function elementbar()
 {
     return menubar("elementbar");
 }
 
+/*Creates an Empty menu bar of given type. by default a top menu bar is created*/
 function menubar(classname)
 {
     classname = classname || "menubar";
@@ -109,7 +113,8 @@ function menubar(classname)
     return menu;
 }
 
-function settingsbar(parentsparent,parent)
+/*Creates a settignsbar to be displayed, when one of the elemtens in the Grafik edit screen is clicked or dragged*/
+function settingsbar(parent)
 {
     menu = document.createElement("div");
     menu.ul = document.createElement("ul");
@@ -118,15 +123,17 @@ function settingsbar(parentsparent,parent)
     menu.style.display = "none";
     menu.parent = parent;
 
-    menu.setpos = function(x,y)
+    menu.onmousedown = (e)=>{e.stopPropagation();};
+
+    menu.setpos = function()
     {
-        this.style.top = (y + this.parent.offsetHeight + 20) + "px";
-        this.style.left = x + "px";
+        this.style.top = (getPos(this.parent).y + this.parent.offsetHeight + 20) + "px";
+        this.style.left = getPos(this.parent).x + "px";
     }
 
     menu.setpos(parent.offsetLeft,parent.offsetTop);
 
-    parentsparent.appendChild(menu);
+    document.body.appendChild(menu);
 
     menu.add = function(x)
     {
@@ -135,7 +142,9 @@ function settingsbar(parentsparent,parent)
 
     menu.make_Visible = function()
     {
+        for(bar of document.getElementsByClassName("settingsbar")) bar.hide();
         this.style.display = "";
+        document.body.onmousedown = ()=>{for(bar of document.getElementsByClassName("settingsbar")) bar.hide(); document.body.onmousedown = null;}
     }
 
     menu.hide = function()
@@ -157,7 +166,7 @@ function settings_Icon(icon,onclick)
     return elem;
 }
 
-function text_input_overlay(target,parent)
+function text_input_overlay(target,set)
 {
     menu = document.createElement("div");
     menu.classList.add("textinput");
@@ -168,13 +177,17 @@ function text_input_overlay(target,parent)
     menu.cancel = document.createElement("button");
     menu.cancel.appendChild(document.createTextNode("Cancel"));
 
-    menu.input = document.createElement("input");
+    menu.accept.input = document.createElement("input");
+    menu.accept.set = set;
+    menu.accept.target = target;
 
     menu.appendChild(menu.input);
     menu.appendChild(menu.cancel);
     menu.appendChild(menu.accept);
 
+    document.body.appendChild(menu);
     
 
     menu.cancel.onclick = function(){this.remove();}
+    menu.accept.onclick = function(){this.set(this.input.value);this.remove();}
 }
