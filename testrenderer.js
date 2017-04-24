@@ -1,7 +1,7 @@
 function test()
 {
 //    $("screencontainer").children[1].innerHTML = $("screencontainer").children[0].innerHTML
-				
+      for(m of document.getElementsByClassName("elementbar")) m.style.display = "none";		
 	  testscreen = document.createElement("div");
 	  testscreen.classList.add("screencontainer");
 	  testscreen.id="testscreencontainer";
@@ -16,13 +16,13 @@ function test()
 	  $("screencontainer").style.display="none";
 }
 
-
+/*Changes view to the Grafik screen*/
 function grafik()
 {
 	$("screencontainer").style.display="";
-	$("testscreencontainer").remove();		
+	if($("testscreencontainer")) $("testscreencontainer").remove();
+    grafic_elements.style.display = "";		
 }
-
 
 function new_TestScreen()
 {

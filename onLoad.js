@@ -1,5 +1,7 @@
 var landscape_mode = false;
 var newscreenbutton;
+var grafic_elements;
+var logick_elements;
 
 function portraitPosition() {
 	
@@ -37,7 +39,7 @@ function initialize(selection)
     //creates the menu bar needet for selection of editing mode
 	default_Menu = menubar();
  	default_Menu.add(menubar_Item("Grafik",grafik,null,true));
-    default_Menu.add(menubar_Item("Logik"));
+    default_Menu.add(menubar_Item("Logik",goto_logick));
     default_Menu.add(menubar_Item("Test", test));
     default_Menu.make_Visible();
     
@@ -49,6 +51,14 @@ function initialize(selection)
    grafic_elements.add(elementbar_Item("Text Input"));
    grafic_elements.add(elementbar_Item("Checkbox"));
    grafic_elements.make_Visible();
+
+   //creates the menu bar containing the elements for Logick desing
+   logick_elements = elementbar();
+   logick_elements.add(elementbar_Item("Click"));
+   logick_elements.add(elementbar_Item("Swipe Left"));
+   logick_elements.add(elementbar_Item("Swipe Right"));
+   logick_elements.add(elementbar_Item("other"));
+   logick_elements.make_Visible();
 
    //creates the "new screen" button
    if(landscape_mode) newscreenbutton = $("createnewscreenlandscape");
