@@ -51,23 +51,9 @@ function moveelem(e)
   y = e.clientY + document.documentElement.scrollTop;
 
   posy = (y - elemToDrag.offsety);
-
-    if(posy<0)
-    { 
-        posy = 0;
-    }
-    else if(posy > elemToDrag.fencey - elemToDrag.offsetHeight) 
-    {
-        posy = elemToDrag.fencey - elemToDrag.offsetHeight;
-    } 
-
   posx = (x - elemToDrag.offsetx);
 
-    if(posx<0) posx = 0;
-    else if(posx > elemToDrag.fencex - elemToDrag.offsetWidth) posx = elemToDrag.fencex - elemToDrag.offsetWidth;
-
-    elemToDrag.setpos(posx,posy);
-
+  elemToDrag.setpos(posx,posy);
 }
 
 
@@ -96,8 +82,30 @@ function make_Container(elem)
         this.isVisible = !this.isVisible;
     }
 
+    elem.scale = function(x,y)
+    {
+
+        if(this.offsetTop > this.fencey - y) y = this.fencey - this.offsetTop;
+        if(this.offsetLeft > this.fencex - x) x = this.fencex - this.offsetLeft;
+        this.style.height = y + "px";
+        this.style.width = x + "px";
+    }
+
     elem.setpos = function(x,y)
     {
+
+        if(y<0)
+        { 
+            y = 0;
+        }
+        else if(y > this.fencey - this.offsetHeight) 
+        {
+            y = this.fencey - this.offsetHeight;
+        } 
+
+        if(x<0) x = 0;
+        else if(x > this.fencex - this.offsetWidth) x = this.fencex - this.offsetWidth;
+
         this.style.top = y + "px";
         this.style.left = x + "px";
         this.settingsbar.setpos();

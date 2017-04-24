@@ -152,7 +152,35 @@ function settingsbar(parent)
         this.style.display = "none";
     }
    
-    /*Grets calles after parent and menu are displayed*/ 
+    /*Recalculates Arrow positions after resize*/
+    menu.recalculate_positons = function()
+    {
+        menu = this;
+        menu.setpos();
+
+        /*calculation used to determen the position of the 8 scale arrows*/
+        posparent = getPos(menu.parent);
+        posmenu = getPos(menu);
+
+        scaletop = posparent.y - posmenu.y;
+        scalebottom = scaletop + menu.parent.offsetHeight;
+        scaleleft = posparent.x - posmenu.x;
+        scaleright = scaleleft + menu.parent.offsetWidth;
+
+        /*Moving the 8 scaling arrows at there corresponding position*/
+        menu.scaleBottomRight.setpose(scaleright,scalebottom);
+        menu.scaleTopRight.setpose(scaleright,scaletop-18);
+        menu.scaleBottomLeft.setpose(scaleleft-18,scalebottom);
+        menu.scaleTopLeft.setpose(scaleleft-18,scaletop-18);
+
+        menu.scaleTop.setpose(scaleleft+(scaleright-scaleleft)/2 - 9,scaletop-18);
+        menu.scaleBottom.setpose(scaleleft+(scaleright-scaleleft)/2 - 9,scalebottom);
+        menu.scaleRight.setpose(scaleright,scaletop + (scalebottom - scaletop)/2-9);
+        menu.scaleLeft.setpose(scaleleft-18,scaletop + (scalebottom - scaletop)/2-9);
+
+    }
+
+    /*Gets called after parent and menu are displayed*/ 
     menu.initialise = function()
     {
         menu = this;
@@ -175,7 +203,128 @@ function settingsbar(parent)
         menu.scaleTop = scale_icon(menu,"arrow_vertical.png",scaleleft+(scaleright-scaleleft)/2 - 9,scaletop-18);
         menu.scaleBottom = scale_icon(menu,"arrow_vertical.png",scaleleft+(scaleright-scaleleft)/2 - 9,scalebottom);
         menu.scaleRight = scale_icon(menu,"arrow_horizontal.png",scaleright,scaletop + (scalebottom - scaletop)/2-9);
-        menu.scaleRight = scale_icon(menu,"arrow_horizontal.png",scaleleft-18,scaletop + (scalebottom - scaletop)/2-9);
+        menu.scaleLeft = scale_icon(menu,"arrow_horizontal.png",scaleleft-18,scaletop + (scalebottom - scaletop)/2-9);
+
+
+        /*Initializing "Drag" of resize arrow*/
+        menu.init_scaling = function(e)
+        {
+            e.stopPropagation();
+            e.preventDefault();
+            elemToDrag = e.target;
+            elemToDrag.offsetx = e.pageX - getPos(elemToDrag).x; 
+            elemToDrag.offsety = e.pageY - getPos(elemToDrag).y;
+
+            document.body.addEventListener('mousemove', moveelem);  
+        };
+
+        /*giving each arrow its resizing effekt*/
+        menu.scaleBottomRight.onmousedown = menu.init_scaling;
+        menu.scaleRight.onmousedown = menu.init_scaling;
+        menu.scaleBottom.onmousedown = menu.init_scaling;
+        menu.scaleBottomLeft.onmousedown = menu.init_scaling;
+        menu.scaleTopRight.onmousedown = menu.init_scaling;
+        menu.scaleTopLeft.onmousedown = menu.init_scaling;
+        menu.scaleTop.onmousedown = menu.init_scaling;
+        menu.scaleLeft.onmousedown = menu.init_scaling;
+
+
+
+        menu.scaleBottomRight.setpos = function(x,y)
+        {
+            origin = getPos(this.parentElement.parent);
+            this.parentElement.parent.scale((x - origin.x),(y - origin.y));            
+            this.parentElement.recalculate_positons();      
+        }
+        menu.scaleBottom.setpos = function(x,y)
+        {
+            origin = getPos(this.parentElement.parent);
+            this.parentElement.parent.scale(this.parentElement.parent.offsetWidth,(y - origin.y));            
+            this.parentElement.recalculate_positons();
+            
+        }
+        menu.scaleRight.setpos = function(x,y)
+        {
+            origin = getPos(this.parentElement.parent);
+            this.parentElement.parent.scale((x - origin.x),this.parentElement.parent.offsetHeight);            
+            this.parentElement.recalculate_positons();
+            
+        }
+        menu.scaleTopLeft.setpos = function(x,y)
+        {
+            origin = getPos(this.parentElement.parent);
+            oldpos = {x: this.parentElement.parent.offsetLeft, y: this.parentElement.parent.offsetTop};
+            oldscale = {w: this.parentElement.parent.offsetWidth, h: this.parentElement.parent.offsetHeight};
+            
+            elempos = getPos(this);
+
+            scalex =(origin.x - x + (elempos.x - origin.x));
+            scaley =(origin.y - y + (elempos.y - origin.y));
+
+            this.parentElement.parent.setpos(oldpos.x - scalex, oldpos.y - scaley);
+            this.parentElement.parent.scale(oldscale.w + scalex, oldscale.h + scaley);
+            this.parentElement.recalculate_positons();      
+        }
+        menu.scaleTop.setpos = function(x,y)
+        {
+            origin = getPos(this.parentElement.parent);
+            oldpos = {x: this.parentElement.parent.offsetLeft, y: this.parentElement.parent.offsetTop};
+            oldscale = {w: this.parentElement.parent.offsetWidth, h: this.parentElement.parent.offsetHeight};
+            
+            elempos = getPos(this);
+
+            scalex =(origin.x - x + (elempos.x - origin.x));
+            scaley =(origin.y - y + (elempos.y - origin.y));
+
+            this.parentElement.parent.setpos(oldpos.x, oldpos.y - scaley);
+            this.parentElement.parent.scale(oldscale.w , oldscale.h + scaley);
+            this.parentElement.recalculate_positons();      
+        }
+        menu.scaleLeft.setpos = function(x,y)
+        {
+            origin = getPos(this.parentElement.parent);
+            oldpos = {x: this.parentElement.parent.offsetLeft, y: this.parentElement.parent.offsetTop};
+            oldscale = {w: this.parentElement.parent.offsetWidth, h: this.parentElement.parent.offsetHeight};
+            
+            elempos = getPos(this);
+
+            scalex =(origin.x - x + (elempos.x - origin.x));
+            scaley =(origin.y - y + (elempos.y - origin.y));
+
+            this.parentElement.parent.setpos(oldpos.x - scalex, oldpos.y);
+            this.parentElement.parent.scale(oldscale.w + scalex, oldscale.h);
+            this.parentElement.recalculate_positons();      
+        }
+        menu.scaleBottomLeft.setpos = function(x,y)
+        {
+            origin = getPos(this.parentElement.parent);
+            oldpos = {x: this.parentElement.parent.offsetLeft, y: this.parentElement.parent.offsetTop};
+            oldscale = {w: this.parentElement.parent.offsetWidth, h: this.parentElement.parent.offsetHeight};
+            
+            elempos = getPos(this);
+
+            scalex =(origin.x - x + (elempos.x - origin.x));
+            scaley =(origin.y - y + (elempos.y - origin.y));
+
+            this.parentElement.parent.setpos(oldpos.x - scalex, oldpos.y);
+            this.parentElement.parent.scale(oldscale.w + scalex, (y - origin.y));
+            this.parentElement.recalculate_positons();      
+        }
+        menu.scaleTopRight.setpos = function(x,y)
+        {
+            origin = getPos(this.parentElement.parent);
+            oldpos = {x: this.parentElement.parent.offsetLeft, y: this.parentElement.parent.offsetTop};
+            oldscale = {w: this.parentElement.parent.offsetWidth, h: this.parentElement.parent.offsetHeight};
+            
+            elempos = getPos(this);
+
+            scalex =(origin.x - x + (elempos.x - origin.x));
+            scaley =(origin.y - y + (elempos.y - origin.y));
+
+            this.parentElement.parent.setpos(oldpos.x, oldpos.y - scaley);
+            this.parentElement.parent.scale((x - origin.x) , oldscale.h + scaley);
+            this.parentElement.recalculate_positons();      
+        }
 
     }
     
@@ -206,6 +355,13 @@ function scale_icon(parent,img,x,y)
     icon.style.top = y + "px";
     icon.style.left = x + "px";
     parent.appendChild(icon);
+
+    icon.setpose = function(x,y)
+    {
+        this.style.top = y + "px";
+        this.style.left = x + "px";
+    }    
+
     return icon;
 }
 
