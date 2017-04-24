@@ -163,6 +163,9 @@ function settings_Icon(icon,onclick)
     elem.img.src = icon;
     elem.img.height = 25;
     elem.img.width = 25;
+    
+    elem.onclick = onclick;
+
     return elem;
 }
 
@@ -170,6 +173,8 @@ function text_input_overlay(target,set)
 {
     menu = document.createElement("div");
     menu.classList.add("textinput");
+    
+    menu.onmousedown = (x)=>{x.stopPropagation();};    
 
     menu.accept = document.createElement("button");
     menu.accept.appendChild(document.createTextNode("Accept"));
@@ -181,13 +186,15 @@ function text_input_overlay(target,set)
     menu.accept.set = set;
     menu.accept.target = target;
 
-    menu.appendChild(menu.input);
+    menu.appendChild(menu.accept.input);
     menu.appendChild(menu.cancel);
     menu.appendChild(menu.accept);
 
     document.body.appendChild(menu);
     
+    menu.style.top = (getPos(menu.accept.target).y + menu.accept.target.offsetHeight + 5) + "px";
+    menu.style.left = getPos(menu.accept.target).x + "px";
 
-    menu.cancel.onclick = function(){this.remove();}
-    menu.accept.onclick = function(){this.set(this.input.value);this.remove();}
+    menu.cancel.onclick = function(){this.parentElement.remove();}
+    menu.accept.onclick = function(){this.set(this.input.value);this.parentElement.remove();}
 }

@@ -206,7 +206,7 @@ div.settingsbar li:hover {
 /* Text input */ 
 
 div.textinput {
-	position: absolut;
+	position: absolute;
 	background-color: #CCC;
 	width: 200px;
 	height: 60px;

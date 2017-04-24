@@ -9,7 +9,7 @@ elements["Button"] = function element_button(e,x,y)
     
     b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this,function(value){this.target.value = value;})}));
+        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
     }
 	b.appendChild(document.createTextNode("Button"));
 	b.create(e,x,y)
@@ -37,6 +37,10 @@ elements["Label"] = function element_Label(e,x,y)
 {
 	b = document.createElement("div");
 	b = make_Container(b);
+    b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+    }
 	b.appendChild(document.createTextNode("Label"));
 	b.create(e,x,y)
 }
