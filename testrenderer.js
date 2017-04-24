@@ -21,6 +21,7 @@ function grafik()
 {
 	$("screencontainer").style.display="";
 	if($("testscreencontainer")) $("testscreencontainer").remove();
+    logick_elements.style.display = "none";
     grafic_elements.style.display = "";		
 }
 

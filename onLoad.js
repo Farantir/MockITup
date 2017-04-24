@@ -58,7 +58,6 @@ function initialize(selection)
    logick_elements.add(elementbar_Item("Swipe Left"));
    logick_elements.add(elementbar_Item("Swipe Right"));
    logick_elements.add(elementbar_Item("other"));
-   logick_elements.make_Visible();
 
    //creates the "new screen" button
    if(landscape_mode) newscreenbutton = $("createnewscreenlandscape");

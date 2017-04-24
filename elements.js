@@ -142,6 +142,7 @@ function make_Container(elem)
         this.offsety = this.offsetTop;
 
         this.settingsbar.add(settings_Icon("toggle_vis.png",()=>{this.togglevisible();}));
+        this.settingsbar.add(settings_Icon("delete.svg",()=>{this.settingsbar.remove();this.remove();}));
         elem.settingsbar.make_Visible();
         elem.settingsbar.initialise();
     }
