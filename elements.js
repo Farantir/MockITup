@@ -87,6 +87,15 @@ function make_Container(elem)
     elem.settingsbar = settingsbar(elem);
     elem.jsoncreate = function(){};
 
+    elem.isVisible = true;
+
+    elem.togglevisible = function()
+    {
+        if(this.isVisible) this.style.opacity = "0.1"; 
+        else this.style.opacity = "1";
+        this.isVisible = !this.isVisible;
+    }
+
     elem.setpos = function(x,y)
     {
         this.style.top = y + "px";
@@ -96,16 +105,35 @@ function make_Container(elem)
 
     elem.create = function(target,x,y)
     {
-    	this.style.left = (x - getPos(target).x || this.offsetLeft) + "px"; 
-    	this.style.top = (y - getPos(target).y || this.offsetTop) + document.documentElement.scrollTop + "px";
+        target.appendChild(this);
+
+        /*setting button toproper position*/   
+    	posx = (x - getPos(target).x || this.offsetLeft); 
+    	posy = (y - getPos(target).y || this.offsetTop) + document.documentElement.scrollTop;
+
+        this.fencey = this.offsetParent.clientHeight;
+        this.fencex = this.offsetParent.clientWidth;
+
+            if(posy<0)
+            { 
+                posy = 0;
+            }
+            else if(posy > this.fencey - this.offsetHeight) 
+            {
+                posy = this.fencey - this.offsetHeight;
+            } 
+
+            if(posx<0) posx = 0;
+            else if(posx > this.fencex - this.offsetWidth) posx = this.fencex - this.offsetWidth;
+
+            this.setpos(posx,posy);
 
         this.jsoncreate(target,x,y);
-        target.appendChild(this);   
 
         this.offsetx = this.offsetLeft; 
         this.offsety = this.offsetTop;
 
-        this.settingsbar.add(settings_Icon("toggle_vis.png"));
+        this.settingsbar.add(settings_Icon("toggle_vis.png",()=>{this.togglevisible();}));
         elem.settingsbar.make_Visible();
     }
 
