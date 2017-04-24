@@ -135,6 +135,7 @@ function make_Container(elem)
 
         this.settingsbar.add(settings_Icon("toggle_vis.png",()=>{this.togglevisible();}));
         elem.settingsbar.make_Visible();
+        elem.settingsbar.initialise();
     }
 
     elem.onmousedown = function(e)

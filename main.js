@@ -151,10 +151,38 @@ function settingsbar(parent)
     {
         this.style.display = "none";
     }
+   
+    /*Grets calles after parent and menu are displayed*/ 
+    menu.initialise = function()
+    {
+        menu = this;
+      
+        /*calculation used to determen the position of the 8 scale arrows*/
+        posparent = getPos(menu.parent);
+        posmenu = getPos(menu);
 
+        scaletop = posparent.y - posmenu.y;
+        scalebottom = scaletop + menu.parent.offsetHeight;
+        scaleleft = posparent.x - posmenu.x;
+        scaleright = scaleleft + menu.parent.offsetWidth;
+
+        /*creating the 8 scaling arrows at there corresponding position*/
+        menu.scaleBottomRight = scale_icon(menu,"arrow_left.png",scaleright,scalebottom);
+        menu.scaleTopRight = scale_icon(menu,"arrow_right.png",scaleright,scaletop-18);
+        menu.scaleBottomLeft = scale_icon(menu,"arrow_right.png",scaleleft-18,scalebottom);
+        menu.scaleTopLeft = scale_icon(menu,"arrow_left.png",scaleleft-18,scaletop-18);
+
+        menu.scaleTop = scale_icon(menu,"arrow_vertical.png",scaleleft+(scaleright-scaleleft)/2 - 9,scaletop-18);
+        menu.scaleBottom = scale_icon(menu,"arrow_vertical.png",scaleleft+(scaleright-scaleleft)/2 - 9,scalebottom);
+        menu.scaleRight = scale_icon(menu,"arrow_horizontal.png",scaleright,scaletop + (scalebottom - scaletop)/2-9);
+        menu.scaleRight = scale_icon(menu,"arrow_horizontal.png",scaleleft-18,scaletop + (scalebottom - scaletop)/2-9);
+
+    }
+    
     return menu;
 }
 
+/*function to create an icon in the custom settings bar of an element*/
 function settings_Icon(icon,onclick)
 {
     elem = document.createElement("li");
@@ -169,6 +197,19 @@ function settings_Icon(icon,onclick)
     return elem;
 }
 
+/*function to create one of the scale arrows*/
+function scale_icon(parent,img,x,y)
+{
+    icon = document.createElement("img");
+    icon.classList.add("arrow");
+    icon.src = img;
+    icon.style.top = y + "px";
+    icon.style.left = x + "px";
+    parent.appendChild(icon);
+    return icon;
+}
+
+/*Function to create a menu used for changing the text of a given resource*/
 function text_input_overlay(target,set)
 {
     menu = document.createElement("div");
