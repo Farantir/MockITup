@@ -14,6 +14,7 @@ function test()
         }
 	   testscreen.children[0].style.display="";
 	  $("screencontainer").style.display="none";
+      TreeCompile(testscreen);
 }
 
 /*Changes view to the Grafik screen*/
@@ -33,6 +34,15 @@ function new_TestScreen()
 	return tmp;
 }
 
-
+/*Compiles every element in the tree recursively*/
+function TreeCompile(target)
+{
+    for(m of target.children) TreeCompile(m);
+    if(target.dataset.isVisible == "false")
+    {
+        m.style.display = "none";
+        m.style.opacity = "1";
+    }
+}
 
 

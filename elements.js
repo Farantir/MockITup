@@ -74,12 +74,14 @@ function make_Container(elem)
     elem.jsoncreate = function(){};
 
     elem.isVisible = true;
-
+    elem.dataset.isVisible = elem.isVisible;
+    
     elem.togglevisible = function()
     {
-        if(this.isVisible) this.style.opacity = "0.1"; 
+        if(this.isVisible) this.style.opacity = "0.3"; 
         else this.style.opacity = "1";
         this.isVisible = !this.isVisible;
+        this.dataset.isVisible = this.isVisible;
     }
 
     elem.scale = function(x,y)
