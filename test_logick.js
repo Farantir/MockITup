@@ -21,9 +21,11 @@ function test_do_execute(event,target,passedvalue)
 
 function swipechecker(e)
 {
-    if(swipex > 100) e.target.test_do_execute("swiperight", swipetarget);
-    else if(swipex < 100) e.target.test_do_execute("swipeleft", swipetarget);
-    document.body.removeEventListener('mousemove', swipeaccumulator);
+    if(swipex > 60) test_do_execute("swiperight", swipetarget);
+    else if(swipex < 60) test_do_execute("swipeleft", swipetarget);
+    document.removeEventListener('mousemove', swipeaccumulator);
+    document.removeEventListener('mouseup',swipechecker);
+    swipetarget.removeEventListener('mouseup',swipechecker);
     swipetarget = null;
 }
 
@@ -34,7 +36,6 @@ var swipetarget;
 function swipeaccumulator(e)
 {
   swipex = e.clientX - beginswipex;
-   console.log(beginswipex);
 }
 
 function swipeinit(target)
@@ -43,8 +44,9 @@ function swipeinit(target)
     {
         swipetarget = this;
         beginswipex = e.pageX;
-        document.body.addEventListener('mousemove', swipeaccumulator);
-        console.log("down");
+        document.addEventListener('mousemove', swipeaccumulator);
+        document.addEventListener('mouseup',swipechecker);
+        this.addEventListener('mouseup',swipechecker);
     }
 }
 
