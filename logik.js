@@ -35,6 +35,23 @@ elements["Click"] = function element_button(e,x,y)
     evoking_aktion = "click";
 }
 
+
+elements["Swipe Left"] = function element_button(e,x,y)
+{
+    GLOBAL_OVERRIDE = global_overrride_onclick;
+    logick_elements.style.display = "none";
+    evoker = e;
+    evoking_aktion = "swipeleft";
+}
+
+elements["Swipe Right"] = function element_button(e,x,y)
+{
+    GLOBAL_OVERRIDE = global_overrride_onclick;
+    logick_elements.style.display = "none";
+    evoker = e;
+    evoking_aktion = "swiperight";
+}
+
 function global_overrride_onclick(e)
 {
     e.target.logick_menu.make_Visible();

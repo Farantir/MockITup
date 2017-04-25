@@ -19,6 +19,38 @@ function test_do_execute(event,target,passedvalue)
 }
 
 
+function swipechecker(e)
+{
+    if(swipex > 100) e.target.test_do_execute("swiperight", swipetarget);
+    else if(swipex < 100) e.target.test_do_execute("swipeleft", swipetarget);
+    document.body.removeEventListener('mousemove', swipeaccumulator);
+    swipetarget = null;
+}
+
+
+var swipex;
+var beginswipex;
+var swipetarget;
+function swipeaccumulator(e)
+{
+  swipex = e.clientX - beginswipex;
+   console.log(beginswipex);
+}
+
+function swipeinit(target)
+{
+    target.onmousedown = function(e)
+    {
+        swipetarget = this;
+        beginswipex = e.pageX;
+        document.body.addEventListener('mousemove', swipeaccumulator);
+        console.log("down");
+    }
+}
+
+test_logick_events["swiperight"] = swipeinit;
+test_logick_events["swipeleft"] = swipeinit;
+
 test_logick_events["textlink"] = function(target,execute)
 {
     target.onkeyup = function(){execute("textlink",this,this.value);};

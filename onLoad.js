@@ -2,6 +2,7 @@ var landscape_mode = false;
 var newscreenbutton;
 var grafic_elements;
 var logick_elements;
+var newElement_menubar;
 
 function portraitPosition() {
 	
@@ -45,7 +46,7 @@ function initialize(selection)
     
    //creates the menu bar containing the elements for grafik desing
    grafic_elements = elementbar();
-   grafic_elements.add(menubar_Item("+",null,"newelement"));
+   grafic_elements.add(menubar_Item("+",gotoNewElement,"newelement"));
    grafic_elements.add(elementbar_Item("Button"));
    grafic_elements.add(elementbar_Item("Label"));
    grafic_elements.add(elementbar_Item("Text Input"));
@@ -70,4 +71,9 @@ function initialize(selection)
    
    //Creates the first screen of the app
    new_Screen();
+
+    //Creates the menu bar for the new element screen
+	newElement_menubar = menubar();
+ 	newElement_menubar.add(menubar_Item("Save",new_element_save));
+    newElement_menubar.add(menubar_Item("Back",grafik));
 }

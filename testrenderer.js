@@ -39,7 +39,8 @@ function grafik()
 	$("screencontainer").style.display="";
 	if($("testscreencontainer")) $("testscreencontainer").remove();
     logick_elements.style.display = "none";
-    grafic_elements.style.display = "";		
+    grafic_elements.style.display = "";	
+    default_Menu.make_Visible();	
 }
 
 /*Compiles every element in the tree recursively*/

@@ -99,7 +99,7 @@ function menubar(classname)
     menu.style.display = "none";
     menu.classList.add(classname);
     document.body.appendChild(menu);
-    
+    menu.flush = function(){for(m of document.getElementsByClassName("menuItem"))m.a.classList = [];};
     menu.add = function(entry)
     {
         this.appendChild(entry);
