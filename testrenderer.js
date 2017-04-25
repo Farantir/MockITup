@@ -1,6 +1,6 @@
 function test()
 {
-
+        /*Translates the logick into data-tags. this way they are part of the inner html and can be transferd*/
         for(m in logick_transaktions)
         {
             ev = {"evoker":logick_transaktions[m].evoking_aktion};
@@ -9,22 +9,23 @@ function test()
             logick_transaktions[m].target.dataset["logik-"+m] = JSON.stringify(tg);
         }
 
-//    $("screencontainer").children[1].innerHTML = $("screencontainer").children[0].innerHTML
+      /*Copies over innerHTML. This way the logik (onclick events, etc) from the other two screens gets lost*/
       for(m of document.getElementsByClassName("elementbar")) m.style.display = "none";		
 	  testscreen = document.createElement("div");
 	  testscreen.classList.add("screencontainer");
 	  testscreen.id="testscreencontainer";
 	  document.body.appendChild(testscreen);
-	  
-	  for(m of document.getElementsByClassName("screengrafikeditor"))
-        {
-         	tmp = new_TestScreen();
-		 	tmp.innerHTML = m.innerHTML;	
-        }
-	   testscreen.children[0].style.display="";
+	  testscreen.innerHTML = $("screencontainer").innerHTML;
+
+      /*Makes all but the first screen invisile*/
+      for(m of testscreen.children) m.style.display = "none";
+	  testscreen.children[0].style.display="";
+
+        /*Makes the container of the grafic screens invisible*/
 	  $("screencontainer").style.display="none";
       TreeCompile(testscreen);
 
+       /*removes data-tags after transfer, as they are no longer needet */
         for(m in logick_transaktions)
         {
             delete logick_transaktions[m].evoker.dataset[m];
@@ -39,14 +40,6 @@ function grafik()
 	if($("testscreencontainer")) $("testscreencontainer").remove();
     logick_elements.style.display = "none";
     grafic_elements.style.display = "";		
-}
-
-function new_TestScreen()
-{
-	tmp = create_Screen();
-	tmp.style.display="none";
-	$("testscreencontainer").appendChild(tmp);
-	return tmp;
 }
 
 /*Compiles every element in the tree recursively*/

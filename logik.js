@@ -48,17 +48,35 @@ function logick_menu_item(name,onclick)
     return menubar_Item(name,onclick,"element-aktions");
 }
 
-/*
-Applys logik trasaktion hide
-function apply_aktion_Hide(e)
+function reset_transaktion(sourche)
 {
-
+    evoking_aktion = null;
+    evoker = null;
+    sourche.parentElement.hide();
+    logick_elements.make_Visible();
 }
-*/
+
 function logick_button_hide()
 {
     logick_transaktions.push(new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"hide"));
-    evoking_aktion = null;
-    evoker = null;
-    this.parentElement.hide();
+    reset_transaktion(this);
 }
+
+function logick_button_unhide()
+{
+    logick_transaktions.push(new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"unhide"));
+    reset_transaktion(this);
+}
+
+function logick_button_toggle_visibility()
+{
+    logick_transaktions.push(new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"togglevisibility"));
+    reset_transaktion(this);
+}
+
+function logick_button_changescreen()
+{
+    logick_transaktions.push(new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"changescreen"));
+    reset_transaktion(this);
+}
+

@@ -79,6 +79,8 @@ function make_Container(elem)
     
     elem.logick_menu = logick_menu(elem);
     elem.logick_menu.add(logick_menu_item("Hide",logick_button_hide));
+    elem.logick_menu.add(logick_menu_item("Make Visible",logick_button_unhide));
+    elem.logick_menu.add(logick_menu_item("Toggle Visibility",logick_button_toggle_visibility));
 
     elem.togglevisible = function()
     {

@@ -31,6 +31,10 @@ function new_Screen()
 	screen = create_Screen();
 	$("screencontainer").insertBefore(screen,newscreenbutton);
 	screen.classList.add("screengrafikeditor");
+    screen.logick_menu = logick_menu(screen);
+    screen.logick_menu.add(logick_menu_item("Change to This Screen",logick_button_changescreen));
+    screen.onclick = function(e){if(GLOBAL_OVERRIDE){GLOBAL_OVERRIDE(e);e.stopPropagation();return;}}
+    return screen;
 }
 
 function create_Screen(){

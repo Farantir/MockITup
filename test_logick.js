@@ -22,3 +22,19 @@ test_logick_effekts["hide"] = function(target)
 {
     target.style.display = "none";
 }
+
+test_logick_effekts["unhide"] = function(target)
+{
+    target.style.display = "";
+}
+
+test_logick_effekts["togglevisibility"] = function(target)
+{
+    if(target.style.display == "none") target.style.display = ""; else target.style.display = "none";
+}
+
+test_logick_effekts["changescreen"] = function(target)
+{
+    for(m of document.getElementsByClassName("screenportait")) m.style.display = "none";
+    target.style.display = "";
+}
