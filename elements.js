@@ -1,5 +1,6 @@
 var elemToDrag = null;
 var elements = new function(){};
+var GLOBAL_OVERRIDE = null;
  
  
 elements["Button"] = function element_button(e,x,y)
@@ -76,6 +77,9 @@ function make_Container(elem)
     elem.isVisible = true;
     elem.dataset.isVisible = elem.isVisible;
     
+    elem.logick_menu = logick_menu(elem);
+    elem.logick_menu.add(logick_menu_item("Hide",logick_button_hide));
+
     elem.togglevisible = function()
     {
         if(this.isVisible) this.style.opacity = "0.3"; 
@@ -151,6 +155,7 @@ function make_Container(elem)
 
     elem.onmousedown = function(e)
     {
+        if(GLOBAL_OVERRIDE){GLOBAL_OVERRIDE(e);e.stopPropagation();return;}
         elemToDrag = this;
         this.offsetx = e.pageX - this.offsetLeft; 
         this.offsety = e.pageY - this.offsetTop;

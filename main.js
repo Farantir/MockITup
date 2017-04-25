@@ -109,6 +109,10 @@ function menubar(classname)
         }
         this.style.display = "";
     }
+    menu.hide = function()
+    {
+       this.style.display = "none"; 
+    }
 
     return menu;
 }
