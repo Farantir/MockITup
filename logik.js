@@ -19,6 +19,14 @@ function goto_logick()
     logick_elements.style.display = "";
 }
 
+elements["Link text"] = function element_button(e,x,y)
+{
+    GLOBAL_OVERRIDE = global_overrride_onclick;
+    logick_elements.style.display = "none";
+    evoker = e;
+    evoking_aktion = "textlink";
+}
+
 elements["Click"] = function element_button(e,x,y)
 {
     GLOBAL_OVERRIDE = global_overrride_onclick;
@@ -80,3 +88,8 @@ function logick_button_changescreen()
     reset_transaktion(this);
 }
 
+function logick_button_textlink()
+{
+    logick_transaktions.push(new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"textlink"));
+    reset_transaktion(this);
+}

@@ -1,16 +1,27 @@
+/*This objekt stores the target and the effekt of all interktions (e.g. a buttonclick). 
+the targets get registert in the testrenderer.js file.*/
 var test_logik_transaktions = {};
+/*this objekt stores all possible effekts to an element together with its identfier*/
 var test_logick_effekts = {};
+/*this objekt stores all events, that can hatten to an objekt, together with its identifier*/
 var test_logick_events = {};
 
-function test_do_execute(event,target)
+/*Executes all aktions, whitch ar linked to the event identifier (e.g. click)*/
+function test_do_execute(event,target,passedvalue)
 {
     for(m of target.tans_out)
     {
         if(m.name == event)
         {
-            test_logik_transaktions[m.id].effekt(test_logik_transaktions[m.id].target);
+            test_logik_transaktions[m.id].effekt(test_logik_transaktions[m.id].target,passedvalue);
         }       
     }
+}
+
+
+test_logick_events["textlink"] = function(target,execute)
+{
+    target.onkeyup = function(){execute("textlink",this,this.value);};
 }
 
 test_logick_events["click"] = function(target,execute)
@@ -35,6 +46,12 @@ test_logick_effekts["togglevisibility"] = function(target)
 
 test_logick_effekts["changescreen"] = function(target)
 {
-    for(m of document.getElementsByClassName("screenportait")) m.style.display = "none";
+    for(m of $("testscreencontainer").getElementsByClassName("screenportait")) m.style.display = "none";
     target.style.display = "";
 }
+
+test_logick_effekts["textlink"] = function(target,message)
+{
+    target.innerHTML = message;
+}
+

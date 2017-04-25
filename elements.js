@@ -13,6 +13,7 @@ elements["Button"] = function element_button(e,x,y)
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
     }
 	b.appendChild(document.createTextNode("Button"));
+    b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
 	b.create(e,x,y)
 }
  
@@ -43,6 +44,7 @@ elements["Label"] = function element_Label(e,x,y)
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
     }
 	b.appendChild(document.createTextNode("Label"));
+    b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
 	b.create(e,x,y)
 }
 
