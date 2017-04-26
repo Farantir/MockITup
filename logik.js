@@ -1,7 +1,7 @@
 var logick_transaktions = [];
 var evoker = null;
 var evoking_aktion = null;
-
+var inlogickview = false;
 
 function logick_transaktion(evoker,evoking_aktion,target,name)
 {
@@ -16,39 +16,40 @@ function goto_logick()
     $("screencontainer").style.display="";
 	if($("testscreencontainer")) $("testscreencontainer").remove();
     grafic_elements.style.display = "none";
-    logick_elements.style.display = "";
+    logick_elements.style.display = "none";
+    inlogickview = true;
 }
 
-elements["Link text"] = function element_button(e,x,y)
+function settextchanged(e)
 {
     GLOBAL_OVERRIDE = global_overrride_onclick;
     logick_elements.style.display = "none";
-    evoker = e;
+    evoker = this.parentElement.eventtarget;
     evoking_aktion = "textlink";
 }
 
-elements["Click"] = function element_button(e,x,y)
+function setclickevent(e)
 {
     GLOBAL_OVERRIDE = global_overrride_onclick;
     logick_elements.style.display = "none";
-    evoker = e;
+    evoker = this.parentElement.eventtarget;
     evoking_aktion = "click";
 }
 
 
-elements["Swipe Left"] = function element_button(e,x,y)
+function setswipeleft(e)
 {
     GLOBAL_OVERRIDE = global_overrride_onclick;
     logick_elements.style.display = "none";
-    evoker = e;
+    evoker = this.parentElement.eventtarget;
     evoking_aktion = "swipeleft";
 }
 
-elements["Swipe Right"] = function element_button(e,x,y)
+function setswiperight(e)
 {
     GLOBAL_OVERRIDE = global_overrride_onclick;
     logick_elements.style.display = "none";
-    evoker = e;
+    evoker = this.parentElement.eventtarget;
     evoking_aktion = "swiperight";
 }
 
@@ -109,4 +110,17 @@ function logick_button_textlink()
 {
     logick_transaktions.push(new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"textlink"));
     reset_transaktion(this);
+}
+
+function logik_bar_make_visible()
+{
+   if(!inlogickview) return false;
+   logick_elements.style.display = "";
+   document.body.addEventListener("mousedown",logik_bar_hide);
+}
+
+function logik_bar_hide()
+{
+   logick_elements.style.display = "none";
+   document.body.removeEventListener("mousedown",logik_bar_hide);
 }

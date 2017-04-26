@@ -218,6 +218,8 @@ function make_Container(elem)
     elem.onmousedown = function(e)
     {
         if(GLOBAL_OVERRIDE){GLOBAL_OVERRIDE(e);e.stopPropagation();return;}
+        logick_elements.eventtarget = this;
+        logik_bar_make_visible();
         elemToDrag = this;
         this.offsetx = e.pageX - this.offsetLeft; 
         this.offsety = e.pageY - this.offsetTop;

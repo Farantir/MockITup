@@ -57,10 +57,10 @@ function initialize(selection)
 
    //creates the menu bar containing the elements for Logick desing
    logick_elements = elementbar();
-   logick_elements.add(elementbar_Item("Click"));
-   logick_elements.add(elementbar_Item("Swipe Left"));
-   logick_elements.add(elementbar_Item("Swipe Right"));
-   logick_elements.add(elementbar_Item("Link text"));
+   logick_elements.add(menubar_Item("Click",setclickevent));
+   logick_elements.add(menubar_Item("Swipe Left",setswipeleft));
+   logick_elements.add(menubar_Item("Swipe Right",setswiperight));
+   logick_elements.add(menubar_Item("Text Changed",settextchanged));
 
    //creates the "new screen" button
    if(landscape_mode) newscreenbutton = $("createnewscreenlandscape");

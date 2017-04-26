@@ -1,5 +1,6 @@
 function test()
 {
+    inlogickview = false;
         /*Translates the logick into data-tags. this way they are part of the inner html and can be transferd*/
         for(m in logick_transaktions)
         {
@@ -40,6 +41,7 @@ function grafik()
 	if($("testscreencontainer")) $("testscreencontainer").remove();
     logick_elements.style.display = "none";
     grafic_elements.style.display = "";	
+    inlogickview = false;
     default_Menu.make_Visible();	
 }
 

@@ -33,7 +33,18 @@ function new_Screen()
 	screen.classList.add("screengrafikeditor");
     screen.logick_menu = logick_menu(screen);
     screen.logick_menu.add(logick_menu_item("Change to This Screen",logick_button_changescreen));
-    screen.onclick = function(e){if(GLOBAL_OVERRIDE){GLOBAL_OVERRIDE(e);e.stopPropagation();return;}}
+    screen.onmousedown = function(e)
+    {
+        if(GLOBAL_OVERRIDE)
+        {
+            GLOBAL_OVERRIDE(e);
+            e.stopPropagation();
+            return;
+        }
+        logick_elements.eventtarget = this;
+        logik_bar_make_visible();
+        e.stopPropagation();
+    }
     return screen;
 }
 
@@ -68,7 +79,7 @@ function menubar_Item(name,onclick,classname,aktive)
     if(aktive) li.a.classList.add("active");
     li.text = document.createTextNode(name);
     li.onclickoverload = onclick;
-    li.onclick = function()
+    li.onclick = function(e)
     {
    		for(m of document.getElementsByClassName(classname))
         {
@@ -76,6 +87,7 @@ function menubar_Item(name,onclick,classname,aktive)
         }
         this.a.classList.add("active");
     	if(this.onclickoverload) this.onclickoverload();
+        e.stopPropagation();
     }
     li.classList.add(classname);
 
@@ -87,7 +99,9 @@ function menubar_Item(name,onclick,classname,aktive)
 /*Creats an empty side menu bar*/
 function elementbar()
 {
-    return menubar("elementbar");
+    var elm = menubar("elementbar");
+    elm.onmousedown = (e)=>{e.stopPropagation();};
+    return elm;
 }
 
 /*Creates an Empty menu bar of given type. by default a top menu bar is created*/
@@ -105,6 +119,7 @@ function menubar(classname)
         this.appendChild(entry);
     }
 
+
     menu.make_Visible = function()
     {
         for(m of document.getElementsByClassName(classname))
@@ -119,6 +134,12 @@ function menubar(classname)
     }
 
     return menu;
+}
+
+function hide_settingsbar()
+{
+    for(bar of document.getElementsByClassName("settingsbar")) bar.hide(); 
+    document.body.removeEventListener("mousedown",hide_settingsbar);
 }
 
 /*Creates a settignsbar to be displayed, when one of the elemtens in the Grafik edit screen is clicked or dragged*/
@@ -152,7 +173,7 @@ function settingsbar(parent)
     {
         for(bar of document.getElementsByClassName("settingsbar")) bar.hide();
         this.style.display = "";
-        document.body.onmousedown = ()=>{for(bar of document.getElementsByClassName("settingsbar")) bar.hide(); document.body.onmousedown = null;}
+        document.body.addEventListener("mousedown",hide_settingsbar);
     }
 
     menu.hide = function()
