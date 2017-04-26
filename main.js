@@ -181,10 +181,6 @@ function settingsbar(parent)
         this.ul2.appendChild(x);
     }
 	
-	menu.removeActionIvon = function(x)
-	{
-		this.ul2.removeChild(x);	
-	}
 
     menu.make_Visible = function()
     {

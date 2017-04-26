@@ -159,29 +159,34 @@ function logik_bar_hide()
 
 
 function delete_transaction(e) {
-	console.log(e.target.parentElement);
+	remove_element_actionbar(e.target.parentElement.transaction);
+}
+
+function remove_element_actionbar(transaction) {
 	
-	var elements = e.target.parentElement.evoker.settingsbar.ul2;
-	for (elem of elements.children) {
-		if (elem.children[0].transaction == e.target.transaction)
-		{
+	
+	
+	var elements = transaction.evoker.settingsbar.ul2;
+	for (elem of elements.children) {;
+		if (elem.transaction == transaction)
+		{   
+		    transaction.target.style.border = elem.bordertarget;
+			transaction.evoker.style.border = elem.borderevoker;
 			elem.remove();
 		}
 	}
 	
-	var elements = e.target.parentElement.target.settingsbar.ul2;
+	var elements = transaction.target.settingsbar.ul2;
 	for (elem of elements.children) {
-		if (elem.children[0].transaction == e.target.transaction)
+		if (elem.transaction == transaction)
 		{
+			transaction.target.style.border = elem.bordertarget;
+			transaction.evoker.style.border = elem.borderevoker;
 			elem.remove();
 		}
 	}
 	
-   logick_transaktions.splice(logick_transaktions.indexOf(e.target.parentElement.transaction), 1);
-   
-   e.target.parentElement.evoker.style.border = e.target.parentElement.borderevoker;
-   e.target.parentElement.target.style.border = e.target.parentElement.bordertarget;
-
-
+	
+   logick_transaktions.splice(logick_transaktions.indexOf(transaction), 1);
 }
 	
