@@ -2,6 +2,7 @@ var logick_transaktions = [];
 var evoker = null;
 var evoking_aktion = null;
 var inlogickview = false;
+var complex_transaktion;
 
 function logick_transaktion(evoker,evoking_aktion,target,name)
 {
@@ -107,11 +108,37 @@ function logick_menu_item(name,onclick)
 
 function reset_transaktion(sourche)
 {
+	    sourche.parentElement.hide();
+	    reset_transaktion_elementindependent();
+}
+
+function reset_transaktion_elementindependent()
+{
     evoking_aktion = null;
     evoker = null;
-    sourche.parentElement.hide();
     logick_elements.make_Visible();
     notifikationbar.hide();
+}
+
+/*element do get text from*/
+function logick_button_get_data_for_add_list(e)
+{
+	/*Create an empty objekt*/
+	complex_transaktion.complex = {};
+	complex_transaktion.complex.textsource = e.target;
+    logick_transaktions.push(complex_transaktion);
+    reset_transaktion_elementindependent();
+    complex_transaktion = null;
+    GLOBAL_OVERRIDE = null;
+}
+
+/*Creating a complex transaktion, because 3 elements are needet*/
+function logick_button_add_list_element()
+{
+	complex_transaktion = new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"addtolist");
+	this.parentElement.hide();
+	GLOBAL_OVERRIDE = logick_button_get_data_for_add_list;
+	notifikationbar.show("Choose text source for List element");
 }
 
 function logick_button_hide()

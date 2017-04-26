@@ -5,6 +5,8 @@ var test_logik_transaktions = {};
 var test_logick_effekts = {};
 /*this objekt stores all events, that can hatten to an objekt, together with its identifier*/
 var test_logick_events = {};
+/*This objekt contains all extra elements needet for complex transaktions*/
+var test_logick_complex_targets = {};
 
 /*Executes all aktions, whitch ar linked to the event identifier (e.g. click)*/
 function test_do_execute(event,target,passedvalue)
@@ -13,7 +15,7 @@ function test_do_execute(event,target,passedvalue)
     {
         if(m.name == event)
         {
-            test_logik_transaktions[m.id].effekt(test_logik_transaktions[m.id].target,passedvalue);
+            test_logik_transaktions[m.id].effekt(test_logik_transaktions[m.id].target,passedvalue,m.id);
         }       
     }
 }
@@ -87,5 +89,13 @@ test_logick_effekts["changescreen"] = function(target)
 test_logick_effekts["textlink"] = function(target,message)
 {
     target.innerHTML = message;
+}
+
+test_logick_effekts["addtolist"] = function(target,x,id)
+{	
+	b = document.createElement("div");
+	target.appendChild(b);
+	b.style.margin = "20px";
+    b.innerHTML = test_logick_complex_targets[id].textsource.value;
 }
 

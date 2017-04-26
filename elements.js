@@ -69,7 +69,7 @@ elements["Liste"] = function element_List(e,x,y)
     {
         this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);}));
     }
-	
+	b.logick_menu.add(logick_menu_item("Add List Entry",logick_button_add_list_element));
 	b.style.height = "200px";
 	b.style.width = "200px";
 	b.style.overflow = "scroll";
@@ -102,6 +102,7 @@ function element_Listelem(e,x,y)
     
     b.style.position = "relative";
     b.style.margin = "20px"; 
+    b.classList.add("listenelement");
 }
 
 function moveelem(e) 

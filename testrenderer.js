@@ -10,6 +10,11 @@ function test()
             tg = {"target":logick_transaktions[m].name};
             logick_transaktions[m].evoker.dataset["logik-"+m] = JSON.stringify(ev);
             logick_transaktions[m].target.dataset["logik-"+m] = JSON.stringify(tg);
+            
+            if(logick_transaktions[m].complex != null) for(com in logick_transaktions[m].complex)
+            {
+				logick_transaktions[m].complex[com].dataset["logik_complex-"+m] = "" + com;
+            };
         }
 
       /*Copies over innerHTML. This way the logik (onclick events, etc) from the other two screens gets lost*/
@@ -31,8 +36,13 @@ function test()
        /*removes data-tags after transfer, as they are no longer needet */
         for(m in logick_transaktions)
         {
-            delete logick_transaktions[m].evoker.dataset[m];
-            delete logick_transaktions[m].target.dataset[m];
+            delete logick_transaktions[m].evoker.dataset["logik-"+m];
+            delete logick_transaktions[m].target.dataset["logik-"+m];
+
+            if(logick_transaktions[m].complex != null) for(com in logick_transaktions[m].complex)
+            {
+				delete logick_transaktions[m].complex[com].dataset["logik_complex-"+m];
+            };
         }
 }
 
@@ -81,6 +91,10 @@ function TreeCompile(target)
                 eff.effekt = test_logick_effekts[effekt.target];
                 test_logik_transaktions[atrname[2]] = eff;
             }
+        }else if(atrname[0] == "data" && atrname[1] == "logik_complex")
+        {
+        	if(test_logick_complex_targets[atrname[2]] == null) test_logick_complex_targets[atrname[2]] = {};
+        	test_logick_complex_targets[atrname[2]][attrib.value] = target;
         }
       }
     }
