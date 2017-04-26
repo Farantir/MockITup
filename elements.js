@@ -61,6 +61,49 @@ elements["Picture"] = function element_Label(e,x,y)
 	b.create(e,x,y)
 }
 
+elements["Liste"] = function element_List(e,x,y)
+{
+	b = document.createElement("div");
+	b = make_Container(b);
+    b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);}));
+    }
+	
+	b.style.height = "200px";
+	b.style.width = "200px";
+	b.style.overflow = "scroll";
+	b.create(e,x,y);
+}
+
+function element_Listelem(e,x,y)
+{
+	b = document.createElement("div");
+	make_Container(b)
+	b.appendChild(document.createTextNode("Label"));
+	e.appendChild(b)
+	b.setpos = ()=>{};
+	b.scale = ()=>{};
+	b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+    }
+    b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
+    b.create(e,b.offsetLeft,b.offsetTop);
+    
+    b.settingsbar.scaleBottomRight.remove();
+    b.settingsbar.scaleBottom.remove();
+    b.settingsbar.scaleBottomLeft.remove();
+    b.settingsbar.scaleRight.remove();
+    b.settingsbar.scaleTop.remove();
+    b.settingsbar.scaleTopLeft.remove();
+    b.settingsbar.scaleTopRight.remove();
+    b.settingsbar.scaleLeft.remove();
+    
+    b.style.position = "relative";
+    b.style.margin = "20px"; 
+}
+
 function moveelem(e) 
 {
   x = e.clientX;
