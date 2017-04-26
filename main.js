@@ -193,7 +193,7 @@ function settingsbar(parent)
 
     menu.hide = function()
     {
-        this.styogikle.display = "none";
+        this.style.display = "none";
     }
    
     /*Recalculates Arrow positions after resize*/
@@ -451,7 +451,7 @@ function create_notifikationbar(notifikationtext)
     {
         this.innerHTML = textmessage;
         this.style.display = "";
-        setTimeout(function(){notifikationbar.hide();}, textmessage.length*1000)
+        setTimeout(function(){notifikationbar.hide();}, textmessage.length*100)
     }
     not_bar.hide = function()
     {

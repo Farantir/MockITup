@@ -79,6 +79,6 @@ function initialize(selection)
 
     //Creates the menu bar for the new element screen
 	newElement_menubar = menubar();
- 	newElement_menubar.add(menubar_Item("Save",new_element_save));
+ 	newElement_menubar.add(menubar_Item("Save",newelementsetname));
     newElement_menubar.add(menubar_Item("Back",grafik));
 }
