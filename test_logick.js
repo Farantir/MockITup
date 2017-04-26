@@ -22,7 +22,7 @@ function test_do_execute(event,target,passedvalue)
 function swipechecker(e)
 {
     if(swipex > 60) test_do_execute("swiperight", swipetarget);
-    else if(swipex < 60) test_do_execute("swipeleft", swipetarget);
+    else if(swipex < -60) test_do_execute("swipeleft", swipetarget);
     document.removeEventListener('mousemove', swipeaccumulator);
     document.removeEventListener('mouseup',swipechecker);
     swipetarget.removeEventListener('mouseup',swipechecker);

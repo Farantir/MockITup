@@ -43,8 +43,10 @@ function new_Screen()
         }
         logick_elements.eventtarget = this;
         logik_bar_make_visible();
+        this.settingsbar.make_Visible();
         e.stopPropagation();
     }
+    screen.settingsbar = settingsbar(screen);
     return screen;
 }
 
