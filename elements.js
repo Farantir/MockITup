@@ -47,6 +47,19 @@ elements["Label"] = function element_Label(e,x,y)
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
 	b.create(e,x,y)
 }
+elements["Picture"] = function element_Label(e,x,y)
+{
+	b = document.createElement("img");
+    b.src = "picture.png";
+    b.draggable="false";
+    b.ondragstart = function() { return false; };
+	b = make_Container(b);
+    b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("picture.png",function(){}));
+    }
+	b.create(e,x,y)
+}
 
 function moveelem(e) 
 {
@@ -76,9 +89,11 @@ function make_Container(elem)
     elem.settingsbar = settingsbar(elem);
     elem.jsoncreate = function(){};
 
+    /*Defines if the element ist visible in the test renderer*/
     elem.isVisible = true;
     elem.dataset.isVisible = elem.isVisible;
     
+    /*Menu containing the logik funktions of the element*/
     elem.logick_menu = logick_menu(elem);
     elem.logick_menu.add(logick_menu_item("Hide",logick_button_hide));
     elem.logick_menu.add(logick_menu_item("Make Visible",logick_button_unhide));

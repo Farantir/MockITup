@@ -51,6 +51,7 @@ function initialize(selection)
    grafic_elements.add(elementbar_Item("Label"));
    grafic_elements.add(elementbar_Item("Text Input"));
    grafic_elements.add(elementbar_Item("Checkbox"));
+   grafic_elements.add(elementbar_Item("Picture"));
    grafic_elements.make_Visible();
 
    //creates the menu bar containing the elements for Logick desing
