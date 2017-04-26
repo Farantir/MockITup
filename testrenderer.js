@@ -16,6 +16,9 @@ function test()
 				logick_transaktions[m].complex[com].dataset["logik_complex-"+m] = "" + com;
             };
         }
+        
+        /*Ensures all textbox text stay the same + all checkboxes keep their state*/
+		save_preenterd_values($("screencontainer"));
 
       /*Copies over innerHTML. This way the logik (onclick events, etc) from the other two screens gets lost*/
       for(m of document.getElementsByClassName("elementbar")) m.style.display = "none";		
@@ -45,6 +48,15 @@ function test()
             };
         }
 }
+
+/*recursively saves every preentert value (e.g. from text boxes) to the data tags*/
+function save_preenterd_values(target)
+{
+	for(m of target.children) save_preenterd_values(m);
+	
+	if(target.value != null) target.dataset["value"] = target.value;
+}
+
 
 /*Changes view to the Grafik screen*/
 function grafik()
@@ -95,6 +107,9 @@ function TreeCompile(target)
         {
         	if(test_logick_complex_targets[atrname[2]] == null) test_logick_complex_targets[atrname[2]] = {};
         	test_logick_complex_targets[atrname[2]][attrib.value] = target;
+        }else if(atrname[0] == "data" && atrname[1] == "value")
+        {
+        	target.value = attrib.value;
         }
       }
     }
