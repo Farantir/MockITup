@@ -203,6 +203,52 @@ div.settingsbar li:hover {
 }
 
 
+div.textbar {
+width: 100%;
+text-align:center;
+margin-top: 65px;
+padding-top:5px;
+padding-bottom: 5px;
+font-size:30px;
+background-color:#ea5a00;
+
+}
+
+div.imageselect {
+	position: absolute;
+	background-color: #CCC;
+	width: 400px;
+	height: 60px;
+	text-align:center;
+	border-style:solid;
+  	border-color: #b43092;
+}
+
+#fileselect {
+width: auto;
+margin: 0px;
+margin-left: 2.5%;
+float: left; 
+}
+
+div.imageselect input {
+	position:relative;
+	float: top;
+	width: 95%;
+	margin-top: 5px;
+	margin-bottom: 3px;	
+}
+
+div.imageselect button {
+  position: relative;
+  float: right;
+  margin-right: 2.5%;
+}
+
+div.textinput button:hover {
+	 color: #b43092;
+}
+
 /* Text input */ 
 
 div.textinput {
@@ -225,7 +271,7 @@ div.textinput input {
 div.textinput button {
   position: relative;
   float: right;
-  margin-right: 5px;
+  margin-right: 2.5%;
 }
 
 div.textinput button:hover {
