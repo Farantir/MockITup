@@ -9,6 +9,33 @@ function logick_transaktion(evoker,evoking_aktion,target,name)
     this.evoking_aktion = evoking_aktion;
     this.target = target;
     this.name = name;
+	
+	evoker.settingsbar.addActionIcon(addActionToSettings("Action.png", this));
+	target.settingsbar.addActionIcon(addActionToSettings("Action.png", this));
+}
+
+function addActionToSettings(png, transaction) {	
+	var icon = settings_Icon(png, delete_transaction);
+	
+	icon.transaction = transaction;
+	icon.evoker = transaction.evoker;
+	icon.target = transaction.target;
+	
+	icon.onmouseover = function(){
+		this.borderevoker = this.evoker.style.border;
+		this.bordertarget = this.target.style.border;
+		
+		this.evoker.style.border = "2px solid #ea5a00";
+		this.target.style.border = "2px solid #b43092";				
+	}
+	
+	icon.onmouseout = function(e){
+		this.evoker.style.border = this.borderevoker;
+	    this.target.style.border = this.bordertarget;	
+	}
+	
+	return icon;
+	
 }
 
 function goto_logick()
@@ -129,3 +156,32 @@ function logik_bar_hide()
    logick_elements.style.display = "none";
    document.body.removeEventListener("mousedown",logik_bar_hide);
 }
+
+
+function delete_transaction(e) {
+	console.log(e.target.parentElement);
+	
+	var elements = e.target.parentElement.evoker.settingsbar.ul2;
+	for (elem of elements.children) {
+		if (elem.children[0].transaction == e.target.transaction)
+		{
+			elem.remove();
+		}
+	}
+	
+	var elements = e.target.parentElement.target.settingsbar.ul2;
+	for (elem of elements.children) {
+		if (elem.children[0].transaction == e.target.transaction)
+		{
+			elem.remove();
+		}
+	}
+	
+   logick_transaktions.splice(logick_transaktions.indexOf(e.target.parentElement.transaction), 1);
+   
+   e.target.parentElement.evoker.style.border = e.target.parentElement.borderevoker;
+   e.target.parentElement.target.style.border = e.target.parentElement.bordertarget;
+
+
+}
+	

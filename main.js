@@ -147,7 +147,12 @@ function settingsbar(parent)
 {
     menu = document.createElement("div");
     menu.ul = document.createElement("ul");
-    menu.appendChild(menu.ul);   
+	menu.ul2 = document.createElement("ul");
+	//List of settings images
+    menu.appendChild(menu.ul);   	
+	//List of Actions Images 
+	menu.appendChild(menu.ul2);
+	
     menu.classList.add("settingsbar");
     menu.style.display = "none";
     menu.parent = parent;
@@ -168,6 +173,16 @@ function settingsbar(parent)
     {
         this.ul.appendChild(x);
     }
+	
+	  menu.addActionIcon = function(x)
+    {
+        this.ul2.appendChild(x);
+    }
+	
+	menu.removeActionIvon = function(x)
+	{
+		this.ul2.removeChild(x);	
+	}
 
     menu.make_Visible = function()
     {
