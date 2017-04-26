@@ -125,7 +125,7 @@ function getPos(el) {
     return {x: lx,y: ly};
 }
 
-/*Adds all functions and propaties needed for an element in the Gragik editd view*/
+/*Adds all functions and properties needed for an element in the Grafik edit view*/
 function make_Container(elem)
 {
     elem.style.position = "absolute";
@@ -136,11 +136,13 @@ function make_Container(elem)
     elem.isVisible = true;
     elem.dataset.isVisible = elem.isVisible;
     
-    /*Menu containing the logik funktions of the element*/
+    /*Menu containing the logic funktions of the element*/
     elem.logick_menu = logick_menu(elem);
     elem.logick_menu.add(logick_menu_item("Hide",logick_button_hide));
     elem.logick_menu.add(logick_menu_item("Make Visible",logick_button_unhide));
     elem.logick_menu.add(logick_menu_item("Toggle Visibility",logick_button_toggle_visibility));
+	
+	
 
     elem.togglevisible = function()
     {
@@ -211,6 +213,7 @@ function make_Container(elem)
 
         this.settingsbar.add(settings_Icon("toggle_vis.png",()=>{this.togglevisible();}));
         this.settingsbar.add(settings_Icon("delete.svg",()=>{this.settingsbar.remove();this.remove();}));
+		
         elem.settingsbar.make_Visible();
         elem.settingsbar.initialise();
     }
