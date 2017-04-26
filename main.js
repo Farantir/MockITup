@@ -178,7 +178,7 @@ function settingsbar(parent)
 
     menu.hide = function()
     {
-        this.style.display = "none";
+        this.styogikle.display = "none";
     }
    
     /*Recalculates Arrow positions after resize*/
@@ -423,4 +423,24 @@ function text_input_overlay(target,set)
 
     menu.cancel.onclick = function(){this.parentElement.remove();}
     menu.accept.onclick = function(){this.set(this.input.value);this.parentElement.remove();}
+}
+
+/*Notifikation bar at the top of the screen*/
+function create_notifikationbar(notifikationtext)
+{
+    var not_bar = document.createElement("div");
+    not_bar.classList.add("textbar");
+    document.body.appendChild(not_bar);
+    not_bar.style.display = "none";
+    not_bar.show = function(textmessage)
+    {
+        this.innerHTML = textmessage;
+        this.style.display = "";
+        setTimeout(function(){notifikationbar.hide();}, textmessage.length*1000)
+    }
+    not_bar.hide = function()
+    {
+       this.style.display = "none";
+    }
+    return not_bar;
 }

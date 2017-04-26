@@ -1,6 +1,8 @@
 function test()
 {
     inlogickview = false;
+    notifikationbar.hide();
+
         /*Translates the logick into data-tags. this way they are part of the inner html and can be transferd*/
         for(m in logick_transaktions)
         {
@@ -37,6 +39,7 @@ function test()
 /*Changes view to the Grafik screen*/
 function grafik()
 {
+    notifikationbar.hide();
 	$("screencontainer").style.display="";
 	if($("testscreencontainer")) $("testscreencontainer").remove();
     logick_elements.style.display = "none";

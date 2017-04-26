@@ -3,6 +3,7 @@ var newscreenbutton;
 var grafic_elements;
 var logick_elements;
 var newElement_menubar;
+var notifikationbar;
 
 function portraitPosition() {
 	
@@ -30,6 +31,9 @@ return document.getElementById(x);
 
 function initialize(selection)
 {
+    /*Creates a notifikationbar*/
+    notifikationbar = create_notifikationbar();
+
     //applys selection of landscape or portrait mode
 	landscape_mode = selection;
 
