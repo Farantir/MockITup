@@ -59,7 +59,6 @@ function initialize(selection)
    logick_elements.add(elementbar_Item("Click"));
    logick_elements.add(elementbar_Item("Swipe Left"));
    logick_elements.add(elementbar_Item("Swipe Right"));
-   logick_elements.add(elementbar_Item("other"));
    logick_elements.add(elementbar_Item("Link text"));
 
    //creates the "new screen" button
