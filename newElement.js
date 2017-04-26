@@ -30,9 +30,16 @@ function gotoNewElement()
     tmpnewelement = b;
 }
 
+var newelementname;
+function newelementsetname()
+{
+    text_input_overlay(tmpnewelement,(x)=>{newelementname=x;new_element_save();})
+    notifikationbar.show("Enter a name for the element");
+}
+
 function new_element_save()
 {
-    name="new";
+    name = newelementname;
     grafic_elements.add(elementbar_Item(name));
 
     elements[name] = function(e,x,y)

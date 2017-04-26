@@ -45,20 +45,26 @@ function goto_logick()
     grafic_elements.style.display = "none";
     logick_elements.style.display = "none";
     inlogickview = true;
+    notifikationbar.show("Klick on the Element that should cause an Event");
+}
+
+function general_event_stuff()
+{
+    notifikationbar.show("Klick on the Element that should be the Target of this Event");
+    GLOBAL_OVERRIDE = global_overrride_onclick;
+    logick_elements.style.display = "none";
 }
 
 function settextchanged(e)
 {
-    GLOBAL_OVERRIDE = global_overrride_onclick;
-    logick_elements.style.display = "none";
+    general_event_stuff();
     evoker = this.parentElement.eventtarget;
     evoking_aktion = "textlink";
 }
 
 function setclickevent(e)
 {
-    GLOBAL_OVERRIDE = global_overrride_onclick;
-    logick_elements.style.display = "none";
+    general_event_stuff();
     evoker = this.parentElement.eventtarget;
     evoking_aktion = "click";
 }
@@ -66,16 +72,14 @@ function setclickevent(e)
 
 function setswipeleft(e)
 {
-    GLOBAL_OVERRIDE = global_overrride_onclick;
-    logick_elements.style.display = "none";
+    general_event_stuff();
     evoker = this.parentElement.eventtarget;
     evoking_aktion = "swipeleft";
 }
 
 function setswiperight(e)
 {
-    GLOBAL_OVERRIDE = global_overrride_onclick;
-    logick_elements.style.display = "none";
+    general_event_stuff();
     evoker = this.parentElement.eventtarget;
     evoking_aktion = "swiperight";
 }
@@ -107,6 +111,7 @@ function reset_transaktion(sourche)
     evoker = null;
     sourche.parentElement.hide();
     logick_elements.make_Visible();
+    notifikationbar.hide();
 }
 
 function logick_button_hide()
