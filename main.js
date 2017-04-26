@@ -32,6 +32,7 @@ function new_Screen()
 	$("screencontainer").insertBefore(screen,$("createnewscreenportrait"));
 	screen.classList.add("screengrafikeditor");
     screen.logick_menu = logick_menu(screen);
+    screen.logick_menu.add(logick_menu_item("Abort",function(){reset_transaktion(this)}));
     screen.logick_menu.add(logick_menu_item("Change to This Screen",logick_button_changescreen));
     screen.onmousedown = function(e)
     {
