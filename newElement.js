@@ -45,8 +45,10 @@ function new_element_save()
     elements[name] = function(e,x,y)
     {
         tocreate = this.item.cloneNode(true);
-        for(m of tocreate.children) make_Container(m);
-        make_Container(tocreate).create(e,x,y);
+        tocreate.dataset.elementtype = "custom";
+        for(m of tocreate.children) elements[m.dataset.elementtype].createfromsave(m);
+        elements[tocreate.dataset.elementtype].createfromsave(tocreate);
+        tocreate.create(e,x,y);
     }
     var tmpel = tmpnewelement.cloneNode(true);
     tmpel.style.border = "";

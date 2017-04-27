@@ -19,11 +19,6 @@ function save()
 		save_preenterd_values($("screencontainer"));
 
       /*Copies over innerHTML. This way the logik (onclick events, etc) from the other two screens gets lost*/
-      for(m of document.getElementsByClassName("elementbar")) m.style.display = "none";		
-	  testscreen = document.createElement("div");
-	  testscreen.classList.add("screencontainer");
-	  testscreen.id="testscreencontainer";
-	  document.body.appendChild(testscreen);
 	  datatosave = $("screencontainer").innerHTML;
 
        /*removes data-tags after creation of the save string, as they are no longer needet */
@@ -99,28 +94,15 @@ function restoredata(saveddata)
 	else landscape_mode = true;
 }
 
-
-/*
-function logick_transaktion(evoker,evoking_aktion,target,name)
-{
-    this.evoker = evoker;
-    this.evoking_aktion = evoking_aktion;
-    this.target = target;
-    this.name = name;
-	
-	evoker.settingsbar.addActionIcon(addActionToSettings("Action.png", this));
-	target.settingsbar.addActionIcon(addActionToSettings("Action.png", this));
-}
-*/
-
 function restorelogik(target)
 {
     /*Compiles logik transaktions for each element*/
     for (var i = 0; i < target.attributes.length; i++) {
     /*restores the js of the element type*/
-    if(target.dataset.elementtype)
+    if(target.dataset.elementtype != null && target.dataset.elementtype != "")
     {
-		elements[target.dataset.elementtype].createfromsave(target);
+		if(elements[target.dataset.elementtype]) elements[target.dataset.elementtype].createfromsave(target);
+		else console.log(target.dataset.elementtype);
     }
     
       var attrib = target.attributes[i];
@@ -140,10 +122,19 @@ function restorelogik(target)
 				
 				/*Resores the logik transaktions array*/
 				if(logick_transaktions[eff.id] == null) logick_transaktions[eff.id] = eff;
+				else if(logick_transaktions[eff.id].target == null)
+				{
+					logick_transaktions[eff.id] = eff;
+					complex = logick_transaktions[eff.id].complex;
+					logick_transaktions[eff.id].complex = complex;
+				}
 				else
 				{
 					/*If both elements of a transaktion are known, the transaktion can be restored*/
+					complex = logick_transaktions[eff.id].complex;
 					logick_transaktions[eff.id] = new logick_transaktion(target,effekt.evoker,logick_transaktions[eff.id].target,logick_transaktions[eff.id].effekt);
+					/*If the transaktion involves more than one element, it will be assingt here*/
+					logick_transaktions[eff.id].complex = complex;
 				}
            }
             /*if the given data tag specifies the element as a target of a event, it needs to be reisterd properly*/
@@ -156,17 +147,34 @@ function restorelogik(target)
                 
 				/*Resores the logik transaktions array*/
 				if(logick_transaktions[eff.id] == null) logick_transaktions[eff.id] = eff; 
+				else if(logick_transaktions[eff.id].evoker == null)
+				{
+					logick_transaktions[eff.id] = eff;
+					complex = logick_transaktions[eff.id].complex;
+					logick_transaktions[eff.id].complex = complex;
+				}
 				else
 				{
 					/*If both elements of a transaktion are known, the transaktion can be restored*/
-					logick_transaktion(logick_transaktions[eff.id].evoker,logick_transaktions[eff.id].name,target,eff.effekt);
-				}               
+					complex = logick_transaktions[eff.id].complex;
+					logick_transaktions[eff.id] = new logick_transaktion(logick_transaktions[eff.id].evoker,logick_transaktions[eff.id].name,target,eff.effekt);
+					/*If the transaktion involves more than one element, it will be assingt here*/
+					logick_transaktions[eff.id].complex = complex;
+				}          
             }
-        }/*else if(atrname[0] == "data" && atrname[1] == "logik_complex")
+        }else if(atrname[0] == "data" && atrname[1] == "logik_complex")
         {
-        	if(test_logick_complex_targets[atrname[2]] == null) test_logick_complex_targets[atrname[2]] = {};
-        	test_logick_complex_targets[atrname[2]][attrib.value] = target;
-        }*/else if(atrname[0] == "data" && atrname[1] == "value")
+        	/*assings additional elements of the transaktion*/
+        	var eff = {};
+            eff.id = atrname[2]; 
+            eff.complex = {};
+        	eff.complex[attrib.value] = target;
+        	if(logick_transaktions[eff.id] == null) logick_transaktions[eff.id] = eff;
+        	else if (logick_transaktions[eff.id].complex == null) logick_transaktions[eff.id].complex = eff.complex;
+        	else logick_transaktions[eff.id].complex[attrib.value] = target;
+
+
+        }else if(atrname[0] == "data" && atrname[1] == "value")
         {
         	target.value = attrib.value;
         }

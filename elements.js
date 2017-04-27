@@ -79,6 +79,14 @@ elements["Checkbox"].createfromsave = function recreatelogick(b)
 	b.afterceration();
 }
 
+elements["custom"] = {};
+elements["custom"].createfromsave = function recreatelogick(b)
+{
+	b = make_Container(b,"custom");
+	b.afterceration();
+}
+
+
 elements["Label"] = function element_Label(e,x,y)
 {
 	b = document.createElement("div");
