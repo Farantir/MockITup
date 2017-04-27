@@ -1,3 +1,7 @@
+/*variables needet to resize elements properly*/
+var oldwidth = 270;
+var oldheight = 480;
+
 function testondevice()
 {
 	var http = new XMLHttpRequest();
@@ -73,7 +77,7 @@ function get_html()
 
             if(logick_transaktions[m].complex != null) for(com in logick_transaktions[m].complex)
             {
-				delete logick_transaktions[m].complex[com].dataset["logik_complex-"+m];
+		delete logick_transaktions[m].complex[com].dataset["logik_complex-"+m];
             };
         }
 
@@ -97,24 +101,46 @@ function mobile_test_render()
 	testscreen = $("testscreencontainer");
 
 	test_renderer();
+	if(testscreen.offsetWidth>testscreen.offsetHeight)
+	{
+		var tmpheight = oldwidth;
+		oldwidth = oldheight;
+		oldheight = tmpheight;
+	}
 
 /*Changes style of containers to mobilde device view*/
 	testscreen.style.width = "100%";
 	testscreen.style.height = "100%";
+	testscreen.style.margin = "0px";
+	testscreen.style.padding = "0px";
 	testscreen.style.border = "";
 	for(m of testscreen.children)
 	{
+		m.style.display = "";
+		m.style.margin = "0px";
+		m.style.padding = "0px";
 		m.style.height = "100%";
 		m.style.width = "100%";
 		m.style.border = "";
+		for(k of m.children) resize_to_mobile_screen(k);
+		m.style.display = "none";
 	}
+	testscreen.children[0].style.display="";
+	
 }
 
 /*resizes all elements to fit on the mobile screen*/
 function resize_to_mobile_screen(e)
 {
-	/*var oldwidth = 
-	var oldheight =*/ 
+	console.log($("testscreencontainer").offsetLeft);
+	e.style.left = calculate_ratio(e.offsetLeft,oldwidth,$("testscreencontainer").clientWidth) + "px";
+}
+
+/*Calculates the new value based on the old ones*/
+function calculate_ratio(targetold,parentold,parentnew)
+{
+	console.log(targetold/parentold);
+	return (targetold/parentold)*parentnew
 }
 
 function test()
