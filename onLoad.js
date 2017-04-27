@@ -46,6 +46,7 @@ function initialize(selection)
  	default_Menu.add(menubar_Item("Grafik",grafik,null,true));
     default_Menu.add(menubar_Item("Logik",goto_logick));
     default_Menu.add(menubar_Item("Test", test));
+    default_Menu.add(menubar_Item("Test on Device", testondevice));
     default_Menu.make_Visible();
     
    //creates the menu bar containing the elements for grafik desing

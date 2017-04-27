@@ -41,10 +41,8 @@ function addActionToSettings(png, transaction) {
 
 function goto_logick()
 {
+	general_screenchange_cleanup();
     $("screencontainer").style.display="";
-	if($("testscreencontainer")) $("testscreencontainer").remove();
-    grafic_elements.style.display = "none";
-    logick_elements.style.display = "none";
     inlogickview = true;
     notifikationbar.show("Klick on the Element that should cause an Event");
 }

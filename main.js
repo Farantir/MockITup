@@ -459,3 +459,25 @@ function create_notifikationbar(notifikationtext)
     }
     return not_bar;
 }
+
+/*Methode for creating and fiering custom events*/
+function fireEvent(name, target, param1, param2) {
+    //Ready: create a generic event
+    var evt = document.createEvent("Events")
+    //Aim: initialize it to be the event we want
+    evt.initEvent(name, true, true); //true for can bubble, true for cancelable
+    evt.param1 = param1;
+    evt.param2 = param2;
+    //FIRE!
+    target.dispatchEvent(evt);
+}
+
+function general_screenchange_cleanup()
+{
+	if($("qrcode")) $("qrcode").remove(); 
+	if($("testscreencontainer")) $("testscreencontainer").remove();
+	inlogickview = false;
+	notifikationbar.hide();
+   	logick_elements.style.display = "none";
+    	grafic_elements.style.display = "none";	
+}

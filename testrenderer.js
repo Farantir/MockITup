@@ -1,8 +1,50 @@
-function test()
+function testondevice()
 {
-    inlogickview = false;
-    notifikationbar.hide();
+	var http = new XMLHttpRequest();
+	var url = "publish.php";
+	var params = "data=" + encodeURIComponent(get_html());
+	http.open("POST", url, true);
 
+	general_screenchange_cleanup();
+
+      for(m of document.getElementsByClassName("elementbar")) m.style.display = "none";	
+
+	//Send the proper header information along with the request
+	http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+
+	http.onreadystatechange = function() {//Call a function when the state changes.
+	    if(http.readyState == 4 && http.status == 200) {
+		console.log(http.responseText);
+		make_qrcode(http.responseText);
+	    }
+	}
+	http.send(params);
+
+        /*Makes the container of the grafic screens invisible*/
+	  $("screencontainer").style.display="none";
+}
+
+function make_qrcode(qrcodevalue)
+{
+	qrcode = document.createElement("div");
+	qrcode.id = "qrcode";
+	qrcode.style.width = "600px";
+	qrcode.style.height = "600px";
+	qrcode.style.margin = "100px";
+
+	document.body.appendChild(qrcode);
+
+	var qrcode = new QRCode(qrcode, 
+	{
+		width : 600,
+		height : 600
+	});
+	qrcode.makeCode(qrcodevalue);
+}
+
+
+function get_html()
+{
         /*Translates the logick into data-tags. this way they are part of the inner html and can be transferd*/
         for(m in logick_transaktions)
         {
@@ -21,20 +63,7 @@ function test()
 		save_preenterd_values($("screencontainer"));
 
       /*Copies over innerHTML. This way the logik (onclick events, etc) from the other two screens gets lost*/
-      for(m of document.getElementsByClassName("elementbar")) m.style.display = "none";		
-	  testscreen = document.createElement("div");
-	  testscreen.classList.add("screencontainer");
-	  testscreen.id="testscreencontainer";
-	  document.body.appendChild(testscreen);
-	  testscreen.innerHTML = $("screencontainer").innerHTML;
-
-      /*Makes all but the first screen invisile*/
-      for(m of testscreen.children) m.style.display = "none";
-	  testscreen.children[0].style.display="";
-
-        /*Makes the container of the grafic screens invisible*/
-	  $("screencontainer").style.display="none";
-      TreeCompile(testscreen);
+	  var value_toReturn = $("screencontainer").innerHTML;
 
        /*removes data-tags after transfer, as they are no longer needet */
         for(m in logick_transaktions)
@@ -47,6 +76,62 @@ function test()
 				delete logick_transaktions[m].complex[com].dataset["logik_complex-"+m];
             };
         }
+
+	return value_toReturn;
+}
+
+/*Displays the elements in a rendert view*/
+function test_renderer()
+{
+	testscreen = $("testscreencontainer")
+	/*Makes all but the first screen invisile*/
+      for(m of testscreen.children) m.style.display = "none";
+	  testscreen.children[0].style.display="";
+
+     	 TreeCompile(testscreen);
+}
+
+/*Displays the test on a mobile device*/
+function mobile_test_render()
+{
+	testscreen = $("testscreencontainer");
+
+	test_renderer();
+
+/*Changes style of containers to mobilde device view*/
+	testscreen.style.width = "100%";
+	testscreen.style.height = "100%";
+	testscreen.style.border = "";
+	for(m of testscreen.children)
+	{
+		m.style.height = "100%";
+		m.style.width = "100%";
+		m.style.border = "";
+	}
+}
+
+/*resizes all elements to fit on the mobile screen*/
+function resize_to_mobile_screen(e)
+{
+	/*var oldwidth = 
+	var oldheight =*/ 
+}
+
+function test()
+{
+	general_screenchange_cleanup();
+
+      for(m of document.getElementsByClassName("elementbar")) m.style.display = "none";		
+	  testscreen = document.createElement("div");
+	  testscreen.classList.add("screencontainer");
+	  testscreen.id="testscreencontainer";
+	  document.body.appendChild(testscreen);
+	  testscreen.innerHTML = get_html();
+
+        /*Makes the container of the grafic screens invisible*/
+	  $("screencontainer").style.display="none";
+
+	test_renderer();
 }
 
 /*recursively saves every preentert value (e.g. from text boxes) to the data tags*/
@@ -55,19 +140,6 @@ function save_preenterd_values(target)
 	for(m of target.children) save_preenterd_values(m);
 	
 	if(target.value != null) target.dataset["value"] = target.value;
-}
-
-
-/*Changes view to the Grafik screen*/
-function grafik()
-{
-    notifikationbar.hide();
-	$("screencontainer").style.display="";
-	if($("testscreencontainer")) $("testscreencontainer").remove();
-    logick_elements.style.display = "none";
-    grafic_elements.style.display = "";	
-    inlogickview = false;
-    default_Menu.make_Visible();	
 }
 
 /*Compiles every element in the tree recursively*/

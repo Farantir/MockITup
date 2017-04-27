@@ -2,6 +2,16 @@ var elemToDrag = null;
 var elements = new function(){};
 var GLOBAL_OVERRIDE = null;
 
+
+/*Changes view to the Grafik screen*/
+function grafik()
+{
+    	general_screenchange_cleanup();
+	$("screencontainer").style.display="";
+    	default_Menu.make_Visible();	
+    	grafic_elements.style.display = "";
+}
+
 elements["screen"] = {}; 
 elements["screen"].createfromsave = function make_Screen(screen)
 {

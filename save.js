@@ -92,6 +92,9 @@ function restoredata(saveddata)
 	/*Resoring landscape or portrait mode*/
 	if($("screencontainer").children[0].classList.contains("screenportait")) landscape_mode = false;
 	else landscape_mode = true;
+	
+	/*fiering event to tell everyone we are done loading*/
+	fireEvent("doneloading", document);
 }
 
 function restorelogik(target)
