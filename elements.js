@@ -38,6 +38,7 @@ elements["Button"] = function element_button(e,x,y)
     }
 	b.appendChild(document.createTextNode("Button"));
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
+    b.logick_menu.add(logick_menu_item("Change Text",logick_button_change_text));
 	b.create(e,x,y)
 }
 elements["Button"].createfromsave = function recreatelogick(b)
@@ -49,6 +50,7 @@ elements["Button"].createfromsave = function recreatelogick(b)
     }
 	b.afterceration();
 	b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
+	b.logick_menu.add(logick_menu_item("Change Text",logick_button_change_text));
 }
  
 elements["Text Input"] = function element_text(e,x,y)
@@ -97,6 +99,7 @@ elements["Label"] = function element_Label(e,x,y)
     }
 	b.appendChild(document.createTextNode("Label"));
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
+    b.logick_menu.add(logick_menu_item("Change Text",logick_button_change_text));
 	b.create(e,x,y)
 }
 elements["Label"].createfromsave = function recreatelogick(b)
@@ -107,6 +110,7 @@ elements["Label"].createfromsave = function recreatelogick(b)
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
     }
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
+    b.logick_menu.add(logick_menu_item("Change Text",logick_button_change_text));
 	b.afterceration();
 }
 
@@ -183,6 +187,7 @@ elements["listelement"].createfromsave = function recreatelogick(b)
     b.settingsbar.scaleLeft.remove();
 
     b.style.position = "relative";
+    b.logick_menu.add(logick_menu_item("Change Text",logick_button_change_text));
 
 }
 function element_Listelem(e,x,y)
@@ -198,6 +203,7 @@ function element_Listelem(e,x,y)
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
     }
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
+    b.logick_menu.add(logick_menu_item("Change Text",logick_button_change_text));
     b.create(e,b.offsetLeft,b.offsetTop);
     
     b.settingsbar.scaleBottomRight.remove();

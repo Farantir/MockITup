@@ -451,7 +451,7 @@ function create_notifikationbar(notifikationtext)
     {
         this.innerHTML = textmessage;
         this.style.display = "";
-        setTimeout(function(){notifikationbar.hide();}, textmessage.length*100)
+        //setTimeout(function(){notifikationbar.hide();}, textmessage.length*100)
     }
     not_bar.hide = function()
     {

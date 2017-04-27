@@ -141,6 +141,15 @@ function logick_button_add_list_element()
 	notifikationbar.show("Choose text source for List element");
 }
 
+/*Creating a complex transaktion, because 3 elements are needet*/
+function logick_button_change_text()
+{
+	complex_transaktion = new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"changtext");
+	this.parentElement.hide();
+	GLOBAL_OVERRIDE = logick_button_get_data_for_add_list;
+	notifikationbar.show("Choose text source for selected element");
+}
+
 function logick_button_hide()
 {
     logick_transaktions.push(new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"hide"));
