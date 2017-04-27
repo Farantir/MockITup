@@ -29,6 +29,7 @@ function test()
 function new_Screen()
 {
 	screen = create_Screen();
+	screen.dataset["elementtype"] = "screen";
 	$("screencontainer").insertBefore(screen,$("createnewscreenportrait"));
 	screen.classList.add("screengrafikeditor");
     screen.logick_menu = logick_menu(screen);
