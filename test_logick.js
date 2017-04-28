@@ -25,9 +25,13 @@ function swipechecker(e)
 {
     if(swipex > 60) test_do_execute("swiperight", swipetarget);
     else if(swipex < -60) test_do_execute("swipeleft", swipetarget);
+    swipex = 0;
     document.removeEventListener('mousemove', swipeaccumulator);
+    document.removeEventListener('touchmove', swipeaccumulator);
     document.removeEventListener('mouseup',swipechecker);
     swipetarget.removeEventListener('mouseup',swipechecker);
+    document.removeEventListener('touchend',swipechecker);
+    swipetarget.removeEventListener('touchend',swipechecker);
     swipetarget = null;
 }
 
@@ -40,6 +44,11 @@ function swipeaccumulator(e)
   swipex = e.clientX - beginswipex;
 }
 
+function touch_swipeaccumulator(e)
+{
+  swipex = e.touches[0].screenX - beginswipex;
+}
+
 function swipeinit(target)
 {
     target.onmousedown = function(e)
@@ -49,6 +58,14 @@ function swipeinit(target)
         document.addEventListener('mousemove', swipeaccumulator);
         document.addEventListener('mouseup',swipechecker);
         this.addEventListener('mouseup',swipechecker);
+    }
+    target.ontouchstart = function(e)
+    {
+        swipetarget = this;
+        beginswipex = e.pageX;
+        document.addEventListener('touchmove', touch_swipeaccumulator);
+        document.addEventListener('touchend',touch_swipeaccumulator);
+        this.addEventListener('touchend',touch_swipeaccumulator);
     }
 }
 
@@ -83,6 +100,7 @@ test_logick_effekts["togglevisibility"] = function(target)
 test_logick_effekts["changescreen"] = function(target)
 {
     for(m of $("testscreencontainer").getElementsByClassName("screenportait")) m.style.display = "none";
+    for(m of $("testscreencontainer").getElementsByClassName("screenlandscape")) m.style.display = "none";
     target.style.display = "";
 }
 

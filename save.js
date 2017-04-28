@@ -183,12 +183,15 @@ function restorelogik(target)
         }
       }
     }
-
-    /*restores value of the is visible attibute*/
-    if(target.dataset.isVisible == "false")
-    {
-    	target.isVisible = "false";
-    }
     
     for(m of target.children) restorelogik(m);
+    
+    		
+    
+	 /*restores value of the is visible attibute*/
+	if(target.dataset.isVisible == "false" || target.dataset.isVisible == false)
+	{
+		target.isVisible = false;
+		console.log(target);
+	}
 }

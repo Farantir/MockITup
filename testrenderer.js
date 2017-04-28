@@ -95,13 +95,29 @@ function test_renderer()
      	 TreeCompile(testscreen);
 }
 
+/*Saves the original positions of the elements on screen, so they can be used for resize calculations later on*/
+function save_original_values(e)
+{	
+	var oldisplay = e.style.display;
+	e.style.display = "";
+	e.oldfont = parseFloat(window.getComputedStyle(e, null).getPropertyValue('font-size'));
+	e.oldwidth = e.offsetWidth;
+	e.oldleft = e.offsetLeft;
+	e.oldtop = e.offsetTop;
+	e.oldheight = e.offsetHeight;
+
+	for(k of e.children) save_original_values(k);
+	
+	e.style.display = oldisplay;
+}
+
 /*Displays the test on a mobile device*/
 function mobile_test_render()
 {
 	testscreen = $("testscreencontainer");
 
 	test_renderer();
-	if(testscreen.offsetWidth>testscreen.offsetHeight)
+	if(testscreen.children[0].offsetWidth>testscreen.children[0].offsetHeight)
 	{
 		var tmpheight = oldwidth;
 		oldwidth = oldheight;
@@ -113,15 +129,23 @@ function mobile_test_render()
 	testscreen.style.height = "100%";
 	testscreen.style.margin = "0px";
 	testscreen.style.padding = "0px";
-	testscreen.style.border = "";
+	testscreen.style.border = "none";
+	testscreen.style.position = "absolute";
+	testscreen.style.top = "0px";
+	testscreen.style.left = "0px";
+	
 	for(m of testscreen.children)
 	{
 		m.style.display = "";
+		for(k of m.children) save_original_values(k);
 		m.style.margin = "0px";
 		m.style.padding = "0px";
 		m.style.height = "100%";
 		m.style.width = "100%";
-		m.style.border = "";
+		m.style.border = "none";
+		m.style.position = "absolute";
+		m.style.top = "0px";
+		m.style.left = "0px"; 
 		for(k of m.children) resize_to_mobile_screen(k);
 		m.style.display = "none";
 	}
@@ -129,17 +153,41 @@ function mobile_test_render()
 	
 }
 
+/*Resizes everything at the onresize event*/
+function mobil_screen_onresize()
+{
+	testscreen = $("testscreencontainer");
+	for(m of testscreen.children)
+	{
+		var screenwasviyible = m.style.display;
+		m.style.display = "";
+		for(k of m.children) resize_to_mobile_screen(k);
+		m.style.display = screenwasviyible;
+	}
+}
+
 /*resizes all elements to fit on the mobile screen*/
 function resize_to_mobile_screen(e)
 {
-	console.log($("testscreencontainer").offsetLeft);
-	e.style.left = calculate_ratio(e.offsetLeft,oldwidth,$("testscreencontainer").clientWidth) + "px";
+	if(e.dataset.elementtype != "listelement")
+	{
+		e.style.left = calculate_ratio(e.oldleft,oldwidth,$("testscreencontainer").clientWidth) + "px";
+		e.style.width = calculate_ratio(e.oldwidth,oldwidth,$("testscreencontainer").clientWidth) + "px";
+		
+		e.style.top = calculate_ratio(e.oldtop,oldheight,$("testscreencontainer").offsetHeight) + "px";
+		e.style.height = calculate_ratio(e.oldheight,oldheight,$("testscreencontainer").offsetHeight) + "px";
+	}
+	
+	e.style.fontSize = calculate_ratio(e.oldfont,oldwidth,$("testscreencontainer").clientWidth) + "px";
+	
+
+	
+	if(e.dataset.elementtype != "listelement") for(k of e.children) resize_to_mobile_screen(k);
 }
 
 /*Calculates the new value based on the old ones*/
 function calculate_ratio(targetold,parentold,parentnew)
 {
-	console.log(targetold/parentold);
 	return (targetold/parentold)*parentnew
 }
 
