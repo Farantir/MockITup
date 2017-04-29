@@ -1,5 +1,6 @@
 var picture_to_edit;
 var canvas_to_edit_picture_on;
+var canvas_canbescaled = true;
 
 function gotoeditPicture(picture)
 {
@@ -45,6 +46,31 @@ function createCanvasToDrawOn(e,x,y,img)
         this.settingsbar.ul.remove();
     }
 	b.create(e,x,y)
+
+    /*Changes the size of the image instead of streching it, like css does it to all of the other elements*/
+    /*Also removing fencing, since the picture can be as large as desierd. it will be scale in grafik view later on*/
+    b.scale = function(x,y)
+    {
+        if(canvas_canbescaled)
+        {
+            canvas_canbescaled = false;
+            /*Scaving the old canvas contend*/
+            var oldcontent = canvas_to_edit_picture_on.toDataURL();
+            /*if(this.offsetTop > this.fencey - y) y = this.fencey - this.offsetTop;
+            if(this.offsetLeft > this.fencex - x) x = this.fencex - this.offsetLeft;*/
+        }
+        this.height = y;
+        this.width = x;
+
+        /*restoring old contend*/
+        var img = new Image;
+        img.onload = function(){
+            canvas_to_edit_picture_on.getContext("2d").drawImage(img,0,0);
+            canvas_canbescaled = true;
+        };
+        img.src = oldcontent;
+    }
+
     return b;
 }
 
@@ -52,4 +78,9 @@ function savePicture()
 {
     picture_to_edit.src = canvas_to_edit_picture_on.toDataURL();
     grafik();
+}
+
+function canvas_erase_picture()
+{
+    canvas_to_edit_picture_on.getContext("2d").clearRect(0,0,canvas_to_edit_picture_on.width,canvas_to_edit_picture_on.height);
 }

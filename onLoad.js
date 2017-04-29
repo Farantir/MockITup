@@ -70,12 +70,12 @@ function initialize(selection)
 
    //creates the menu bar containing the elements for Editing a picture
    pictureEdit = elementbar();
-   pictureEdit.add(menubar_Item("Mouse",setclickevent));
-   pictureEdit.add(menubar_Item("Draw",setclickevent));
-   pictureEdit.add(menubar_Item("Erase",setclickevent));
-   pictureEdit.add(menubar_Item("Color",setclickevent));
-   pictureEdit.add(menubar_Item("Size",setclickevent));
-   pictureEdit.add(menubar_Item("Clear Canvas",setclickevent));
+   pictureEdit.add(menubar_Item("Mouse",));
+   pictureEdit.add(menubar_Item("Draw",));
+   pictureEdit.add(menubar_Item("Erase",));
+   pictureEdit.add(menubar_Item("Color",));
+   pictureEdit.add(menubar_Item("Size",));
+   pictureEdit.add(menubar_Item("Clear Canvas",canvas_erase_picture));
 
    //creates the "new screen" button
    if(landscape_mode) newscreenbutton = $("createnewscreenlandscape");
