@@ -74,14 +74,15 @@ function elementbar_Item(name,onclick)
 }
 
 /*Creates an item for the top menu bar. Needs to be addet to one of those bars later on*/
-function menubar_Item(name,onclick,classname,aktive)
+function menubar_Item(name,onclick,classname,aktive,othercontent)
 {
 	classname = classname || "menuItem";
     li = document.createElement("li");
     li.name = name;
     li.a = document.createElement("a");
     if(aktive) li.a.classList.add("active");
-    li.text = document.createTextNode(name);
+    if(othercontent == null) li.text = document.createTextNode(name);
+    else li.text = othercontent;
     li.onclickoverload = onclick;
     li.onclick = function(e)
     {

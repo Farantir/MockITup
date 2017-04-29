@@ -1,8 +1,13 @@
 var picture_to_edit;
 var canvas_to_edit_picture_on;
 var canvas_canbescaled = true;
-var editImage_DrawingColor = "black";
-var editImage_strokesize = "5";
+var editImage_DrawingColor = document.createElement("input");
+var editImage_strokesize = document.createElement("input");
+
+editImage_DrawingColor.type = "color";
+editImage_strokesize.style.width = "50px";
+editImage_strokesize.value = "5";
+editImage_strokesize.type = "number";
 
 function gotoeditPicture(picture)
 {
@@ -136,15 +141,15 @@ function draw_on_canvas_draw_dot(x,y)
 {
   var context = canvas_to_edit_picture_on.getContext("2d");
   context.beginPath();
-  context.arc(x, y, editImage_strokesize, 0, 2 * Math.PI, false);
-  context.fillStyle = editImage_DrawingColor;
+  context.arc(x, y, editImage_strokesize.value, 0, 2 * Math.PI, false);
+  context.fillStyle = editImage_DrawingColor.value;
   context.fill();
 }
 
 function draw_on_canvas_erase_rect(x,y)
 {
   var context = canvas_to_edit_picture_on.getContext("2d");
-  context.clearRect(x-editImage_strokesize,y-editImage_strokesize,editImage_strokesize*2,editImage_strokesize*2);
+  context.clearRect(x-editImage_strokesize.value,y-editImage_strokesize.value,editImage_strokesize.value*2,editImage_strokesize.value*2);
 }
 
 function draw_on_canvas_end_draw()

@@ -78,8 +78,8 @@ function initialize(selection)
    pictureEdit.add(menubar_Item("Mouse",edit_image_back_to_mouse));
    pictureEdit.add(menubar_Item("Draw",draw_on_canvas));
    pictureEdit.add(menubar_Item("Erase",erase_from_canvas));
-   pictureEdit.add(menubar_Item("Color",));
-   pictureEdit.add(menubar_Item("Size",));
+   pictureEdit.add(menubar_Item("Color",null,null,null,editImage_DrawingColor));
+   pictureEdit.add(menubar_Item("Size",null,null,null,editImage_strokesize));
    pictureEdit.add(menubar_Item("Clear Canvas",canvas_erase_picture));
 
    //creates the "new screen" button
