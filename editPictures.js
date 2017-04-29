@@ -81,15 +81,29 @@ function draw_on_canvas()
     GLOBAL_OVERRIDE = edit_image_initialise_draw;
 }
 
+function erase_from_canvas()
+{
+    GLOBAL_OVERRIDE = edit_image_initialise_erase;
+}
+
 function edit_image_initialise_draw(e)
 {
        canvas_to_edit_picture_on.addEventListener('mousemove',draw_on_canvas_drawing);
        document.addEventListener('mouseup',draw_on_canvas_end_draw);
-        var offset = getPos(canvas_to_edit_picture_on);
-console.log(offset);
+        var offset = getPos(canvas_to_edit_picture_on);;
        canvas_to_edit_picture_on.offsetx = offset.x;
        canvas_to_edit_picture_on.offsety = offset.y;
-draw_on_canvas_draw_dot(e.pageX - canvas_to_edit_picture_on.offsetx,e.pageY - canvas_to_edit_picture_on.offsety)
+       draw_on_canvas_draw_dot(e.pageX - canvas_to_edit_picture_on.offsetx,e.pageY - canvas_to_edit_picture_on.offsety)
+}
+
+function edit_image_initialise_erase(e)
+{
+       canvas_to_edit_picture_on.addEventListener('mousemove',draw_on_canvas_erasing);
+       document.addEventListener('mouseup',draw_on_canvas_end_draw);
+        var offset = getPos(canvas_to_edit_picture_on);;
+       canvas_to_edit_picture_on.offsetx = offset.x;
+       canvas_to_edit_picture_on.offsety = offset.y;
+       draw_on_canvas_erase_rect(e.pageX - canvas_to_edit_picture_on.offsetx,e.pageY - canvas_to_edit_picture_on.offsety)
 }
 
 function draw_on_canvas_drawing(e)
@@ -100,7 +114,18 @@ function draw_on_canvas_drawing(e)
   posy = (y - canvas_to_edit_picture_on.offsety);
   posx = (x - canvas_to_edit_picture_on.offsetx);
 
-  draw_on_canvas_draw_dot(posx,posy)
+  draw_on_canvas_draw_dot(posx,posy);
+}
+
+function draw_on_canvas_erasing(e)
+{
+  x = e.clientX;
+  y = e.clientY + document.documentElement.scrollTop;
+
+  posy = (y - canvas_to_edit_picture_on.offsety);
+  posx = (x - canvas_to_edit_picture_on.offsetx);
+
+  draw_on_canvas_erase_rect(posx,posy);
 }
 
 function draw_on_canvas_draw_dot(x,y)
@@ -112,10 +137,17 @@ function draw_on_canvas_draw_dot(x,y)
   context.fill();
 }
 
+function draw_on_canvas_erase_rect(x,y)
+{
+  var context = canvas_to_edit_picture_on.getContext("2d");
+  context.clearRect(x-editImage_strokesize,y-editImage_strokesize,editImage_strokesize*2,editImage_strokesize*2);
+}
+
 function draw_on_canvas_end_draw()
 {
     canvas_to_edit_picture_on.removeEventListener('mousemove',draw_on_canvas_drawing);
-    document.addEventListener('mouseup',draw_on_canvas_end_draw);
+    document.removeEventListener('mouseup',draw_on_canvas_end_draw);
+    canvas_to_edit_picture_on.removeEventListener('mousemove',draw_on_canvas_erasing);
 }
 
 function edit_image_back_to_mouse()

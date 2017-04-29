@@ -77,7 +77,7 @@ function initialize(selection)
    pictureEdit = elementbar();
    pictureEdit.add(menubar_Item("Mouse",edit_image_back_to_mouse));
    pictureEdit.add(menubar_Item("Draw",draw_on_canvas));
-   pictureEdit.add(menubar_Item("Erase",));
+   pictureEdit.add(menubar_Item("Erase",erase_from_canvas));
    pictureEdit.add(menubar_Item("Color",));
    pictureEdit.add(menubar_Item("Size",));
    pictureEdit.add(menubar_Item("Clear Canvas",canvas_erase_picture));
