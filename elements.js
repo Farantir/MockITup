@@ -134,6 +134,7 @@ elements["Picture"] = function element_Label(e,x,y)
     b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("picture.png",function(){}));
+        this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)}));
     }
 	b.create(e,x,y)
 }
@@ -146,6 +147,7 @@ elements["Picture"].createfromsave = function recreatelogick(b)
     b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("picture.png",function(){}));
+        this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)}));
     }
 	b.afterceration();
 }

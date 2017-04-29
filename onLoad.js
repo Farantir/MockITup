@@ -4,6 +4,7 @@ var grafic_elements;
 var logick_elements;
 var newElement_menubar;
 var notifikationbar;
+var pictureEdit;
 
 function portraitPosition() {
 	
@@ -67,6 +68,15 @@ function initialize(selection)
    logick_elements.add(menubar_Item("Swipe Right",setswiperight));
    logick_elements.add(menubar_Item("Text Changed",settextchanged));
 
+   //creates the menu bar containing the elements for Editing a picture
+   pictureEdit = elementbar();
+   pictureEdit.add(menubar_Item("Mouse",setclickevent));
+   pictureEdit.add(menubar_Item("Draw",setclickevent));
+   pictureEdit.add(menubar_Item("Erase",setclickevent));
+   pictureEdit.add(menubar_Item("Color",setclickevent));
+   pictureEdit.add(menubar_Item("Size",setclickevent));
+   pictureEdit.add(menubar_Item("Clear Canvas",setclickevent));
+
    //creates the "new screen" button
    if(landscape_mode) newscreenbutton = $("createnewscreenlandscape");
    else newscreenbutton = $("createnewscreenportrait");
@@ -82,4 +92,9 @@ function initialize(selection)
 	newElement_menubar = menubar();
  	newElement_menubar.add(menubar_Item("Save",newelementsetname));
     newElement_menubar.add(menubar_Item("Back",grafik));
+
+    //Creates the menu bar for the Edit picture screen
+	editPicture_menubar = menubar();
+ 	editPicture_menubar.add(menubar_Item("Save",savePicture));
+    editPicture_menubar.add(menubar_Item("Back",grafik));
 }

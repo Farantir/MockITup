@@ -479,5 +479,7 @@ function general_screenchange_cleanup()
 	inlogickview = false;
 	notifikationbar.hide();
    	logick_elements.style.display = "none";
-    	grafic_elements.style.display = "none";	
+    grafic_elements.style.display = "none";	
+    editPicture_menubar.hide();
+    pictureEdit.hide();
 }
