@@ -76,16 +76,19 @@ function createCanvasToDrawOn(e,x,y,img)
     return b;
 }
 
+/*Sets the canvas into drawing mode*/
 function draw_on_canvas()
 {
     GLOBAL_OVERRIDE = edit_image_initialise_draw;
 }
 
+/*Sets the canvas into erasing mode*/
 function erase_from_canvas()
 {
     GLOBAL_OVERRIDE = edit_image_initialise_erase;
 }
 
+/*Intialises onmosedown and mousemove functions to make a dot on the screen*/
 function edit_image_initialise_draw(e)
 {
        canvas_to_edit_picture_on.addEventListener('mousemove',draw_on_canvas_drawing);
@@ -96,6 +99,7 @@ function edit_image_initialise_draw(e)
        draw_on_canvas_draw_dot(e.pageX - canvas_to_edit_picture_on.offsetx,e.pageY - canvas_to_edit_picture_on.offsety)
 }
 
+/*initialises onmousedown and onmousemove functions to erase a rect on the screen*/
 function edit_image_initialise_erase(e)
 {
        canvas_to_edit_picture_on.addEventListener('mousemove',draw_on_canvas_erasing);

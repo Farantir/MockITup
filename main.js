@@ -474,6 +474,8 @@ function fireEvent(name, target, param1, param2) {
 
 function general_screenchange_cleanup()
 {
+    if(canvas_to_edit_picture_on) {canvas_to_edit_picture_on.remove(); canvas_to_edit_picture_on = null;}
+    GLOBAL_OVERRIDE = null;
 	if($("qrcode")) $("qrcode").remove(); 
 	if($("testscreencontainer")) $("testscreencontainer").remove();
 	inlogickview = false;

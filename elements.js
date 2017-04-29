@@ -1,7 +1,7 @@
 var elemToDrag = null;
 var elements = new function(){};
 var GLOBAL_OVERRIDE = null;
-
+var copied_Element = null;
 
 /*Changes view to the Grafik screen*/
 function grafik()
@@ -135,6 +135,7 @@ elements["Picture"] = function element_Label(e,x,y)
     {
         this.settingsbar.add(settings_Icon("picture.png",function(){}));
         this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)}));
+        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
     }
 	b.create(e,x,y)
 }
@@ -148,6 +149,7 @@ elements["Picture"].createfromsave = function recreatelogick(b)
     {
         this.settingsbar.add(settings_Icon("picture.png",function(){}));
         this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)}));
+        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
     }
 	b.afterceration();
 }
@@ -253,6 +255,27 @@ function getPos(el) {
     return {x: lx,y: ly};
 }
 
+function copy_element(target)
+{
+    copied_Element = target.cloneNode(true);
+    GLOBAL_OVERRIDE = append_copied_element;    
+}
+
+function append_copied_element(e)
+{
+   
+   elements[copied_Element.dataset.elementtype].createfromsave(copied_Element); 
+   copied_Element.create(e.target,e.clientX,e.clientY)
+   recreate_jsfunktions_after_copy(copied_Element);
+   GLOBAL_OVERRIDE = null;
+}
+
+function recreate_jsfunktions_after_copy(elemelement)
+{
+   elements[elemelement.dataset.elementtype].createfromsave(copied_Element); 
+   for(m of elemelement.children) recreate_jsfunktions_after_copy(m);
+}
+
 /*Adds all functions and properties needed for an element in the Grafik edit view*/
 function make_Container(elem,elemtype)
 {
@@ -336,9 +359,7 @@ function make_Container(elem,elemtype)
 			 }
 			this.settingsbar.remove();
 			this.remove();
-		}
-			));
-		
+		}));
         this.settingsbar.make_Visible();
         this.settingsbar.initialise();
 	}
