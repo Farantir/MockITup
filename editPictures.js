@@ -1,6 +1,8 @@
 var picture_to_edit;
 var canvas_to_edit_picture_on;
 var canvas_canbescaled = true;
+var editImage_DrawingColor = "black";
+var editImage_strokesize = "5";
 
 function gotoeditPicture(picture)
 {
@@ -74,13 +76,62 @@ function createCanvasToDrawOn(e,x,y,img)
     return b;
 }
 
+function draw_on_canvas()
+{
+    GLOBAL_OVERRIDE = edit_image_initialise_draw;
+}
+
+function edit_image_initialise_draw(e)
+{
+       canvas_to_edit_picture_on.addEventListener('mousemove',draw_on_canvas_drawing);
+       document.addEventListener('mouseup',draw_on_canvas_end_draw);
+        var offset = getPos(canvas_to_edit_picture_on);
+console.log(offset);
+       canvas_to_edit_picture_on.offsetx = offset.x;
+       canvas_to_edit_picture_on.offsety = offset.y;
+draw_on_canvas_draw_dot(e.pageX - canvas_to_edit_picture_on.offsetx,e.pageY - canvas_to_edit_picture_on.offsety)
+}
+
+function draw_on_canvas_drawing(e)
+{
+  x = e.clientX;
+  y = e.clientY + document.documentElement.scrollTop;
+
+  posy = (y - canvas_to_edit_picture_on.offsety);
+  posx = (x - canvas_to_edit_picture_on.offsetx);
+
+  draw_on_canvas_draw_dot(posx,posy)
+}
+
+function draw_on_canvas_draw_dot(x,y)
+{
+  var context = canvas_to_edit_picture_on.getContext("2d");
+  context.beginPath();
+  context.arc(x, y, editImage_strokesize, 0, 2 * Math.PI, false);
+  context.fillStyle = editImage_DrawingColor;
+  context.fill();
+}
+
+function draw_on_canvas_end_draw()
+{
+    canvas_to_edit_picture_on.removeEventListener('mousemove',draw_on_canvas_drawing);
+    document.addEventListener('mouseup',draw_on_canvas_end_draw);
+}
+
+function edit_image_back_to_mouse()
+{
+    GLOBAL_OVERRIDE = null;
+}
+
 function savePicture()
 {
+    GLOBAL_OVERRIDE = null;
     picture_to_edit.src = canvas_to_edit_picture_on.toDataURL();
     grafik();
 }
 
 function canvas_erase_picture()
 {
+    GLOBAL_OVERRIDE = null;
     canvas_to_edit_picture_on.getContext("2d").clearRect(0,0,canvas_to_edit_picture_on.width,canvas_to_edit_picture_on.height);
 }

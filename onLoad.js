@@ -68,10 +68,15 @@ function initialize(selection)
    logick_elements.add(menubar_Item("Swipe Right",setswiperight));
    logick_elements.add(menubar_Item("Text Changed",settextchanged));
 
+    //Creates the menu bar for the Edit picture screen
+	editPicture_menubar = menubar();
+ 	editPicture_menubar.add(menubar_Item("Save",savePicture));
+    editPicture_menubar.add(menubar_Item("Back",grafik));
+
    //creates the menu bar containing the elements for Editing a picture
    pictureEdit = elementbar();
-   pictureEdit.add(menubar_Item("Mouse",));
-   pictureEdit.add(menubar_Item("Draw",));
+   pictureEdit.add(menubar_Item("Mouse",edit_image_back_to_mouse));
+   pictureEdit.add(menubar_Item("Draw",draw_on_canvas));
    pictureEdit.add(menubar_Item("Erase",));
    pictureEdit.add(menubar_Item("Color",));
    pictureEdit.add(menubar_Item("Size",));
@@ -92,9 +97,4 @@ function initialize(selection)
 	newElement_menubar = menubar();
  	newElement_menubar.add(menubar_Item("Save",newelementsetname));
     newElement_menubar.add(menubar_Item("Back",grafik));
-
-    //Creates the menu bar for the Edit picture screen
-	editPicture_menubar = menubar();
- 	editPicture_menubar.add(menubar_Item("Save",savePicture));
-    editPicture_menubar.add(menubar_Item("Back",grafik));
 }
