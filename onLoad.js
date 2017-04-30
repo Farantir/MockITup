@@ -5,6 +5,28 @@ var logick_elements;
 var newElement_menubar;
 var notifikationbar;
 var pictureEdit;
+var preloadetimages = [];
+
+/*Preloading Images*/
+preloadetimages.push(preload('picture.png'));
+preloadetimages.push(preload('plus.png'));
+preloadetimages.push(preload('toggle_vis.png'));
+preloadetimages.push(preload('copy.png'));
+preloadetimages.push(preload('arrow_vertical.png'));
+preloadetimages.push(preload('arrow_right.png'));
+preloadetimages.push(preload('arrow_left.png'));
+preloadetimages.push(preload('arrow_horizontal.png'));
+preloadetimages.push(preload('Action.png'));
+preloadetimages.push(preload('delete.svg'));
+preloadetimages.push(preload('edit_icon.svg'));
+preloadetimages.push(preload('textedit.svg'));
+
+function preload(imgsrc)
+{
+    var my_image = new Image();
+    my_image.src = imgsrc;
+    return my_image;
+}
 
 function portraitPosition() {
 	
