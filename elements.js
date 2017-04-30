@@ -3,6 +3,12 @@ var elements = new function(){};
 var GLOBAL_OVERRIDE = null;
 var copied_Element = null;
 
+function notifikation_to_drag_and_drop()
+{
+    notifikationbar.show("Drag the Element onto the target screen");
+    window.setTimeout(function(){notifikationbar.hide();}, 5000);
+}
+
 /*Changes view to the Grafik screen*/
 function grafik()
 {

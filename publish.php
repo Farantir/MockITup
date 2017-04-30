@@ -26,5 +26,5 @@ $htmlfile = '<!DOCTYPE html>
 fwrite($f, $htmlfile);
 fclose($f);
 
-print "http://192.168.178.26"."/MockITup/testonmobile.html";
+print "http://192.168.178.82"."/MockITup/testonmobile.html";
 ?>
