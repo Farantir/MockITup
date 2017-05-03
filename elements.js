@@ -139,7 +139,7 @@ elements["Picture"] = function element_Label(e,x,y)
 	b = make_Container(b,"Picture");
     b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("picture.png",function(){}));
+        this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.src = value;})}));
         this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)}));
         this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
     }
@@ -153,7 +153,7 @@ elements["Picture"].createfromsave = function recreatelogick(b)
 	b = make_Container(b,"Picture");
     b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("picture.png",function(){}));
+        this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.src = value;})}));
         this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)}));
         this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
     }
@@ -439,3 +439,59 @@ function drop(ev) {
     var data = ev.dataTransfer.getData("ElementName");
     elements[data](ev.target,ev.target.offx,ev.target.offy);
 }
+
+function imageSelect(target,set)
+ {
+	var s = document.createElement("div");	
+	s.input = document.createElement("input");
+	s.filepicker = document.createElement("input");
+	s.ok = document.createElement("button");
+	s.cancel = document.createElement("button");
+
+	s.onmousedown = (x)=>{x.stopPropagation();};  
+	s.set = set;
+    s.target = target;   
+	s.className = "imageselect";
+	s.input.value = "Post your URL here";
+	s.ok.appendChild(document.createTextNode("Ok"));
+	s.cancel.appendChild(document.createTextNode("Cancel"));
+
+	s.filepicker.type ="file";
+	s.filepicker.id = "fileselect";
+	s.target = target;
+
+	s.appendChild(s.input);
+	s.appendChild(s.ok);
+	s.appendChild(s.cancel);
+	s.appendChild(s.filepicker);
+
+	document.body.appendChild(s);
+
+	s.style.top = (getPos(target).y + target.offsetHeight + 5) + "px";
+	s.style.left = getPos(target).x + "px";
+
+	s.cancel.onclick = function(){this.parentElement.remove();}
+	s.ok.onclick = function(){s.set(s.input.value);this.parentElement.remove();}
+	
+	s.filepicker.onchange = function handleFileSelect(evt)
+ 	{
+  	 	 var files = evt.target.files; // FileList object
+			if(files[0].type.match("image.*"))
+			{
+				var reader = new FileReader();
+				reader.onload = function(theFile) 
+				{
+					return function(e)
+					{
+						s.set(e.target.result);	
+					};
+				}
+				(files[0]);
+				reader.readAsDataURL(files[0]);
+				this.parentElement.remove()
+			}
+	};
+    	 
+ 	
+	}	
+
