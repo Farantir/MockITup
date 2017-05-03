@@ -17,16 +17,10 @@
     <script src="editPictures.js"></script>
     </head>
     
-  <!-- <div class="imageselect">
-    <input value="Paste URL to image" ></input>
-    <button>Ok</button>
-    <button>Cancel</button>
-    <input type="file" name="pic" accept="image/*" id="fileselect"></input>
-    </div> -->
-
-    
-    <body onload="portraitPosition()" onResize="portraitPosition()">   
+   <body onload="portraitPosition()" onResize="portraitPosition()">   
    
+   <button class="hvr-border-fade" id="loadbutton" onclick="load">Load</button>
+   <button class="hvr-border-fade" id="savebutton" onclick="save">Save</button>
     
    <div class="portrait hvr-border-fade" id="portrait" >
     portrait
@@ -36,7 +30,7 @@
     landscape
     </div>	
     
- 	<img id="logo" class="rotating" src="Mockingbird_Illustration_Color4.png"><img>
+ 	<img id="logo" class="rotating" src="Mockingbird_Illustration_Color4.png"></img>
 
  	<div id="screencontainer" class="screencontainer">
         <div class="createnewscreen" id="createnewscreenportrait">

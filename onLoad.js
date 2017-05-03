@@ -36,10 +36,14 @@ var h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
 var mx = w / 2;
 var my = h / 2;
 
+$("savebutton").style.top= (h - 80) + "px";
+$("loadbutton").style.top= (h - 80) + "px";
 $("logo").style.top= (h - 100) + "px";
 $("landscape").style.top= "" + (my - 135) + "px";
 $("portrait").style.top= "" + (my - 240) + "px";
 
+$("savebutton").style.left= (w - 210) + "px";
+$("loadbutton").style.left= (w - 330) + "px";
 $("logo").style.left= (w - 100) + "px";
 $("landscape").style.left= "" + ((mx - 240) * 0.25) + "px";
 $("portrait").style.left= "" + ((mx - 135) * 1.75) + "px";
