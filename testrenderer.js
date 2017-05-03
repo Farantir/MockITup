@@ -56,6 +56,12 @@ function get_html()
             tg = {"target":logick_transaktions[m].name};
             logick_transaktions[m].evoker.dataset["logik-"+m] = JSON.stringify(ev);
             logick_transaktions[m].target.dataset["logik-"+m] = JSON.stringify(tg);
+            /*Ensuring no information gets overwritten*/
+            if(logick_transaktions[m].target == logick_transaktions[m].evoker)
+            {
+            	var evtg = {"evoker":logick_transaktions[m].evoking_aktion,"target":logick_transaktions[m].name};
+            	logick_transaktions[m].evoker.dataset["logik-"+m] = JSON.stringify(evtg);
+            }
             
             if(logick_transaktions[m].complex != null) for(com in logick_transaktions[m].complex)
             {

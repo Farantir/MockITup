@@ -263,13 +263,14 @@ function getPos(el) {
 
 function copy_element(target)
 {
+	notifikationbar.show("Click on the place, where the copy should be created");
     copied_Element = target.cloneNode(true);
     GLOBAL_OVERRIDE = append_copied_element;    
 }
 
 function append_copied_element(e)
 {
-   
+   notifikationbar.hide();
    elements[copied_Element.dataset.elementtype].createfromsave(copied_Element); 
    copied_Element.create(e.target,e.clientX,e.clientY)
    recreate_jsfunktions_after_copy(copied_Element);
