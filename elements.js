@@ -146,11 +146,22 @@ elements["Label"] = function element_Label(e,x,y)
     b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+        this.settingsbar.add(settings_Icon("center.png",function()
+        {
+        	var targettochange = this.parentElement.parentElement.parent;
+        	switch(targettochange.style.textAlign)
+        	{
+        		case "center": targettochange.style.textAlign = "left"; break;
+        		case "left"  : targettochange.style.textAlign = "right"; break;
+        		case "right" : targettochange.style.textAlign = "center"; break;
+        		default: targettochange.style.textAlign = "left"; break;
+        	}
+        }));
     }
 	b.appendChild(document.createTextNode("Label"));
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
     b.logick_menu.add(logick_menu_item("Change Text",logick_button_change_text));
-	b.create(e,x,y)
+	b.create(e,x,y);
 }
 elements["Label"].createfromsave = function recreatelogick(b)
 {
@@ -158,6 +169,17 @@ elements["Label"].createfromsave = function recreatelogick(b)
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+        this.settingsbar.add(settings_Icon("center.png",function()
+        {
+        	var targettochange = this.parentElement.parentElement.parent;
+        	switch(targettochange.style.textAlign)
+        	{
+        		case "center": targettochange.style.textAlign = "left"; break;
+        		case "left"  : targettochange.style.textAlign = "right"; break;
+        		case "right" : targettochange.style.textAlign = "center"; break;
+        		default: targettochange.style.textAlign = "left"; break;
+        	}
+        }));
     }
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
     b.logick_menu.add(logick_menu_item("Change Text",logick_button_change_text));
@@ -302,12 +324,31 @@ function copy_element(target)
     GLOBAL_OVERRIDE = append_copied_element;    
 }
 
+function move_element(target)
+{
+	notifikationbar.show("Click on the place, the element should be moved to");
+    copied_Element = target
+    GLOBAL_OVERRIDE = move_element_to_target;  
+}
+
 function append_copied_element(e)
 {
    notifikationbar.hide();
    elements[copied_Element.dataset.elementtype].createfromsave(copied_Element); 
    copied_Element.create(e.target,e.clientX,e.clientY)
    recreate_jsfunktions_after_copy(copied_Element);
+   GLOBAL_OVERRIDE = null;
+}
+
+function move_element_to_target(e)
+{
+   notifikationbar.hide(); 
+   e.target.appendChild(copied_Element);
+   
+	posx = (e.clientX - getPos(e.target).x || copied_Element.offsetLeft); 
+	posy = (e.clientY - getPos(e.target).y || copied_Element.offsetTop) + document.documentElement.scrollTop;
+    	
+   copied_Element.setpos(posx,posy);
    GLOBAL_OVERRIDE = null;
 }
 
@@ -385,6 +426,7 @@ function make_Container(elem,elemtype)
         this.offsety = this.offsetTop;
 
         this.settingsbar.add(settings_Icon("toggle_vis.png",()=>{this.togglevisible();}));
+        this.settingsbar.add(settings_Icon("move.svg",()=>{move_element(this)}));
         this.settingsbar.add(settings_Icon("delete.svg",()=>
 		{		
 			for (trans of logick_transaktions)
