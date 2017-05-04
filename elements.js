@@ -154,7 +154,7 @@ elements["Label"] = function element_Label(e,x,y)
         		case "center": targettochange.style.textAlign = "left"; break;
         		case "left"  : targettochange.style.textAlign = "right"; break;
         		case "right" : targettochange.style.textAlign = "center"; break;
-        		default: targettochange.style.textAlign = "left"; break;
+        		default: targettochange.style.textAlign = "right"; break;
         	}
         }));
     }
@@ -177,7 +177,7 @@ elements["Label"].createfromsave = function recreatelogick(b)
         		case "center": targettochange.style.textAlign = "left"; break;
         		case "left"  : targettochange.style.textAlign = "right"; break;
         		case "right" : targettochange.style.textAlign = "center"; break;
-        		default: targettochange.style.textAlign = "left"; break;
+        		default: targettochange.style.textAlign = "right"; break;
         	}
         }));
     }
@@ -250,6 +250,17 @@ elements["listelement"].createfromsave = function recreatelogick(b)
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+        this.settingsbar.add(settings_Icon("center.png",function()
+        {
+        	var targettochange = this.parentElement.parentElement.parent;
+        	switch(targettochange.style.textAlign)
+        	{
+        		case "center": targettochange.style.textAlign = "left"; break;
+        		case "left"  : targettochange.style.textAlign = "right"; break;
+        		case "right" : targettochange.style.textAlign = "center"; break;
+        		default: targettochange.style.textAlign = "right"; break;
+        	}
+        }));
     }
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
    	b.afterceration();
@@ -277,6 +288,17 @@ function element_Listelem(e,x,y)
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+        this.settingsbar.add(settings_Icon("center.png",function()
+        {
+        	var targettochange = this.parentElement.parentElement.parent;
+        	switch(targettochange.style.textAlign)
+        	{
+        		case "center": targettochange.style.textAlign = "left"; break;
+        		case "left"  : targettochange.style.textAlign = "right"; break;
+        		case "right" : targettochange.style.textAlign = "center"; break;
+        		default: targettochange.style.textAlign = "right"; break;
+        	}
+        }));
     }
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
     b.logick_menu.add(logick_menu_item("Change Text",logick_button_change_text));
