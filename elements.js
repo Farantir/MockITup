@@ -75,12 +75,28 @@ elements["Text Input"] = function element_text(e,x,y)
     b.type = "text";
 	b = make_Container(b,"Text Input");
 	//b.appendChild(document.createTextNode(""));
-	b.create(e,x,y)
+	b.create(e,x,y);
+	
+	b.settingsbar.scaleBottom.remove();
+    b.settingsbar.scaleBottomLeft.remove();
+    b.settingsbar.scaleRight.remove();
+    b.settingsbar.scaleTop.remove();
+    b.settingsbar.scaleTopLeft.remove();
+    b.settingsbar.scaleTopRight.remove();
+    b.settingsbar.scaleLeft.remove();
 }
 elements["Text Input"].createfromsave = function recreatelogick(b)
 {
 	b = make_Container(b,"Text Input");
 	b.afterceration();
+	
+    b.settingsbar.scaleBottom.remove();
+    b.settingsbar.scaleBottomLeft.remove();
+    b.settingsbar.scaleRight.remove();
+    b.settingsbar.scaleTop.remove();
+    b.settingsbar.scaleTopLeft.remove();
+    b.settingsbar.scaleTopRight.remove();
+    b.settingsbar.scaleLeft.remove();
 }
 
 elements["Checkbox"] = function element_checkbox(e,x,y)
@@ -89,12 +105,30 @@ elements["Checkbox"] = function element_checkbox(e,x,y)
     b.type = "checkbox"
 	b = make_Container(b,"Checkbox");
 	//b.appendChild(document.createTextNode(""));
-	b.create(e,x,y)
+	b.create(e,x,y);
+
+	b.settingsbar.scaleBottomRight.remove();
+    b.settingsbar.scaleBottom.remove();
+    b.settingsbar.scaleBottomLeft.remove();
+    b.settingsbar.scaleRight.remove();
+    b.settingsbar.scaleTop.remove();
+    b.settingsbar.scaleTopLeft.remove();
+    b.settingsbar.scaleTopRight.remove();
+    b.settingsbar.scaleLeft.remove();
 }
 elements["Checkbox"].createfromsave = function recreatelogick(b)
 {
 	b = make_Container(b,"Checkbox");
 	b.afterceration();
+	
+	b.settingsbar.scaleBottomRight.remove();
+    b.settingsbar.scaleBottom.remove();
+    b.settingsbar.scaleBottomLeft.remove();
+    b.settingsbar.scaleRight.remove();
+    b.settingsbar.scaleTop.remove();
+    b.settingsbar.scaleTopLeft.remove();
+    b.settingsbar.scaleTopRight.remove();
+    b.settingsbar.scaleLeft.remove();
 }
 
 elements["custom"] = {};
