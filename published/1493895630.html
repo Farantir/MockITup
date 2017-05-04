@@ -1,9 +1,4 @@
-<?php
-$data = $_POST['data'];
-/*Create new unique file*/
-$filename = time(); 
-$f = fopen('published/'.$filename.'.html', 'w+');
-$htmlfile = '<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
     <head>
     <meta charset="utf-8">
@@ -20,25 +15,14 @@ $htmlfile = '<!DOCTYPE html>
     <script src="../save.js"></script>
     </head>
         <body onload="mobile_test_render()" onResize="mobil_screen_onresize()">
-	<div id="testscreencontainer">'.$data.'</div>
+	<div id="testscreencontainer">
+        <div class="screenportait screengrafikeditor" data-elementtype="screen"><button data-elementtype="Button" style="position: absolute; top: 114px; left: 79px;" data-is-visible="true" data-value="">Button</button><input data-elementtype="Checkbox" style="position: absolute; top: 387px; left: 86px;" data-is-visible="true" data-value="on" type="checkbox"></div><div class="createnewscreen" id="createnewscreenportrait" style="display: inline;">
+        +
+        </div>
+        
+        <div class="createnewscreen" id="createnewscreenlandscape">
+        +
+        </div>
+    </div>
 </body>
-</html>';
-
-
-fwrite($f, $htmlfile);
-fclose($f);
-
-print "http://192.168.178.22"."/MockITup/published/".$filename.".html";
-
-/*Delete all files older than 24h */
-  $path = 'published/';
-  if ($handle = opendir($path)) {
-     while (false !== ($file = readdir($handle))) {
-        if ((time()-filectime($path.$file)) >= 86400) {  
-        	if (preg_match('/\.html$/i', $file)) {
-              unlink($path.$file);}
-        }
-     }
-   }
-
-?>
+</html>
