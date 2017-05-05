@@ -447,6 +447,7 @@ function imageSelect(target,set)
 	var s = document.createElement("div");	
 	s.input = document.createElement("input");
 	s.filepicker = document.createElement("input");
+	s.pickfile = document.createElement("button");
 	s.ok = document.createElement("button");
 	s.cancel = document.createElement("button");
 
@@ -461,11 +462,17 @@ function imageSelect(target,set)
 	s.filepicker.type ="file";
 	s.filepicker.id = "fileselect";
 	s.target = target;
+	s.filepicker.style.display = "none";
+
+	s.pickfile.appendChild(document.createTextNode("Choose File"));
+	s.pickfile.parent = s;
+	s.pickfile.onclick = function(){this.parent.filepicker.display = ""; this.parent.filepicker.click(); this.parent.filepicker.display = "";}
 
 	s.appendChild(s.input);
 	s.appendChild(s.ok);
 	s.appendChild(s.cancel);
 	s.appendChild(s.filepicker);
+	s.appendChild(s.pickfile);
 
 	document.body.appendChild(s);
 
