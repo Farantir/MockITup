@@ -82,6 +82,7 @@ function initialize(selection)
    grafic_elements.add(elementbar_Item("Button",notifikation_to_drag_and_drop));
    grafic_elements.add(elementbar_Item("Label",notifikation_to_drag_and_drop));
    grafic_elements.add(elementbar_Item("Text Input",notifikation_to_drag_and_drop));
+   grafic_elements.add(elementbar_Item("Textarea",notifikation_to_drag_and_drop));
    grafic_elements.add(elementbar_Item("Checkbox",notifikation_to_drag_and_drop));
    grafic_elements.add(elementbar_Item("Picture",notifikation_to_drag_and_drop));
    grafic_elements.add(elementbar_Item("Liste",notifikation_to_drag_and_drop));

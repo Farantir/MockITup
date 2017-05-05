@@ -99,6 +99,36 @@ elements["Text Input"].createfromsave = function recreatelogick(b)
     b.settingsbar.scaleLeft.remove();
 }
 
+elements["Textarea"] = function element_text(e,x,y)
+{
+	b = document.createElement("textarea");
+	b = make_Container(b,"Textarea");
+	b.style.resize = "none";
+	//b.appendChild(document.createTextNode(""));
+	b.create(e,x,y);
+	
+	b.settingsbar.scaleBottom.remove();
+    b.settingsbar.scaleBottomLeft.remove();
+    b.settingsbar.scaleRight.remove();
+    b.settingsbar.scaleTop.remove();
+    b.settingsbar.scaleTopLeft.remove();
+    b.settingsbar.scaleTopRight.remove();
+    b.settingsbar.scaleLeft.remove();
+}
+elements["Textarea"].createfromsave = function recreatelogick(b)
+{
+	b = make_Container(b,"Textarea");
+	b.afterceration();
+	
+    b.settingsbar.scaleBottom.remove();
+    b.settingsbar.scaleBottomLeft.remove();
+    b.settingsbar.scaleRight.remove();
+    b.settingsbar.scaleTop.remove();
+    b.settingsbar.scaleTopLeft.remove();
+    b.settingsbar.scaleTopRight.remove();
+    b.settingsbar.scaleLeft.remove();
+}
+
 elements["Checkbox"] = function element_checkbox(e,x,y)
 {
 	b = document.createElement("input");
