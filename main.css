@@ -302,6 +302,8 @@ img.arrow {
     font-size: 16px;
 	background-color: #D3D3D3;
 	cursor: pointer; cursor: hand;
+	z-index: 999999;
+	display: none;
 }
 
 #savebutton {
@@ -314,6 +316,8 @@ img.arrow {
     font-size: 16px;
 	background-color: #D3D3D3;
 	cursor: pointer; cursor: hand;
+	z-index: 999999;
+	display: none;
 }
 
 /* Border Hover Animation for Divs */

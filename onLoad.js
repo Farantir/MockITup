@@ -58,6 +58,7 @@ return document.getElementById(x);
 
 function initialize(selection)
 {
+
     /*Creates a notifikationbar*/
     notifikationbar = create_notifikationbar();
 
@@ -125,4 +126,9 @@ function initialize(selection)
 	newElement_menubar = menubar();
  	newElement_menubar.add(menubar_Item("Save",newelementsetname));
     newElement_menubar.add(menubar_Item("Back",grafik));*/
+    
+     /*Shows the load and the save button*/
+    $("savebutton").style.display = "inline-block";
+	$("loadbutton").style.display = "inline-block";
+	
 }
