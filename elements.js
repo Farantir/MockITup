@@ -176,6 +176,7 @@ elements["Label"] = function element_Label(e,x,y)
     b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -199,6 +200,7 @@ elements["Label"].createfromsave = function recreatelogick(b)
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
