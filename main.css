@@ -19,6 +19,7 @@ ul.menubar {
 
 ul.menubar li {
     float: right;
+    cursor: pointer; cursor: hand;
 }
 
 ul.menubar li a {
@@ -54,6 +55,7 @@ ul.elementbar {
 
 ul.elementbar li {
     float: top;
+    cursor: pointer; cursor: hand;
 }
 
 ul.elementbar li a {
@@ -116,6 +118,7 @@ div.portrait {
 	text-align:center;
 	line-height: 480px;  
 	font-size: 24px;
+	cursor: pointer; cursor: hand;
 }
 
 
@@ -128,6 +131,7 @@ div.landscape {
 	text-align:center;
 	line-height: 270px;  
 	font-size: 24px;
+	cursor: pointer; cursor: hand;
 	/*margin-top: 105px*/
 }
 
@@ -143,7 +147,7 @@ div.createnewscreen {
 	font-size: 40px;
 	
 	border-style: solid;
-	
+	cursor: pointer; cursor: hand;
 }
 
 #screencontainer{
@@ -190,6 +194,7 @@ div.settingsbar li {
     padding-left: 1px;
 	padding-right: 1px;
 	margin-right: 1px;
+	cursor: pointer; cursor: hand;
 }
 
 div.settingsbar img {
@@ -243,6 +248,7 @@ div.imageselect button {
   position: relative;
   float: right;
   margin-right: 2.5%;
+  cursor: pointer; cursor: hand;
 }
 
 div.textinput button:hover {
@@ -272,6 +278,7 @@ div.textinput button {
   position: relative;
   float: right;
   margin-right: 2.5%;
+  cursor: pointer; cursor: hand;
 }
 
 div.textinput button:hover {
@@ -282,6 +289,7 @@ img.arrow {
 	position: absolute;
 	width: 20px;	
 	height: 20px;
+	cursor: pointer; cursor: hand;
 }
 
 #loadbutton {
@@ -293,6 +301,7 @@ img.arrow {
     display: inline-block;
     font-size: 16px;
 	background-color: #D3D3D3;
+	cursor: pointer; cursor: hand;
 }
 
 #savebutton {
@@ -304,6 +313,7 @@ img.arrow {
     display: inline-block;
     font-size: 16px;
 	background-color: #D3D3D3;
+	cursor: pointer; cursor: hand;
 }
 
 /* Border Hover Animation for Divs */

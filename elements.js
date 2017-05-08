@@ -439,8 +439,17 @@ function change_text_color(target)
 	colpicker = document.createElement("input");
 	colpicker.type = "color";
 	colpicker.target = target;
+	colpicker.value = rgb2hex(target.style.color);
 	colpicker.onchange = function(){this.target.style.color = this.value;}
 	colpicker.click();
+}
+
+function rgb2hex(rgb){
+ rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+ return (rgb && rgb.length === 4) ? "#" +
+  ("0" + parseInt(rgb[1],10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb[2],10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
 }
 
 function copy_element(target)
@@ -497,6 +506,8 @@ function make_Container(elem,elemtype)
     /*Defines if the element ist visible in the test renderer*/
     elem.isVisible = true;
     elem.dataset.isVisible = elem.isVisible;
+    elem.style.cursor = "pointer";
+    elem.style.cursor = "hand";
     
     /*Menu containing the logic funktions of the element*/
     elem.logick_menu = logick_menu(elem);
