@@ -78,7 +78,7 @@ function initialize(selection)
     
    //creates the menu bar containing the elements for grafik desing
    grafic_elements = elementbar();
-   grafic_elements.add(menubar_Item("+",gotoNewElement,"newelement"));
+   /*grafic_elements.add(menubar_Item("+",gotoNewElement,"newelement"));*/
    grafic_elements.add(elementbar_Item("Button",notifikation_to_drag_and_drop));
    grafic_elements.add(elementbar_Item("Label",notifikation_to_drag_and_drop));
    grafic_elements.add(elementbar_Item("Text Input",notifikation_to_drag_and_drop));
@@ -86,6 +86,7 @@ function initialize(selection)
    grafic_elements.add(elementbar_Item("Checkbox",notifikation_to_drag_and_drop));
    grafic_elements.add(elementbar_Item("Picture",notifikation_to_drag_and_drop));
    grafic_elements.add(elementbar_Item("Liste",notifikation_to_drag_and_drop));
+   grafic_elements.add(elementbar_Item("Container",notifikation_to_drag_and_drop));
    grafic_elements.make_Visible();
 
    //creates the menu bar containing the elements for Logick desing
@@ -119,9 +120,9 @@ function initialize(selection)
    
    //Creates the first screen of the app
    new_Screen();
-
+/*
     //Creates the menu bar for the new element screen
 	newElement_menubar = menubar();
  	newElement_menubar.add(menubar_Item("Save",newelementsetname));
-    newElement_menubar.add(menubar_Item("Back",grafik));
+    newElement_menubar.add(menubar_Item("Back",grafik));*/
 }

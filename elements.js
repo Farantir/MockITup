@@ -216,6 +216,45 @@ elements["Label"].createfromsave = function recreatelogick(b)
 	b.afterceration();
 }
 
+elements["Container"] = function element_container(e,x,y)
+{
+	b = document.createElement("div");
+	b.style.border = "1px dashed";
+	b.style.height = "30px";
+	b.style.width = "30px";
+	b = make_Container(b,"Container");
+    b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
+    }
+	b.create(e,x,y);
+	
+	b.settingsbar.scaleBottom.remove();
+    b.settingsbar.scaleBottomLeft.remove();
+    b.settingsbar.scaleRight.remove();
+    b.settingsbar.scaleTop.remove();
+    b.settingsbar.scaleTopLeft.remove();
+    b.settingsbar.scaleTopRight.remove();
+    b.settingsbar.scaleLeft.remove();
+}
+elements["Container"].createfromsave = function recreatelogick(b)
+{
+	b = make_Container(b,"Container");
+	b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
+    }
+	b.afterceration();
+	
+	b.settingsbar.scaleBottom.remove();
+    b.settingsbar.scaleBottomLeft.remove();
+    b.settingsbar.scaleRight.remove();
+    b.settingsbar.scaleTop.remove();
+    b.settingsbar.scaleTopLeft.remove();
+    b.settingsbar.scaleTopRight.remove();
+    b.settingsbar.scaleLeft.remove();
+}
+
 elements["Picture"] = function element_Label(e,x,y)
 {
 	b = document.createElement("img");
@@ -406,7 +445,7 @@ function move_element_to_target(e)
 
 function recreate_jsfunktions_after_copy(elemelement)
 {
-   elements[elemelement.dataset.elementtype].createfromsave(copied_Element); 
+   elements[elemelement.dataset.elementtype].createfromsave(elemelement); 
    for(m of elemelement.children) recreate_jsfunktions_after_copy(m);
 }
 

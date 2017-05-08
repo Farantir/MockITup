@@ -226,6 +226,8 @@ function save_preenterd_values(target)
 function TreeCompile(target)
 {
     for(m of target.children) TreeCompile(m);
+    
+    if(target.dataset.elementtype == "Container") target.style.border = "";
 
     /*Compiles logik transaktions for each element*/
     for (var i = 0; i < target.attributes.length; i++) {
