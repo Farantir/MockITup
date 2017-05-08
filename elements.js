@@ -51,6 +51,7 @@ elements["Button"] = function element_button(e,x,y)
     b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
     }
 	b.appendChild(document.createTextNode("Button"));
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
@@ -63,6 +64,7 @@ elements["Button"].createfromsave = function recreatelogick(b)
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
     }
 	b.afterceration();
 	b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
@@ -74,6 +76,10 @@ elements["Text Input"] = function element_text(e,x,y)
 	b = document.createElement("input");
     b.type = "text";
 	b = make_Container(b,"Text Input");
+	b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+    }
 	//b.appendChild(document.createTextNode(""));
 	b.create(e,x,y);
 	
@@ -88,6 +94,10 @@ elements["Text Input"] = function element_text(e,x,y)
 elements["Text Input"].createfromsave = function recreatelogick(b)
 {
 	b = make_Container(b,"Text Input");
+	b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+    }
 	b.afterceration();
 	
     b.settingsbar.scaleBottom.remove();
@@ -103,6 +113,10 @@ elements["Textarea"] = function element_text(e,x,y)
 {
 	b = document.createElement("textarea");
 	b = make_Container(b,"Textarea");
+	b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+    }
 	b.style.resize = "none";
 	//b.appendChild(document.createTextNode(""));
 	b.create(e,x,y);
@@ -118,6 +132,10 @@ elements["Textarea"] = function element_text(e,x,y)
 elements["Textarea"].createfromsave = function recreatelogick(b)
 {
 	b = make_Container(b,"Textarea");
+	b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+    }
 	b.afterceration();
 	
     b.settingsbar.scaleBottom.remove();
@@ -160,14 +178,14 @@ elements["Checkbox"].createfromsave = function recreatelogick(b)
     b.settingsbar.scaleTopRight.remove();
     b.settingsbar.scaleLeft.remove();
 }
-
+/* //needet only for new element screen. new element now inexistent, because we cut it. got replaced by container element
 elements["custom"] = {};
 elements["custom"].createfromsave = function recreatelogick(b)
 {
 	b = make_Container(b,"custom");
 	b.afterceration();
 }
-
+*/
 
 elements["Label"] = function element_Label(e,x,y)
 {
@@ -177,6 +195,7 @@ elements["Label"] = function element_Label(e,x,y)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
         this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -201,6 +220,7 @@ elements["Label"].createfromsave = function recreatelogick(b)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
         this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -294,6 +314,7 @@ elements["Liste"] = function element_List(e,x,y)
     b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
     }
 	b.logick_menu.add(logick_menu_item("Add List Entry",logick_button_add_list_element));
 	b.style.height = "200px";
@@ -307,6 +328,7 @@ elements["Liste"].createfromsave = function recreatelogick(b)
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
     }
 	b.logick_menu.add(logick_menu_item("Add List Entry",logick_button_add_list_element));
 	b.afterceration();
@@ -321,6 +343,7 @@ elements["listelement"].createfromsave = function recreatelogick(b)
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -359,6 +382,7 @@ function element_Listelem(e,x,y)
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -408,6 +432,15 @@ function getPos(el) {
          el != null;
          lx += el.offsetLeft, ly += el.offsetTop, el = el.offsetParent);
     return {x: lx,y: ly};
+}
+
+function change_text_color(target)
+{
+	colpicker = document.createElement("input");
+	colpicker.type = "color";
+	colpicker.target = target;
+	colpicker.onchange = function(){this.target.style.color = this.value;}
+	colpicker.click();
 }
 
 function copy_element(target)
