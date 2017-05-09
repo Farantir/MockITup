@@ -112,7 +112,6 @@ function edit_image_initialise_erase(e)
         var offset = getPos(canvas_to_edit_picture_on);;
        canvas_to_edit_picture_on.offsetx = offset.x;
        canvas_to_edit_picture_on.offsety = offset.y;
-       canvas_to_edit_picture_on.border = "1px dashed"
        draw_on_canvas_erase_rect(e.pageX - canvas_to_edit_picture_on.offsetx,e.pageY - canvas_to_edit_picture_on.offsety)
 }
 
