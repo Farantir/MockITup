@@ -121,3 +121,8 @@ test_logick_effekts["changtext"] = function(target,x,id)
 {	
     target.innerHTML = test_logick_complex_targets[id].textsource.value;
 }
+
+test_logick_effekts["changeimage"] = function(target,x,id)
+{	
+    target.src = test_logick_complex_targets[id].textsource.src;
+}

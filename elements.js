@@ -281,7 +281,8 @@ elements["Picture"] = function element_Label(e,x,y)
         this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.src = value;})},"Lets you select a custom image, either by url or filpicker, to coose from your own device"));
         this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)},"Opens a seperate Screen, on whitch you can paint your own picture for this Container"));
     }
-	b.create(e,x,y)
+	b.create(e,x,y);
+    b.logick_menu.add(logick_menu_item("Change Image",logick_button_change_image));
 	b.style.width = "100px";
 	b.style.height = "100px";
 }
@@ -296,6 +297,7 @@ elements["Picture"].createfromsave = function recreatelogick(b)
         this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.src = value;})},"Lets you select a custom image, either by url or filpicker, to coose from your own device"));
         this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)},"Opens a seperate Screen, on whitch you can paint your own picture for this Container"));
     }
+    b.logick_menu.add(logick_menu_item("Change Image",logick_button_change_image));
 	b.afterceration();
 }
 

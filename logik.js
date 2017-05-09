@@ -159,6 +159,16 @@ function logick_button_change_text()
 }
 logick_dictionary["changtext"] = "Changes the text of";
 
+/*Creating a complex transaktion, because 3 elements are needet*/
+function logick_button_change_image()
+{
+	complex_transaktion = new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"changeimage");
+	this.parentElement.hide();
+	GLOBAL_OVERRIDE = logick_button_get_data_for_add_list;
+	notifikationbar.show("Choose Image source for selected element");
+}
+logick_dictionary["changeimage"] = "Changes the the image of";
+
 function logick_button_hide()
 {
     logick_transaktions.push(new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"hide"));
