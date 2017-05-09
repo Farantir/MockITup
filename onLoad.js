@@ -110,6 +110,7 @@ function initialize(selection)
    pictureEdit.add(menubar_Item("Color",null,null,null,editImage_DrawingColor));
    pictureEdit.add(menubar_Item("Size",null,null,null,editImage_strokesize));
    pictureEdit.add(menubar_Item("Clear Canvas",canvas_erase_picture));
+   pictureEdit.add(menubar_Item("Toggle Background Color",toggel_dark_mode));
 
    //creates the "new screen" button
    if(landscape_mode) newscreenbutton = $("createnewscreenlandscape");

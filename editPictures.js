@@ -112,7 +112,22 @@ function edit_image_initialise_erase(e)
         var offset = getPos(canvas_to_edit_picture_on);;
        canvas_to_edit_picture_on.offsetx = offset.x;
        canvas_to_edit_picture_on.offsety = offset.y;
+       canvas_to_edit_picture_on.border = "1px dashed"
        draw_on_canvas_erase_rect(e.pageX - canvas_to_edit_picture_on.offsetx,e.pageY - canvas_to_edit_picture_on.offsety)
+}
+
+function toggel_dark_mode()
+{
+    if($("testscreencontainer").children[0].bg == "dark")
+    { 
+        $("testscreencontainer").children[0].bg = "light";
+        $("testscreencontainer").children[0].style.backgroundColor = "white";
+    }
+    else
+    {
+        $("testscreencontainer").children[0].bg = "dark";
+        $("testscreencontainer").children[0].style.backgroundColor = "#272727";
+    }
 }
 
 function draw_on_canvas_drawing(e)

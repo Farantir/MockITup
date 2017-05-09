@@ -1,6 +1,6 @@
 function save()
 {
-	/*Creating a string containing all the necassary information*/
+	    /*Creating a string containing all the necassary information*/
 	    /*Translates the logick into data-tags. this way they are part of the inner html and can be transferd*/
         for(m in logick_transaktions)
         {
