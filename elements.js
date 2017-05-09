@@ -50,8 +50,8 @@ elements["Button"] = function element_button(e,x,y)
     
     b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Changes the Text of the Button"));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the Color of the Buttons text"));
     }
 	b.appendChild(document.createTextNode("Button"));
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
@@ -63,8 +63,8 @@ elements["Button"].createfromsave = function recreatelogick(b)
 	b = make_Container(b,"Button");
 	b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Changes the Text of the Button"));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the Color of the Buttons text"));
     }
 	b.afterceration();
 	b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
@@ -78,7 +78,7 @@ elements["Text Input"] = function element_text(e,x,y)
 	b = make_Container(b,"Text Input");
 	b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
     }
 	//b.appendChild(document.createTextNode(""));
 	b.create(e,x,y);
@@ -96,7 +96,7 @@ elements["Text Input"].createfromsave = function recreatelogick(b)
 	b = make_Container(b,"Text Input");
 	b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
     }
 	b.afterceration();
 	
@@ -115,7 +115,7 @@ elements["Textarea"] = function element_text(e,x,y)
 	b = make_Container(b,"Textarea");
 	b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
     }
 	b.style.resize = "none";
 	//b.appendChild(document.createTextNode(""));
@@ -134,7 +134,7 @@ elements["Textarea"].createfromsave = function recreatelogick(b)
 	b = make_Container(b,"Textarea");
 	b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
     }
 	b.afterceration();
 	
@@ -193,9 +193,8 @@ elements["Label"] = function element_Label(e,x,y)
 	b = make_Container(b,"Label");
     b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
-        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Canges the Text of the Label"));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -206,7 +205,7 @@ elements["Label"] = function element_Label(e,x,y)
         		case "right" : targettochange.style.textAlign = "center"; break;
         		default: targettochange.style.textAlign = "right"; break;
         	}
-        }));
+        },"Selects the textaling for the Labels Text. you can choose between center, left and right"));
     }
 	b.appendChild(document.createTextNode("Label"));
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
@@ -218,9 +217,8 @@ elements["Label"].createfromsave = function recreatelogick(b)
 	b = make_Container(b,"Label");
 	b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
-        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Canges the Text of the Label"));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -231,7 +229,7 @@ elements["Label"].createfromsave = function recreatelogick(b)
         		case "right" : targettochange.style.textAlign = "center"; break;
         		default: targettochange.style.textAlign = "right"; break;
         	}
-        }));
+        },"Selects the textaling for the Labels Text. you can choose between center, left and right"));
     }
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
     b.logick_menu.add(logick_menu_item("Change Text",logick_button_change_text));
@@ -245,10 +243,7 @@ elements["Container"] = function element_container(e,x,y)
 	b.style.height = "30px";
 	b.style.width = "30px";
 	b = make_Container(b,"Container");
-    b.jsoncreate = function(target)
-    {
-        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
-    }
+	
 	b.create(e,x,y);
 	
 	b.settingsbar.scaleBottom.remove();
@@ -262,10 +257,7 @@ elements["Container"] = function element_container(e,x,y)
 elements["Container"].createfromsave = function recreatelogick(b)
 {
 	b = make_Container(b,"Container");
-	b.jsoncreate = function(target)
-    {
-        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
-    }
+
 	b.afterceration();
 	
 	b.settingsbar.scaleBottom.remove();
@@ -286,11 +278,12 @@ elements["Picture"] = function element_Label(e,x,y)
 	b = make_Container(b,"Picture");
     b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.src = value;})}));
-        this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)}));
-        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
+        this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.src = value;})},"Lets you select a custom image, either by url or filpicker, to coose from your own device"));
+        this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)},"Opens a seperate Screen, on whitch you can paint your own picture for this Container"));
     }
 	b.create(e,x,y)
+	b.style.width = "100px";
+	b.style.height = "100px";
 }
 elements["Picture"].createfromsave = function recreatelogick(b)
 {
@@ -300,9 +293,8 @@ elements["Picture"].createfromsave = function recreatelogick(b)
 	b = make_Container(b,"Picture");
     b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.src = value;})}));
-        this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)}));
-        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);}));
+        this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.src = value;})},"Lets you select a custom image, either by url or filpicker, to coose from your own device"));
+        this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)},"Opens a seperate Screen, on whitch you can paint your own picture for this Container"));
     }
 	b.afterceration();
 }
@@ -313,8 +305,8 @@ elements["Liste"] = function element_List(e,x,y)
 	b = make_Container(b,"Liste");
     b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);}));
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);},"Creates a new List Entry"));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Specifies the text color for all Entries of this List, if the color is not set in the list element itself"));
     }
 	b.logick_menu.add(logick_menu_item("Add List Entry",logick_button_add_list_element));
 	b.style.height = "200px";
@@ -327,8 +319,8 @@ elements["Liste"].createfromsave = function recreatelogick(b)
 	b = make_Container(b,"Liste");
 	b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);}));
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);},"Creates a new List Entry"));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Specifies the text color for all Entries of this List, if the color is not set in the list element itself"));
     }
 	b.logick_menu.add(logick_menu_item("Add List Entry",logick_button_add_list_element));
 	b.afterceration();
@@ -342,8 +334,8 @@ elements["listelement"].createfromsave = function recreatelogick(b)
 	b.scale = ()=>{};
 	b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Lets you change the text of this list entry"));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"changes the color of this list entry. Overrides the color set by the list itself"));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -354,7 +346,7 @@ elements["listelement"].createfromsave = function recreatelogick(b)
         		case "right" : targettochange.style.textAlign = "center"; break;
         		default: targettochange.style.textAlign = "right"; break;
         	}
-        }));
+        },"Allows you to change th textalingment of this list entry"));
     }
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
    	b.afterceration();
@@ -381,8 +373,8 @@ function element_Listelem(e,x,y)
 	b.scale = ()=>{};
 	b.jsoncreate = function(target)
     {
-        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})}));
-        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);}));
+        this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Lets you change the text of this list entry"));
+        this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"changes the color of this list entry. Overrides the color set by the list itself"));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -393,7 +385,7 @@ function element_Listelem(e,x,y)
         		case "right" : targettochange.style.textAlign = "center"; break;
         		default: targettochange.style.textAlign = "right"; break;
         	}
-        }));
+        },"Allows you to change th textalingment of this list entry"));
     }
     b.logick_menu.add(logick_menu_item("Text Link",logick_button_textlink));
     b.logick_menu.add(logick_menu_item("Change Text",logick_button_change_text));
@@ -561,25 +553,35 @@ function make_Container(elem,elemtype)
 
         this.offsetx = this.offsetLeft; 
         this.offsety = this.offsetTop;
-
-        this.settingsbar.add(settings_Icon("toggle_vis.png",()=>{this.togglevisible();}));
-        this.settingsbar.add(settings_Icon("move.svg",()=>{move_element(this)}));
+        
+        this.settingsbar.add(settings_Icon("copy.png",()=>{copy_element(this);},"Creates a copy of this element and all elements inside it at a target location"));
+        this.settingsbar.add(settings_Icon("toggle_vis.png",()=>{this.togglevisible();},"Button to toggle whether the element is visible in the test screen"));
+        this.settingsbar.add(settings_Icon("move.svg",()=>{move_element(this)},"Allows you to redifine the parent container of this element (move it to anoter screen or another container element)"));
         this.settingsbar.add(settings_Icon("delete.svg",()=>
 		{		
-			for (trans of logick_transaktions)
-			 {
-				if (this == trans.evoker)
+			this.removeme = function()
+			{
+				for(m of this.children)
 				{
-					remove_element_actionbar(trans);	
+					m.removeme = this.removeme;
+					m.removeme();
 				}
-				else if (this == trans.target)
+				for (trans of logick_transaktions)
 				{
-					remove_element_actionbar(trans);	
-				}
-			 }
-			this.settingsbar.remove();
-			this.remove();
-		}));
+					if (this == trans.evoker)
+					{
+						remove_element_actionbar(trans);	
+					}
+					else if (this == trans.target)
+					{
+						remove_element_actionbar(trans);	
+					}
+			 	}
+				this.settingsbar.remove();
+				this.remove();
+			}
+			this.removeme();
+		},"Deletes this element and all its children"));
         this.settingsbar.make_Visible();
         this.settingsbar.initialise();
 	}

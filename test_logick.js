@@ -72,9 +72,9 @@ function swipeinit(target)
 test_logick_events["swiperight"] = swipeinit;
 test_logick_events["swipeleft"] = swipeinit;
 
-test_logick_events["textlink"] = function(target,execute)
+test_logick_events["textchanged"] = function(target,execute)
 {
-    target.onkeyup = function(){execute("textlink",this,this.value);};
+    target.onkeyup = function(){execute("textchanged",this,this.value);};
 }
 
 test_logick_events["click"] = function(target,execute)

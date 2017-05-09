@@ -179,7 +179,7 @@ function settingsbar(parent)
         this.ul.appendChild(x);
     }
 	
-	  menu.addActionIcon = function(x)
+	menu.addActionIcon = function(x)
     {
         this.ul2.appendChild(x);
     }
@@ -377,10 +377,11 @@ function settingsbar(parent)
 }
 
 /*function to create an icon in the custom settings bar of an element*/
-function settings_Icon(icon,onclick)
+function settings_Icon(icon,onclick,explanation)
 {
     elem = document.createElement("li");
     elem.img = document.createElement("img");
+    elem.title = explanation || "";
     elem.appendChild(elem.img);
     elem.img.src = icon;
     elem.img.height = 25;
