@@ -119,7 +119,7 @@ test_logick_effekts["addtolist"] = function(target,x,id)
 
 test_logick_effekts["changtext"] = function(target,x,id)
 {	
-    target.innerHTML = test_logick_complex_targets[id].textsource.value;
+    target.innerHTML = test_logick_complex_targets[id].textsource.value || test_logick_complex_targets[id].textsource.innerHTML;
 }
 
 test_logick_effekts["changeimage"] = function(target,x,id)
