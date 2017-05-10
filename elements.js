@@ -315,6 +315,19 @@ elements["Liste"] = function element_List(e,x,y)
 	b.style.width = "200px";
 	b.style.overflow = "scroll";
 	b.create(e,x,y);
+	
+	/*Overrides the positioning of elements appendet to the List to relative*/
+	var observer = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+		  for (var i = 0; i < mutation.addedNodes.length; i++) {
+		    mutation.addedNodes[i].style.position = "relative";
+		    mutation.addedNodes[i].style.top = "0px";
+		    mutation.addedNodes[i].style.left = "0px";
+		    mutation.addedNodes[i].setpos = ()=>{};
+		  }
+		});
+	  });
+	  observer.observe(b, { childList: true });
 }
 elements["Liste"].createfromsave = function recreatelogick(b)
 {

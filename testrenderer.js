@@ -184,7 +184,11 @@ function resize_to_mobile_screen(e)
 		e.style.height = calculate_ratio(e.oldheight,oldheight,$("testscreencontainer").offsetHeight) + "px";
 	}
 	
-	e.style.fontSize = calculate_ratio(e.oldfont,oldwidth,$("testscreencontainer").clientWidth) + "px";
+	/*Determen if the font needs to be affekted by the heigt or the width*/
+	var touse = calculate_ratio(e.oldfont,oldwidth,$("testscreencontainer").clientWidth);
+	var by_height = calculate_ratio(e.oldfont,oldheight,$("testscreencontainer").offsetHeight)
+	if(touse > by_height) touse = by_height;
+	e.style.fontSize = touse + "px";
 	
 
 	
