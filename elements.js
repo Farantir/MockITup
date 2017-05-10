@@ -50,6 +50,8 @@ elements["Button"] = function element_button(e,x,y)
     
     b.jsoncreate = function(target)
     {
+    	this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Changes the Text of the Button"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the Color of the Buttons text"));
     }
@@ -63,6 +65,8 @@ elements["Button"].createfromsave = function recreatelogick(b)
 	b = make_Container(b,"Button");
 	b.jsoncreate = function(target)
     {
+        this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Changes the Text of the Button"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the Color of the Buttons text"));
     }
@@ -78,6 +82,8 @@ elements["Text Input"] = function element_text(e,x,y)
 	b = make_Container(b,"Text Input");
 	b.jsoncreate = function(target)
     {
+        this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
     }
 	//b.appendChild(document.createTextNode(""));
@@ -96,6 +102,8 @@ elements["Text Input"].createfromsave = function recreatelogick(b)
 	b = make_Container(b,"Text Input");
 	b.jsoncreate = function(target)
     {
+        this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
     }
 	b.afterceration();
@@ -115,6 +123,8 @@ elements["Textarea"] = function element_text(e,x,y)
 	b = make_Container(b,"Textarea");
 	b.jsoncreate = function(target)
     {
+        this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
     }
 	b.style.resize = "none";
@@ -134,6 +144,8 @@ elements["Textarea"].createfromsave = function recreatelogick(b)
 	b = make_Container(b,"Textarea");
 	b.jsoncreate = function(target)
     {
+        this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
     }
 	b.afterceration();
@@ -195,6 +207,8 @@ elements["Label"] = function element_Label(e,x,y)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Canges the Text of the Label"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
+        this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -219,6 +233,8 @@ elements["Label"].createfromsave = function recreatelogick(b)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Canges the Text of the Label"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
+        this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -309,6 +325,8 @@ elements["Liste"] = function element_List(e,x,y)
     {
         this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);},"Creates a new List Entry"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Specifies the text color for all Entries of this List, if the color is not set in the list element itself"));
+        this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
     }
 	b.logick_menu.add(logick_menu_item("Add List Entry",logick_button_add_list_element));
 	b.style.height = "200px";
@@ -336,6 +354,8 @@ elements["Liste"].createfromsave = function recreatelogick(b)
     {
         this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);},"Creates a new List Entry"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Specifies the text color for all Entries of this List, if the color is not set in the list element itself"));
+        this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
     }
 	b.logick_menu.add(logick_menu_item("Add List Entry",logick_button_add_list_element));
 	b.afterceration();
@@ -351,6 +371,8 @@ elements["listelement"].createfromsave = function recreatelogick(b)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Lets you change the text of this list entry"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"changes the color of this list entry. Overrides the color set by the list itself"));
+        this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -390,6 +412,8 @@ function element_Listelem(e,x,y)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Lets you change the text of this list entry"));
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"changes the color of this list entry. Overrides the color set by the list itself"));
+        this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
+        this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -471,6 +495,24 @@ function move_element(target)
 	notifikationbar.show("Click on the place, the element should be moved to");
     copied_Element = target
     GLOBAL_OVERRIDE = move_element_to_target;  
+}
+
+function make_text_smaler(target)
+{
+	changetextsize(target,-1);
+}
+
+function make_text_larger(target)
+{
+	changetextsize(target,1);
+}
+
+function changetextsize(el,value)
+{
+	var style = window.getComputedStyle(el, null).getPropertyValue('font-size');
+	var fontSize = parseFloat(style); 
+	// now you have a proper float for the font size (yes, it can be a float, not just an integer)
+	el.style.fontSize = (fontSize + value) + 'px';
 }
 
 function append_copied_element(e)

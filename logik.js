@@ -176,6 +176,7 @@ function logick_button_copy()
 	GLOBAL_OVERRIDE = logick_button_get_data_for_add_list;
 	notifikationbar.show("Choose parent for copy");
 }
+logick_dictionary["copyelement"] = "Creates a copy of";
 
 function logick_button_hide()
 {
