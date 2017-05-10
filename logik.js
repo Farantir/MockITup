@@ -169,6 +169,14 @@ function logick_button_change_image()
 }
 logick_dictionary["changeimage"] = "Changes the the image of";
 
+function logick_button_copy()
+{
+	complex_transaktion = new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"copyelement");
+	this.parentElement.hide();
+	GLOBAL_OVERRIDE = logick_button_get_data_for_add_list;
+	notifikationbar.show("Choose parent for copy");
+}
+
 function logick_button_hide()
 {
     logick_transaktions.push(new logick_transaktion(evoker,evoking_aktion,this.parentElement.parent,"hide"));

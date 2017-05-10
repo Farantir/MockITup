@@ -126,3 +126,8 @@ test_logick_effekts["changeimage"] = function(target,x,id)
 {	
     target.src = test_logick_complex_targets[id].textsource.src;
 }
+
+test_logick_effekts["copyelement"] = function(target,x,id)
+{	
+	test_logick_complex_targets[id].textsource.appendChild(target.cloneNode(true));
+}
