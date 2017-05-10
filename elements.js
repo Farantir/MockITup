@@ -512,7 +512,7 @@ function make_Container(elem,elemtype)
 
     /*Defines if the element ist visible in the test renderer*/
     elem.isVisible = true;
-    elem.dataset.isVisible = elem.isVisible;
+    elem.dataset.isVisible = elem.dataset.isVisible || elem.isVisible;
     elem.style.cursor = "pointer";
     elem.style.cursor = "hand";
     

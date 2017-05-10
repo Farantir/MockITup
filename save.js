@@ -106,14 +106,22 @@ function restoredata(saveddata)
 
 function restorelogik(target)
 {
-    /*Compiles logik transaktions for each element*/
-    for (var i = 0; i < target.attributes.length; i++) {
     /*restores the js of the element type*/
     if(target.dataset.elementtype != null && target.dataset.elementtype != "")
     {
 		if(elements[target.dataset.elementtype]) elements[target.dataset.elementtype].createfromsave(target);
 		else console.log(target.dataset.elementtype);
     }
+    
+    /*restores value of the is visible attibute*/
+	if(target.dataset.isVisible == "false" || target.dataset.isVisible == false)
+	{
+		target.isVisible = false;
+		console.log(target);
+	}
+
+    /*Compiles logik transaktions for each element*/
+    for (var i = 0; i < target.attributes.length; i++) {
     
       var attrib = target.attributes[i];
       if (attrib.specified) 
@@ -192,13 +200,4 @@ function restorelogik(target)
     }
     
     for(m of target.children) restorelogik(m);
-    
-    		
-    
-	 /*restores value of the is visible attibute*/
-	if(target.dataset.isVisible == "false" || target.dataset.isVisible == false)
-	{
-		target.isVisible = false;
-		console.log(target);
-	}
 }
