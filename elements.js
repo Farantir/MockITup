@@ -359,6 +359,19 @@ elements["Liste"].createfromsave = function recreatelogick(b)
     }
 	b.logick_menu.add(logick_menu_item("Add List Entry",logick_button_add_list_element));
 	b.afterceration();
+	
+	/*Overrides the positioning of elements appendet to the List to relative*/
+	var observer = new MutationObserver(function(mutations) {
+		mutations.forEach(function(mutation) {
+		  for (var i = 0; i < mutation.addedNodes.length; i++) {
+		    mutation.addedNodes[i].style.position = "relative";
+		    mutation.addedNodes[i].style.top = "0px";
+		    mutation.addedNodes[i].style.left = "0px";
+		    mutation.addedNodes[i].setpos = ()=>{};
+		  }
+		});
+	  });
+	  observer.observe(b, { childList: true });
 }
 
 elements["listelement"] = element_Listelem;
