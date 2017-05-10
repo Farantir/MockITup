@@ -43,6 +43,7 @@ function createCanvasToDrawOn(e,x,y,img)
 	b = document.createElement("canvas");
     b.height = img.height;
     b.width = img.width;
+    b.style.border = "1px dashed";    
     var ctx = b.getContext("2d");
     ctx.drawImage(img,0,0);
     b.draggable="false";
@@ -52,7 +53,15 @@ function createCanvasToDrawOn(e,x,y,img)
     {
         this.settingsbar.ul.remove();
     }
-	b.create(e,x,y)
+	b.create(e,x,y);
+	
+	b.settingsbar.scaleBottom.remove();
+    b.settingsbar.scaleBottomLeft.remove();
+    b.settingsbar.scaleRight.remove();
+    b.settingsbar.scaleTop.remove();
+    b.settingsbar.scaleTopLeft.remove();
+    b.settingsbar.scaleTopRight.remove();
+    b.settingsbar.scaleLeft.remove();
 
     /*Changes the size of the image instead of streching it, like css does it to all of the other elements*/
     /*Also removing fencing, since the picture can be as large as desierd. it will be scale in grafik view later on*/
