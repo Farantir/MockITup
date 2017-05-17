@@ -50,6 +50,10 @@ function new_Screen()
     }
     screen.settingsbar = settingsbar(screen);
     screen.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.style.backgroundImage = "url('"+value+"')";})},"Lets you select a custom background image, either by url or filpicker, to coose from your own device"));
+    
+    /*sets the background image, so its always streched to fill the screen*/
+    screen.style.backgroundSize="100% 100%";
+    
     return screen;
 }
 

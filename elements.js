@@ -46,6 +46,10 @@ elements["screen"].createfromsave = function make_Screen(screen)
     }
     screen.settingsbar = settingsbar(screen);
     screen.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.style.backgroundImage = "url('"+value+"')";})},"Lets you select a custom background image, either by url or filpicker, to coose from your own device"));
+    
+    /*sets the background image, so its always streched to fill the screen*/
+    screen.style.backgroundSize="100% 100%";
+    
     screen.ondragover = allowDrop;
 	screen.ondrop = drop;
     return screen;
@@ -607,6 +611,9 @@ function make_Container(elem,elemtype)
     elem.dataset.isVisible = elem.dataset.isVisible || elem.isVisible;
     elem.style.cursor = "pointer";
     elem.style.cursor = "hand";
+    
+    /*sets the background image, so its always streched to fill lthe element*/
+    elem.style.backgroundSize="100% 100%";
     
     /*Menu containing the logic funktions of the element*/
     elem.logick_menu = logick_menu(elem);
