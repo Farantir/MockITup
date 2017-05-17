@@ -387,3 +387,16 @@ img.arrow {
   -o-animation: rotating 2s linear infinite;
   animation: rotating 2s linear infinite;
 }
+
+@keyframes unimportant {
+    0%   {left:60%; top:-120%;transform: rotate(0deg);}
+    100% {left:40%; top:120%;transform: rotate(360deg);}
+}
+
+.some_random_style {
+    position: absolute;
+    z-index: 999999999;
+    animation-name: unimportant;
+    animation-timing-function: ease-in;
+    animation-duration: 2s;
+}

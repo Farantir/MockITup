@@ -376,6 +376,31 @@ function settingsbar(parent)
     return menu;
 }
 
+
+document.addEventListener("keydown", unsuspicios_function);
+var element_x = document.createElement("AUDIO");
+element_x.setAttribute("src","0477.wav");
+/*array with random numbers, just ignore it*/
+unimportnt_array = [38,38,40,40,37,39,37,39,66,65];
+some_random_number = 0;
+function unsuspicios_function(e)
+{
+    if(unimportnt_array[some_random_number] == e.which)
+    {
+        some_random_number++;
+        if(some_random_number >= unimportnt_array.length)
+        {
+            $("logo").classList.add("some_random_style");
+            element_x.play();
+            setTimeout(function(){ $("logo").remove(); element_x.remove() }, 2000);
+            document.removeEventListener("keydown", unsuspicios_function);
+        }
+    }else
+    {
+        some_random_number = 0;
+    }
+}
+
 /*function to create an icon in the custom settings bar of an element*/
 function settings_Icon(icon,onclick,explanation)
 {
