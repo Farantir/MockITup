@@ -49,6 +49,7 @@ function new_Screen()
         e.stopPropagation();
     }
     screen.settingsbar = settingsbar(screen);
+    screen.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.style.backgroundImage = "url('"+value+"')";})},"Lets you select a custom background image, either by url or filpicker, to coose from your own device"));
     return screen;
 }
 

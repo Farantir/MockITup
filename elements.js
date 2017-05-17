@@ -13,11 +13,18 @@ function notifikation_to_drag_and_drop()
 function grafik()
 {
     	general_screenchange_cleanup();
-	$("screencontainer").style.display="";
+		$("screencontainer").style.display="";
     	default_Menu.make_Visible();	
     	grafic_elements.style.display = "";
 }
 
+/*functions to create and recreate (after save) all elements.
+the functions are addet to the elements objekt
+to "create" or "recreate" an element the decorator pattern is used.
+for creation the dom objekts needdet for the element are createt first. they then get decorated with all the funktions and variables needet by every element using the  make_Container(<Target element>,<name of the element>); funktion.
+the element then gets further decorated with custom properties. at the end the create function of the newly cerated element is called, to place ist onto the target parent and initialise it.
+
+to recreate an element from save it needs to get decorated only with the js variables and logik, as changes in css or html got already strored.*/
 elements["screen"] = {}; 
 elements["screen"].createfromsave = function make_Screen(screen)
 {
@@ -38,6 +45,7 @@ elements["screen"].createfromsave = function make_Screen(screen)
         e.stopPropagation();
     }
     screen.settingsbar = settingsbar(screen);
+    screen.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.style.backgroundImage = "url('"+value+"')";})},"Lets you select a custom background image, either by url or filpicker, to coose from your own device"));
     screen.ondragover = allowDrop;
 	screen.ondrop = drop;
     return screen;
@@ -209,6 +217,9 @@ elements["Label"] = function element_Label(e,x,y)
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Changes the color of the text"));
         this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
         this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
+        /*by far not the best solution. the function itself is totaly fine however, it shouldn't be nameless for 
+        Its needet at multiple locations.  Ill leave it like this for now, but if someone needs to change it its better to refactor the code, so its a seperate function and all elements using it simply get it assined and not redefined every time
+        */
         this.settingsbar.add(settings_Icon("center.png",function()
         {
         	var targettochange = this.parentElement.parentElement.parent;
@@ -260,6 +271,11 @@ elements["Container"] = function element_container(e,x,y)
 	b.style.width = "30px";
 	b = make_Container(b,"Container");
 	
+	b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.style.backgroundImage = "url('"+value+"')";})},"Lets you select a custom background image, either by url or filpicker, to coose from your own device"));
+    }
+	
 	b.create(e,x,y);
 	
 	b.settingsbar.scaleBottom.remove();
@@ -269,10 +285,16 @@ elements["Container"] = function element_container(e,x,y)
     b.settingsbar.scaleTopLeft.remove();
     b.settingsbar.scaleTopRight.remove();
     b.settingsbar.scaleLeft.remove();
+    
 }
 elements["Container"].createfromsave = function recreatelogick(b)
 {
 	b = make_Container(b,"Container");
+
+	b.jsoncreate = function(target)
+    {
+        this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.style.backgroundImage = "url('"+value+"')";})},"Lets you select a custom background image, either by url or filpicker, to coose from your own device"));
+    }
 
 	b.afterceration();
 	
@@ -327,6 +349,7 @@ elements["Liste"] = function element_List(e,x,y)
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Specifies the text color for all Entries of this List, if the color is not set in the list element itself"));
         this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
         this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
+        this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.style.backgroundImage = "url('"+value+"')";})},"Lets you select a custom background image, either by url or filpicker, to coose from your own device"));
     }
 	b.logick_menu.add(logick_menu_item("Add List Entry",logick_button_add_list_element));
 	b.style.height = "200px";
@@ -356,6 +379,7 @@ elements["Liste"].createfromsave = function recreatelogick(b)
         this.settingsbar.add(settings_Icon("change_text_color.png",()=>{change_text_color(this);},"Specifies the text color for all Entries of this List, if the color is not set in the list element itself"));
         this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
         this.settingsbar.add(settings_Icon("plus.svg",()=>{make_text_larger(this);},"Makes the font size larger"));
+        this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.style.backgroundImage = "url('"+value+"')";})},"Lets you select a custom background image, either by url or filpicker, to coose from your own device"));
     }
 	b.logick_menu.add(logick_menu_item("Add List Entry",logick_button_add_list_element));
 	b.afterceration();
@@ -457,6 +481,7 @@ function element_Listelem(e,x,y)
     b.classList.add("listenelement");
 }
 
+/*function used to reposition an element onto a target container (eg. another screen or an list element)*/
 function moveelem(e) 
 {
   x = e.clientX;
@@ -478,6 +503,7 @@ function getPos(el) {
     return {x: lx,y: ly};
 }
 
+/*opens a menu to change the text color of an element*/
 function change_text_color(target)
 {
 	colpicker = document.createElement("input");
@@ -488,6 +514,11 @@ function change_text_color(target)
 	colpicker.click();
 }
 
+/*needet because of the stunningly dump imlementation of the html color picker.
+it needs a hex color value to get initialized, but it returns an rgb value.
+so to initialise it with the current color of an objekt, tranformation is needet
+however, js dosent have a funktion for that.
+This one is copied from the internet somewhere and uses a bit of regex magic*/
 function rgb2hex(rgb){
  rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
  return (rgb && rgb.length === 4) ? "#" +
@@ -496,13 +527,14 @@ function rgb2hex(rgb){
   ("0" + parseInt(rgb[3],10).toString(16)).slice(-2) : '';
 }
 
+/*used to create a copy of an element aktual copying done by append_copied_element function*/
 function copy_element(target)
 {
 	notifikationbar.show("Click on the place, where the copy should be created");
     copied_Element = target.cloneNode(true);
     GLOBAL_OVERRIDE = append_copied_element;    
 }
-
+/*used to move an element. aktual moving done by move_element_to_target function*/
 function move_element(target)
 {
 	notifikationbar.show("Click on the place, the element should be moved to");
@@ -524,10 +556,12 @@ function changetextsize(el,value)
 {
 	var style = window.getComputedStyle(el, null).getPropertyValue('font-size');
 	var fontSize = parseFloat(style); 
-	// now you have a proper float for the font size (yes, it can be a float, not just an integer)
+	/* now you have a proper float for the font size (yes, it can be a float, not just an integer)
+	however, mostly increments/decrements by 1 are used*/
 	el.style.fontSize = (fontSize + value) + 'px';
 }
 
+/*adds the copied elements to the target parent and recreates its js proparties afterwards.*/
 function append_copied_element(e)
 {
    notifikationbar.hide();
@@ -549,13 +583,16 @@ function move_element_to_target(e)
    GLOBAL_OVERRIDE = null;
 }
 
+/*recreates the js functions and variables of an aélement, after it got copyed*/
 function recreate_jsfunktions_after_copy(elemelement)
 {
    elements[elemelement.dataset.elementtype].createfromsave(elemelement); 
    for(m of elemelement.children) recreate_jsfunktions_after_copy(m);
 }
 
-/*Adds all functions and properties needed for an element in the Grafik edit view*/
+/*Adds all functions and properties needed for an element in the Grafik edit view
+gets calloed by nearly every elemten funktion.
+uses the decorator pattern to fit the dom elements with js functionality*/
 function make_Container(elem,elemtype)
 {
 	/*Saves the type of element in the data tags*/
