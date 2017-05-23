@@ -26,6 +26,9 @@ function test()
 }
 */
 
+/*uses create screen function to add a new scrren html element.
+utilizes decorator pattern to add all the functionality needet for the logick anbd grafik screen, so the 
+element can be used*/
 function new_Screen()
 {
 	screen = create_Screen();
@@ -57,6 +60,7 @@ function new_Screen()
     return screen;
 }
 
+/*creates an html element that is used as screen. dosent add any js logick to it*/
 function create_Screen(){
 	screen = document.createElement("div");
 	screen.ondragover = allowDrop;

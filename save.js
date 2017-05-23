@@ -1,5 +1,39 @@
+/*to add custom data to a savefile (using html data- tags) plugins need to add a function to the custom_presave_logick objekt.
+for example:
+custom_presave_logick.save_all_animations = function(){for()....}
+its important, that for every addet function a cleanup function is also addet.
+the job if the cleanup function is to remove all addet data- tags after the saving is completet. this way 
+data integrity is ensured. to add a cleanup function, simply add .cleanup = function.. 
+to your custom save function. see this example:
+custom_presave_logick.save_all_animations.cleanup = function(){for()....}
+*/
+custom_presave_logick = {};
+/*
+to restore the data saved by a custom save function, a custom_loading_logick function ist needet. 
+creating one ist quite simple. just add one to the objekt. It gets called after the data was loadet. 
+if you want to create a function that gets called for each data tag instead, you schould use custom_loading_datatag_info instead.
+this function will get called for each element and will get the current element passed as parameter
+*/
+custom_loading_logick = {};
+/*
+used to restore your data tags. will get callled for each datatag for echach element. gets passed the following values:
+1. data tag name array 2. data tag value 3. target element
+use it like this:
+custom_loading_datatag_info.set_element_rotating = function(tag,value,target){if(tag[1]=="rotation") {target.classList.add(value); target.rotating_logick......}}
+*/
+custom_loading_datatag_info = {};
+
 function save()
 {
+		/*allows plugins to add custom data to the savefile*/
+		for (var key in custom_presave_logick) 
+		{
+		  if (custom_presave_logick.hasOwnProperty(key)) 
+		  {
+			custom_presave_logick[key]();
+		  }
+		}
+
 	    /*Creating a string containing all the necassary information*/
 	    /*Translates the logick into data-tags. this way they are part of the inner html and can be transferd*/
         for(m in logick_transaktions)
@@ -40,7 +74,14 @@ function save()
             };
         }
 	
-	
+		/*calls the cleanup function of the plugins to remove data tags in the dom tree after saving. this is important for data integrity*/
+		for (var key in custom_presave_logick) 
+		{
+		  if (custom_presave_logick.hasOwnProperty(key)) 
+		  {
+		  	if(custom_presave_logick[key].cleanup) custom_presave_logick[key].cleanup();
+		  }
+		}
 
 	/*Aktual saving of the file*/
 	var link = document.createElement('a');
@@ -120,6 +161,15 @@ function restorelogik(target)
 		console.log(target);
 	}
 
+	/*allows plugins to use custom data before parsing data tags.*/
+	for (var key in custom_loading_logick) 
+	{
+	  if (custom_loading_logick.hasOwnProperty(key)) 
+	  {
+		custom_loading_logick[key](target);
+	  }
+	}
+
     /*Compiles logik transaktions for each element*/
     for (var i = 0; i < target.attributes.length; i++) {
     
@@ -195,6 +245,16 @@ function restorelogik(target)
         }else if(atrname[0] == "data" && atrname[1] == "value")
         {
         	target.value = attrib.value;
+        }else if(atrname[0] == "data")
+        {
+        	/*allows plugins to use custom data tags to manipulate the elements on loading*/
+			for (var key in custom_loading_datatag_info) 
+			{
+			  if (custom_loading_datatag_info.hasOwnProperty(key)) 
+			  {
+				custom_loading_datatag_info[key](atrname,attrib.value,target);
+			  }
+			}
         }
       }
     }
