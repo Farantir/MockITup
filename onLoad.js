@@ -132,4 +132,9 @@ function initialize(selection)
     $("savebutton").style.display = "inline-block";
 	$("loadbutton").style.display = "inline-block";
 	
+	/*the initialize event schould be used by plugins for their initialisation.
+	this way the core of the application dosent need to be touched. every new functionaöity can be implemented in another file.
+	all important resources can be accesst globaly
+	*/
+	fireEvent("initialize", document);
 }
