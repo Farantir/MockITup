@@ -345,7 +345,7 @@ elements["Picture"].createfromsave = function recreatelogick(b)
 
 elements["Liste"] = function element_List(e,x,y)
 {
-	b = document.createElement("div");
+	var b = document.createElement("div");
 	b = make_Container(b,"Liste");
     b.jsoncreate = function(target)
     {
@@ -376,7 +376,7 @@ elements["Liste"] = function element_List(e,x,y)
 }
 elements["Liste"].createfromsave = function recreatelogick(b)
 {
-	b = make_Container(b,"Liste");
+	var b = make_Container(b,"Liste");
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);},"Creates a new List Entry"));
@@ -405,7 +405,7 @@ elements["Liste"].createfromsave = function recreatelogick(b)
 elements["listelement"] = element_Listelem;
 elements["listelement"].createfromsave = function recreatelogick(b)
 {
-	b = make_Container(b,"listelement");
+	var b = make_Container(b,"listelement");
 	b.setpos = ()=>{};
 	b.scale = ()=>{};
 	b.jsoncreate = function(target)
@@ -443,7 +443,7 @@ elements["listelement"].createfromsave = function recreatelogick(b)
 }
 function element_Listelem(e,x,y)
 {
-	b = document.createElement("div");
+	var b = document.createElement("div");
 	make_Container(b,"listelement");
 	b.appendChild(document.createTextNode("Label"));
 	e.appendChild(b)
@@ -483,6 +483,8 @@ function element_Listelem(e,x,y)
     b.style.position = "relative";
     b.style.margin = "20px"; 
     b.classList.add("listenelement");
+    b.settingsbar.hide();
+    b.parentElement.settingsbar.make_Visible();
 }
 
 /*function used to reposition an element onto a target container (eg. another screen or an list element)*/
