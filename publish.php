@@ -27,7 +27,7 @@ $htmlfile = '<!DOCTYPE html>
 fwrite($f, $htmlfile);
 fclose($f);
 
-print "http://192.168.178.22"."/MockITup/published/".$filename.".html";
+print "http://".$_SERVER['SERVER_ADDR'].":".$_SERVER['SERVER_PORT']."/MockITup/published/".$filename.".html";
 
 /*Delete all files older than 24h */
   $path = 'published/';
