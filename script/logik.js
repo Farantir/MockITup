@@ -64,6 +64,9 @@ function goto_logick()
             logik_bar_make_visible();
         }
     }
+
+    /*event used to signal plugins, that the logick view got selectet*/
+    fireEvent("in logick View", document);
 }
 
 function general_event_stuff()

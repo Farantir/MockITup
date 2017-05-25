@@ -1,10 +1,35 @@
 /*This plugin enabels the use of animations, if addet inside the index.html*/
+/*menu for the animation screen*/
 var animation_types;
 /*Specifies whether or not the application is in the animation tab*/
 var in_animation_view = false;
 
+/*Array containing all animations, the user created*/
+var animations = [];
+
 /*This event gets fired, after the initialisation in the onload.js has finisched*/
 document.addEventListener("initialize",initializeAnimationPlugin);
+
+/*constructor for animations*/
+function animation(type,target,keyframes)
+{
+    this.target = target;
+    this.type = type;
+    this.keyframes = keyframes || [];
+    
+    this.addKeyframe = function(frame)
+    {
+        this.keyframes.push(frame);
+    }
+}
+
+/*constructor for keyframes*/
+function keyframe(time,x,y)
+{
+    this.time = dtime;
+    this.dx = dx;
+    this.dy = dy
+}
 
 /*Adds the needet funktionality for this plugin to the applycation*/
 function initializeAnimationPlugin()
@@ -54,6 +79,9 @@ function changetoAnimationView()
             animation_bar_make_visible();
         }
     }
+
+    /*event used to signal other plugins, that the animation view got selectet*/
+    fireEvent("in animation View", document);
 }
 
 function animation_bar_make_visible()

@@ -12,10 +12,13 @@ function notifikation_to_drag_and_drop()
 /*Changes view to the Grafik screen*/
 function grafik()
 {
-    	general_screenchange_cleanup();
-		$("screencontainer").style.display="";
-    	default_Menu.make_Visible();	
-    	grafic_elements.style.display = "";
+	general_screenchange_cleanup();
+	$("screencontainer").style.display="";
+	default_Menu.make_Visible();	
+	grafic_elements.style.display = "";
+
+    /*event used to signal plugins, that the grafik view got selectet*/
+    fireEvent("in grafik View", document);
 }
 
 /*functions to create and recreate (after save) all elements.
