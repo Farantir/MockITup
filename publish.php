@@ -8,15 +8,15 @@ $htmlfile = '<!DOCTYPE html>
     <head>
     <meta charset="utf-8">
     <title>MockITup</title>
-    <link rel="stylesheet" type="text/css" href="../main.css">
+    <link rel="stylesheet" type="text/css" href="../style/main.css">
     <link rel="shortcut icon" href="../Mockingbird_Illustration_Color4.png"/>
-    <script src="../main.js"></script>
-    <script src="../onLoad.js"></script>
-    <script src="../elements.js"></script>
-    <script src="../testrenderer.js"></script>
-    <script src="../logik.js"></script>
-    <script src="../test_logick.js"></script>
-    <script src="../save.js"></script>
+    <script src="../script/main.js"></script>
+    <script src="../script/onLoad.js"></script>
+    <script src="../script/elements.js"></script>
+    <script src="../script/testrenderer.js"></script>
+    <script src="../script/logik.js"></script>
+    <script src="../script/test_logick.js"></script>
+    <script src="../script/save.js"></script>
     </head>
         <body onload="mobile_test_render()" onResize="mobil_screen_onresize()">
 	<div id="testscreencontainer">'.$data.'</div>
