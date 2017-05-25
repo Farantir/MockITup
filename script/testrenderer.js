@@ -5,7 +5,7 @@ var oldheight = 480;
 function testondevice()
 {
 	var http = new XMLHttpRequest();
-	var url = "publish.php";
+	var url = "php/publish.php";
 	var params = "data=" + encodeURIComponent(get_html());
 	http.open("POST", url, true);
 
