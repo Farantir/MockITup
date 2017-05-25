@@ -128,9 +128,10 @@ function menubar(classname)
     menu.classList.add(classname);
     document.body.appendChild(menu);
     menu.flush = function(){for(m of document.getElementsByClassName("menuItem"))m.a.classList = [];};
-    menu.add = function(entry)
-    {
-        this.appendChild(entry);
+    menu.add = function(entry,position)
+    {   
+        if(position) this.insertBefore(entry, this.children[position]);
+        else this.appendChild(entry);
     }
 
 
