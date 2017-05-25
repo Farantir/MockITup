@@ -2,7 +2,7 @@
 $data = $_POST['data'];
 /*Create new unique file*/
 $filename = time(); 
-$f = fopen('published/'.$filename.'.html', 'w+');
+$f = fopen('../published/'.$filename.'.html', 'w+');
 $htmlfile = '<!DOCTYPE html>
 <html>
     <head>
@@ -30,7 +30,7 @@ fclose($f);
 print "http://".$_SERVER['SERVER_ADDR'].":".$_SERVER['SERVER_PORT']."/MockITup/published/".$filename.".html";
 
 /*Delete all files older than 24h */
-  $path = 'published/';
+  $path = '../published/';
   if ($handle = opendir($path)) {
      while (false !== ($file = readdir($handle))) {
         if ((time()-filectime($path.$file)) >= 86400) {  
