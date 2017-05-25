@@ -50,6 +50,10 @@ function new_Screen()
         logik_bar_make_visible();
         this.settingsbar.make_Visible();
         e.stopPropagation();
+
+        /*This event is needet, if plugins want to add their own functionality, after a Screen got selected.
+        the message of the Event contains the selected Screen*/
+        fireEvent("Screen Selected", document, this);
     }
     screen.settingsbar = settingsbar(screen);
     screen.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.style.backgroundImage = "url('"+value+"')";})},"Lets you select a custom background image, either by url or filpicker, to coose from your own device"));
@@ -572,6 +576,7 @@ function fireEvent(name, target, param1, param2) {
     target.dispatchEvent(evt);
 }
 
+custom_screenchange_cleanup = {};
 function general_screenchange_cleanup()
 {
     if(canvas_to_edit_picture_on) {canvas_to_edit_picture_on.remove(); canvas_to_edit_picture_on = null;}
@@ -584,4 +589,18 @@ function general_screenchange_cleanup()
     grafic_elements.style.display = "none";	
     editPicture_menubar.hide();
     pictureEdit.hide();
+    
+    /*allows plugins to add custom functions
+    to restore the integrity after the screen changes.
+    simply call general_screenchange_cleanup.prototype.myfunction = function()...
+    to add your own one.
+    javascript ist magical sometimes
+    */
+	for (var key in custom_screenchange_cleanup) 
+	{
+	  if (custom_screenchange_cleanup.hasOwnProperty(key)) 
+	  {
+		custom_screenchange_cleanup[key]();
+	  }
+	}
 }

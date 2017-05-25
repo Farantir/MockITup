@@ -746,6 +746,10 @@ function make_Container(elem,elemtype)
         elem.settingsbar.make_Visible();
 
         e.stopPropagation();
+
+        /*This event is needet, if plugins want to add their own functionality, after an element got selected.
+        the message of the Event contains the selected element*/
+        fireEvent("Element Selected", document, this);
     }
 
     document.onmouseup = function()
