@@ -48,9 +48,22 @@ function addActionToSettings(png, transaction) {
 function goto_logick()
 {
 	general_screenchange_cleanup();
-    $("screencontainer").style.display="";
     inlogickview = true;
-    notifikationbar.show("Klick on the Element that should cause an Event");
+
+    notifikationbar.show("Klick on the Element that should cause an Event"); 
+    $("screencontainer").style.display="";
+
+    /*Checks whether an element had been pree-selected in another screen.
+    if so, it will be used as selected element. if not, notifikation baar ist shown*/
+    for(bar of document.getElementsByClassName("settingsbar"))
+    {
+        /*element will not be selected, if it is a screen, because most people wont want so preselect a screen*/
+        if(bar.style.display == "" && bar.parent.dataset["elementtype"] != "screen")
+        {
+            notifikationbar.hide();
+            logik_bar_make_visible();
+        }
+    }
 }
 
 function general_event_stuff()

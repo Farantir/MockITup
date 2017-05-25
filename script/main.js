@@ -134,6 +134,7 @@ function menubar(classname)
         else this.appendChild(entry);
     }
 
+    menu.onmousedown = (e)=>{e.stopPropagation();};
 
     menu.make_Visible = function()
     {
