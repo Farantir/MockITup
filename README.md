@@ -11,7 +11,7 @@ if you have a webserver with php installed, simply download and
 extrackt the .zip file into your web directory and you are ready to go.
 
 if you dont have a webserver you can still use the application by doubleclicking
-the index.html. However, you wont be able to use the Test on device" function.
+the index.html. However, you wont be able to use the "Test on device" function.
 
 ### Licensing
 It is intendet, that MockITup is free to use and modify for non comertial applications.
