@@ -454,7 +454,7 @@ function scale_icon(parent,img,x,y)
 /*Function to create a menu used for changing the text of a given resource*/
 function text_input_overlay(target,set)
 {
-    menu = document.createElement("div");
+    var menu = document.createElement("div");
     menu.classList.add("textinput");
     
     menu.onmousedown = (x)=>{x.stopPropagation();};    

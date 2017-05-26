@@ -23,6 +23,9 @@ custom_loading_datatag_info.set_element_rotating = function(tag,value,target){if
 */
 custom_loading_datatag_info = {};
 
+/*Allows Plugins to excute a funktion Before the loading of each individual element beginnst*/
+custom_logick_before_loading = {};
+
 function save()
 {
 		/*allows plugins to add custom data to the savefile*/
@@ -128,6 +131,15 @@ function loadonselect()
 
 function restoredata(saveddata)
 {
+	/*allows plugins to use custom logick before parsing individual elements*/
+	for (var key in custom_logick_before_loading) 
+	{
+	  if (custom_logick_before_loading.hasOwnProperty(key)) 
+	  {
+		custom_logick_before_loading[key]();
+	  }
+	}
+
 	/*Setting the inner html of the screen container to the saved inner html*/
 	$("screencontainer").innerHTML = saveddata;
 	logick_transaktions = [];
@@ -141,6 +153,15 @@ function restoredata(saveddata)
 	if($("screencontainer").children[0].classList.contains("screenportait")) landscape_mode = false;
 	else landscape_mode = true;
 	
+    /*Cleaning html data tags of the savefile set by plugins out of the data.*/
+	for (var key in custom_presave_logick) 
+	{
+	  if (custom_presave_logick.hasOwnProperty(key)) 
+	  {
+	  	if(custom_presave_logick[key].cleanup) custom_presave_logick[key].cleanup();
+	  }
+	}
+
 	/*fiering event to tell everyone we are done loading*/
 	fireEvent("doneloading", document);
 }
