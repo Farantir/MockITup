@@ -24,7 +24,7 @@ function testondevice()
 	}
 	http.send(params);
 
-        /*Makes the container of the grafic screens invisible*/
+      /*Makes the container of the grafic screens invisible*/
 	  $("screencontainer").style.display="none";
 }
 
