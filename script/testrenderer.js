@@ -2,6 +2,18 @@
 var oldwidth = 270;
 var oldheight = 480;
 
+/*objects that create execution points for plugins*/
+/*attaching a funktion to this objekt causes the function to be
+executed before the html ist copied over to the testscreen or the 
+test device. Use only togeter with a cleanup funktion. 
+the cleanup function should remove all datatags set by its 
+parent function. see this example:
+compile_save_data_to_html.save_animations = function(){//write to datatags}
+compile_save_data_to_html.save_animations.cleanup = function(){//remove all set Datatags}
+*/
+var compile_save_data_to_html = {}; 
+
+
 function testondevice()
 {
 	var http = new XMLHttpRequest();
@@ -49,6 +61,15 @@ function make_qrcode(qrcodevalue)
 
 function get_html()
 {
+        /*allows plugins to save their own data inside the html to complile later on*/
+        for (var key in compile_save_data_to_html) 
+        {
+          if (compile_save_data_to_html.hasOwnProperty(key)) 
+          {
+	        compile_save_data_to_html[key]();
+          }
+        }
+
         /*Translates the logick into data-tags. this way they are part of the inner html and can be transferd*/
         for(m in logick_transaktions)
         {
@@ -83,8 +104,17 @@ function get_html()
 
             if(logick_transaktions[m].complex != null) for(com in logick_transaktions[m].complex)
             {
-		delete logick_transaktions[m].complex[com].dataset["logik_complex-"+m];
+		        delete logick_transaktions[m].complex[com].dataset["logik_complex-"+m];
             };
+        }
+
+        /*Deletes the information saved inside the data tags, so integrity is ensured*/
+        for (var key in compile_save_data_to_html) 
+        {
+          if (compile_save_data_to_html.hasOwnProperty(key)) 
+          {
+	        compile_save_data_to_html[key].cleanup();
+          }
         }
 
 	return value_toReturn;

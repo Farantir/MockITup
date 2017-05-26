@@ -54,6 +54,10 @@ custom_presave_logick.save_animations.cleanup = function()
         delete animations[anim].target.dataset["animation-"+anim];
     }
 }
+
+/*using the same function to save logic to a savefile an for creating the code for the pharser*/
+compile_save_data_to_html.save_animations = custom_presave_logick.save_animations;
+
 /*deletes the current animation array to allow the Savedata to be addet*/
 custom_logick_before_loading.clear_savedata = function()
 {
