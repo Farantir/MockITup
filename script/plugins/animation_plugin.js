@@ -71,7 +71,7 @@ custom_loading_datatag_info.load_animations = function(atrname,atrvalue,target)
     {
         var torestore = JSON.parse(atrvalue)
         torestore.target = target;
-        animations.push(torestore);
+        animations[atrname[2]] = torestore;
     }
 }
 

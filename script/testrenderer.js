@@ -2,7 +2,10 @@
 var oldwidth = 270;
 var oldheight = 480;
 
+/**************************************************/
 /*objects that create execution points for plugins*/
+/**************************************************/
+
 /*attaching a funktion to this objekt causes the function to be
 executed before the html ist copied over to the testscreen or the 
 test device. Use only togeter with a cleanup funktion. 
@@ -11,8 +14,27 @@ parent function. see this example:
 compile_save_data_to_html.save_animations = function(){//write to datatags}
 compile_save_data_to_html.save_animations.cleanup = function(){//remove all set Datatags}
 */
-var compile_save_data_to_html = {}; 
+var compile_save_data_to_html = {};
 
+/*attaching a function to this object causes
+it to get executed before the logic is loadet from the 
+html file*/
+var compile_read_data_from_html = {};
+
+/*Attaching a function to this object will cause it to be 
+executet for each element in the tree compile methode.
+it will recive the current element as parameter*/
+var compile_data_for_each_element = {};
+
+/*Attaching a function to this object causes it to
+get executet for every data tag of every element
+inside the html file.
+it will get the current tag, the current element and the current tag value as parameter
+compile_data_for_each_tag.myfunction = function(attribute_name,attrigute_value,current_element){....}
+*/
+var compile_data_for_each_tag = {};
+
+/****************************************************************************/
 
 function testondevice()
 {
@@ -127,6 +149,15 @@ function test_renderer()
 	/*Makes all but the first screen invisile*/
       for(m of testscreen.children) m.style.display = "none";
 	  testscreen.children[0].style.display="";
+
+        /*allows plugins to execute their own code, before the logick gets loadet*/
+        for (var key in compile_read_data_from_html) 
+        {
+          if (compile_read_data_from_html.hasOwnProperty(key)) 
+          {
+            compile_read_data_from_html[key]();
+          }
+        }
 
      	 TreeCompile(testscreen);
 }
@@ -263,6 +294,15 @@ function TreeCompile(target)
     
     if(target.dataset.elementtype == "Container") target.style.border = "";
 
+    /*allows plugins to execute their own code for each element*/
+    for (var key in compile_data_for_each_element) 
+    {
+      if (compile_data_for_each_element.hasOwnProperty(key)) 
+      {
+        compile_data_for_each_element[key](target);
+      }
+    }
+
     /*Compiles logik transaktions for each element*/
     for (var i = 0; i < target.attributes.length; i++) {
       var attrib = target.attributes[i];
@@ -283,7 +323,7 @@ function TreeCompile(target)
                 target.tans_out.push(eff);
                 test_logick_events[effekt.evoker](target,test_do_execute);
            }
-            /*if the given data tag specifies the element as a target of a event, it needs to be reisterd properly*/
+            /*if the given data tag specifies the element as a target of a event, it needs to be reigsterd properly*/
             if(effekt.target)
             {
                 eff = {};
@@ -298,6 +338,18 @@ function TreeCompile(target)
         }else if(atrname[0] == "data" && atrname[1] == "value")
         {
         	target.value = attrib.value;
+        }else if(atrname[0] == "data")
+        {
+            /*allows plugins to execute their own code for each data tag
+            they will recive the tag name, the value and the current element as
+            parameters*/
+            for (var key in compile_data_for_each_tag) 
+            {
+              if (compile_data_for_each_tag.hasOwnProperty(key)) 
+              {
+                compile_data_for_each_tag[key](atrname,attrib.value,target);
+              }
+            }
         }
       }
     }
