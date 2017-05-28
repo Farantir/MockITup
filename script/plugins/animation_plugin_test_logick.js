@@ -45,23 +45,6 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
     }
 }
 
-/*Saves the logick and the anmation id, so the logick funktion knows, whitch animation to start*/
-compile_save_data_to_html.link_logick_to_animations = function()
-{
-        for(m in logick_transaktions)
-        {
-            logick_transaktions[m].target.dataset["animation_logik-" + m] = logick_transaktions[m].animation;
-        }
-}
-/*Required cleanup function to clear html data tags*/
-compile_save_data_to_html.link_logick_to_animations.cleanup = function()
-{
-        for(m in logick_transaktions)
-        {
-            delete logick_transaktions[m].target.dataset["animation_logik-" + m];
-        }
-}
-
 /*Creates the logick needet to animate objekts*/
 test_logick_effekts["start_animation"] = function(target,unused,id)
 {
@@ -93,6 +76,8 @@ function animation_engine(animation)
     /*unsubscribes the engine from the animation handler*/
     this.stop = function()
     {
+        this.distance_in_current_frame.x = 0;
+        this.distance_in_current_frame.y = 0;
     }
 
     /*runns the animation, gets called each timestepp*/
@@ -104,36 +89,31 @@ function animation_engine(animation)
         this.lastframetime = curtime;
 
         var this_keyframe = this.animation.keyframes[this.current_frame];
-        var distance_in_current_frame = this.distance_in_current_frame;
 
         /*calculates the distance to be traveld in this frame*/
-        var deltax = (this_keyframe.dx/(this_keyframe.dtime*1000))*deltatime;
-        var deltay = (this_keyframe.dy/(this_keyframe.dtime*1000))*deltatime;
+        var deltax = -(this_keyframe.dx/(this_keyframe.dtime*1000))*deltatime;
+        var deltay = -(this_keyframe.dy/(this_keyframe.dtime*1000))*deltatime;
 
-        /*adds the overflow of the last frame*/
-        deltax += this.overflow.x
-        deltay += this.overflow.y
-
-console.log(deltax + " " + deltay + " " + this.current_frame + " " + this.animation.keyframes.length);
-console.log(Math.abs(deltax + distance_in_current_frame.x) >= Math.abs(this_keyframe.dx) || Math.abs(deltay + distance_in_current_frame.y) >= Math.abs(this_keyframe.dy));   
         /*Ensures the distance travelt is allways maxing out at the max distance of the keyframe, looks komplicatet, but its really just size comparison*/
-        if(Math.abs(deltax + distance_in_current_frame.x) >= Math.abs(this_keyframe.dx) || Math.abs(deltay + distance_in_current_frame.y) >= Math.abs(this_keyframe.dy))
+        if(Math.abs(deltax + this.distance_in_current_frame.x) >= Math.abs(this_keyframe.dx) || Math.abs(deltay + this.distance_in_current_frame.y) >= Math.abs(this_keyframe.dy))
         {
-            deltax = this_keyframe.dx - distance_in_current_frame.x;
-            deltay = this_keyframe.dy - distance_in_current_frame.y;
+            this.distance_in_current_frame.x = this_keyframe.dx;
+            this.distance_in_current_frame.y = this_keyframe.dy;
             this.current_frame++;
         }
 
-        /*So, finaly we come to the actual animation code. using 2d translations to move the element*/
-        this.animation.target.style.transform = "translate("+deltax%1+"px, "+deltay%1+"px)";
 
-        /*increases the current traveld distance*/
-        distance_in_current_frame.x += deltax;
-        distance_in_current_frame.y += deltay;
+        this.distance_in_current_frame.x += deltax;
+        this.distance_in_current_frame.y += deltay;
+
+        /*So, finaly we come to the actual animation code. using 2d translations to move the element*/
+        this.animation.target.style.transform = "translate("+this.distance_in_current_frame.x+"px, "+this.distance_in_current_frame.y+"px)";
+
 
         /*stopping the animation if the end of the keyframes is reached*/
-        if(this.current_frame >= this.animation.keyframes.length) this.stop();
-        else window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})
+        if(this.current_frame >= this.animation.keyframes.length){this.stop();}
+        else{window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})
+        }
     }
 }
 

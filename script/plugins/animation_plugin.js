@@ -22,6 +22,7 @@ function animation(type,target,keyframes)
     this.target = target;
     this.type = type;
     this.keyframes = keyframes || [];
+    this.id;
     
     this.addKeyframe = function(frame)
     {
@@ -76,9 +77,47 @@ custom_loading_datatag_info.load_animations = function(atrname,atrvalue,target)
     {
         var torestore = JSON.parse(atrvalue)
         torestore.target = target;
-        animations[atrname[2]] = torestore;
+        animations[torestore.id] = torestore;
+        /*now the logick menu for the animation needs to be created*/
+        add_animaton_specifik_logick_buttons(torestore);
+    }else if(atrname[1] == "animation_logik")
+    {
+        /*need to store animation and logick id somewhere to fix relations later on*/
+        unresolved_relations.push({"animation": atrvalue, "transaktion": atrname[2]});
     }
 }
+
+/*used to fix realtion problems after the loading has finished*/
+document.addEventListener("doneloading",function()
+{
+    for(var rel of unresolved_relations)
+    {
+        logick_transaktions[rel.transaktion].animation = rel.animation;
+    }
+});
+
+/*Saves the logick and the anmation id, so the logick funktion knows, whitch animation to start*/
+compile_save_data_to_html.link_logick_to_animations = function()
+{
+        /*clears the unresolved relations array*/
+        unresolved_relations = [];
+        for(m in logick_transaktions)
+        {
+            logick_transaktions[m].target.dataset["animation_logik-" + m] = logick_transaktions[m].animation;
+        }
+}
+
+/*Required cleanup function to clear html data tags*/
+compile_save_data_to_html.link_logick_to_animations.cleanup = function()
+{
+        for(m in logick_transaktions)
+        {
+            delete logick_transaktions[m].target.dataset["animation_logik-" + m];
+        }
+}
+
+/*Again, using the same function for loading and compiling data*/
+custom_presave_logick.link_logick_to_animations = compile_save_data_to_html.link_logick_to_animations;
 
 /*Adds the needet funktionality for this plugin to the applycation*/
 function initializeAnimationPlugin()
