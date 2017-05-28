@@ -16,6 +16,10 @@ compile_save_data_to_html.save_animations.cleanup = function(){//remove all set 
 */
 var compile_save_data_to_html = {};
 
+/*Adding functions to this objekt causes them to be executed after the logick got
+compiled.*/
+var compile_execute_stuff_after_compiling = {};
+
 /*attaching a function to this object causes
 it to get executed before the logic is loadet from the 
 html file*/
@@ -160,6 +164,15 @@ function test_renderer()
         }
 
      	 TreeCompile(testscreen);
+
+        /*allows plugins to execute their own code, After the logick got loadet*/
+        for (var key in compile_execute_stuff_after_compiling) 
+        {
+          if (compile_execute_stuff_after_compiling.hasOwnProperty(key)) 
+          {
+            compile_execute_stuff_after_compiling[key]();
+          }
+        }
 }
 
 /*Saves the original positions of the elements on screen, so they can be used for resize calculations later on*/

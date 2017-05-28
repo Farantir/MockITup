@@ -55,7 +55,7 @@ custom_presave_logick.save_animations.cleanup = function()
     }
 }
 
-/*using the same function to save logic to a savefile an for creating the code for the pharser*/
+/*using the same function to save logic to a savefile and for creating the code for the pharser*/
 compile_save_data_to_html.save_animations = custom_presave_logick.save_animations;
 
 /*deletes the current animation array to allow the Savedata to be addet*/
@@ -214,9 +214,35 @@ function apply_liear_two_point_animation()
     number_input_overlay(animation_types.target,function(value){this.additionaldata.dtime = value;notifikationbar.hide();},endpoint);
 
     /*Pushes the animation into the animation Array*/
-    animations.push(linearanimation);
+    /*setting the array position as animation id. will be needet later on*/
+    linearanimation.id = (animations.push(linearanimation)-1);
     
-    
+    /*adds a logick button to the element, if it dosen't has one already*/
+    add_animaton_specifik_logick_buttons(linearanimation);
+}
+
+/*Creates the buttons needet for the logick menu, to start the animation*/
+function add_animaton_specifik_logick_buttons(animation)
+{
+    if(!animation.target.hasAnimationMenu)
+    { 
+        /*Creates the entys for the logick menu*/
+        animation.target.logick_menu.add(logick_menu_item("Play Animation",function(){select_specifik_animation(this.offsetParent.parent,logick_animation_start);}));
+
+        /*Creates the entrys for the animation menu, used to select one of the elements animations specifikally*/
+        animation.target.animation_selection_menu = elementbar();
+        animation.target.animation_selection_menu.parent = animation.target;        
+
+        /*Sets the has animation menu property to true, so onl one menu is created per element*/
+        animation.target.hasAnimationMenu = true;
+    }
+
+    /*finally, we are adding the new animation to the animation menu
+    todoo: add animation name*/
+    var itemtoadd = elementbar_Item("Animation",animation_selection_menu_button_click);
+    /*giving the new item its target animation*/
+    itemtoadd.animationtselect = animation;
+    animation.target.animation_selection_menu.add(itemtoadd);
 }
 
 /*Does all the things that need to be done before registering an animation, like saving the original position of the element*/
@@ -259,3 +285,33 @@ function clean_animation_screen()
     /*removes the cleaning funtion, so it won't get executet everytime the screen changes*/
     delete custom_screenchange_cleanup.clean_animation_screen;
 }
+
+/*Creates a funktion to regisrter the logick effekts to sart an animation*/
+function logick_animation_start(animation)
+{
+    var transaktion = new logick_transaktion(evoker,evoking_aktion,animation.target,"start_animation");
+    transaktion.animation = animation.id;
+    logick_transaktions.push(transaktion);
+    reset_transaktion_elementindependent();
+}
+logick_dictionary["start_animation"] = "Starts an animation for";
+
+/*displays a custom menu, to select an animation a ne specifik element. If the animation gets selected
+an overload function ist executetd*/
+function select_specifik_animation(target,overload)
+{
+    /*Passes the overload to the menu and makes it visible, so the animations can be clicked*/
+    target.animation_selection_menu.overload = overload;
+    target.animation_selection_menu.style.display = "";
+}
+/*this function gets executet, when a specifik animation of the animation selcection menu, whitch each
+element has, gets clicked*/
+function animation_selection_menu_button_click()
+{
+    /*Hides the menu again, as it is no longer needet*/
+    this.offsetParent.style.display = ""; 
+    /*executes the overload funktion given by select_specifik_animation(target,overload)
+    passes the selected animation as parameter*/
+   this.offsetParent.overload(this.animationtselect);
+}
+
