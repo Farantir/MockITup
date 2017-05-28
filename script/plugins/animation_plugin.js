@@ -1,3 +1,8 @@
+/***************************************************************/
+/*This file is mostly needet for the UI part of the animations.*/
+/*it also handels the data structure of the animation objekt   */
+/***************************************************************/
+
 /*This plugin enabels the use of animations, if addet inside the index.html*/
 /*menu for the animation screen*/
 var animation_types;

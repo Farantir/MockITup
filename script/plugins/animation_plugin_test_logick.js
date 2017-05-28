@@ -1,3 +1,9 @@
+/*************************************************************/
+/*This file handels most of the compilation of the animations*/
+/*it also houses all of the actual animation logick, e.g. the*/
+/*actual animation engine                                    */
+/*************************************************************/
+
 /*some array needet to fix relation problems later on*/
 var unresolved_relations = [];
 
@@ -61,5 +67,78 @@ test_logick_effekts["start_animation"] = function(target,unused,id)
 {
     /*reciving the id of the target animation*/
     var animation = test_logik_transaktions[id].animation_id;
-    console.log(animation);
+    /*creates a animation engine, using the animation objekt corrasponding to the id*/
+    var new_animation_engine = new animation_engine(compiled_animations[animation]);
+    new_animation_engine.start();
+}
+
+function animation_engine(animation)
+{
+    this.animation = animation;
+    this.current_frame = 0;
+    /*time at witch the last frame was*/
+    this.lastframetime = 0;
+    //this.time_in_current_frame = 0;
+    this.distance_in_current_frame = {"x":0, "y":0};
+    /*gets the overflow, so repainting is only done, when movement is over 1px*/
+    this.overflow = {"x":0, "y":0};
+
+    /*initializes the egine*/
+    this.start = function()
+    {
+        /*Doing some lambda magick to pass this reference*/
+        window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})
+    }
+    
+    /*unsubscribes the engine from the animation handler*/
+    this.stop = function()
+    {
+    }
+
+    /*runns the animation, gets called each timestepp*/
+    this.runn = function(curtime)
+    {
+        /*determening the delta time (the time between two frames)*/
+        if(this.lastframetime == 0) this.lastframetime = curtime;
+        deltatime = this.lastframetime - curtime;
+        this.lastframetime = curtime;
+
+        var this_keyframe = this.animation.keyframes[this.current_frame];
+        var distance_in_current_frame = this.distance_in_current_frame;
+
+        /*calculates the distance to be traveld in this frame*/
+        var deltax = (this_keyframe.dx/(this_keyframe.dtime*1000))*deltatime;
+        var deltay = (this_keyframe.dy/(this_keyframe.dtime*1000))*deltatime;
+
+        /*adds the overflow of the last frame*/
+        deltax += this.overflow.x
+        deltay += this.overflow.y
+
+console.log(deltax + " " + deltay + " " + this.current_frame + " " + this.animation.keyframes.length);
+console.log(Math.abs(deltax + distance_in_current_frame.x) >= Math.abs(this_keyframe.dx) || Math.abs(deltay + distance_in_current_frame.y) >= Math.abs(this_keyframe.dy));   
+        /*Ensures the distance travelt is allways maxing out at the max distance of the keyframe, looks komplicatet, but its really just size comparison*/
+        if(Math.abs(deltax + distance_in_current_frame.x) >= Math.abs(this_keyframe.dx) || Math.abs(deltay + distance_in_current_frame.y) >= Math.abs(this_keyframe.dy))
+        {
+            deltax = this_keyframe.dx - distance_in_current_frame.x;
+            deltay = this_keyframe.dy - distance_in_current_frame.y;
+            this.current_frame++;
+        }
+
+        /*So, finaly we come to the actual animation code. using 2d translations to move the element*/
+        this.animation.target.style.transform = "translate("+deltax%1+"px, "+deltay%1+"px)";
+
+        /*increases the current traveld distance*/
+        distance_in_current_frame.x += deltax;
+        distance_in_current_frame.y += deltay;
+
+        /*stopping the animation if the end of the keyframes is reached*/
+        if(this.current_frame >= this.animation.keyframes.length) this.stop();
+        else window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})
+    }
+}
+
+/*Function that gets called by the callback. it sumply calls the runn function of the coresponding animation engine*/
+function runn_animation(target_animation_engine,deltatime)
+{
+    target_animation_engine.runn(deltatime);
 }
