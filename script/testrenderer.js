@@ -1,3 +1,8 @@
+/**********************************************************/
+/*This file contains all the logick to compile the html,  */ 
+/*pharse it back and resize everythin an the mobile device*/
+/**********************************************************/
+
 /*variables needet to resize elements properly*/
 var oldwidth = 270;
 var oldheight = 480;
@@ -37,6 +42,10 @@ it will get the current tag, the current element and the current tag value as pa
 compile_data_for_each_tag.myfunction = function(attribute_name,attrigute_value,current_element){....}
 */
 var compile_data_for_each_tag = {};
+
+/*adding a function to this objekt will cause it to be executet an each resize
+of the mobile screen.*/
+var compile_execute_stuff_after_resize = {};
 
 /****************************************************************************/
 
@@ -230,6 +239,15 @@ function mobile_test_render()
 		m.style.display = "none";
 	}
 	testscreen.children[0].style.display="";
+
+    /*allows plugins to execute their own code, After resizing has been done*/
+    for (var key in compile_execute_stuff_after_resize) 
+    {
+      if (compile_execute_stuff_after_resize.hasOwnProperty(key)) 
+      {
+        compile_execute_stuff_after_resize[key]();
+      }
+    }
 	
 }
 
@@ -244,6 +262,15 @@ function mobil_screen_onresize()
 		for(k of m.children) resize_to_mobile_screen(k);
 		m.style.display = screenwasviyible;
 	}
+
+    /*allows plugins to execute their own code, After resizing has been done*/
+    for (var key in compile_execute_stuff_after_resize) 
+    {
+      if (compile_execute_stuff_after_resize.hasOwnProperty(key)) 
+      {
+        compile_execute_stuff_after_resize[key]();
+      }
+    }
 }
 
 /*resizes all elements to fit on the mobile screen*/

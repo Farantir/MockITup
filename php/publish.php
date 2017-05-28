@@ -17,6 +17,8 @@ $htmlfile = '<!DOCTYPE html>
     <script src="../script/logik.js"></script>
     <script src="../script/test_logick.js"></script>
     <script src="../script/save.js"></script>
+    <script src="../script/plugins/animation_plugin.js"></script>
+    <script src="../script/plugins/animation_plugin_test_logick.js"></script>
     </head>
         <body onload="mobile_test_render()" onResize="mobil_screen_onresize()">
 	<div id="testscreencontainer">'.$data.'</div>

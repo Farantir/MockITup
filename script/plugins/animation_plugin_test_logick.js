@@ -36,12 +36,22 @@ compile_data_for_each_tag.get_Animations = function(attribute_name,attrigute_val
     }
     
 }
-/*Fixing those relation problems mentiond earlier*/
+/*Fixing those relation problems mentiond earlier, also saves values for resizing on mobile devices*/
 compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = function()
 {
     for(var rel of unresolved_relations)
     {
         test_logik_transaktions[rel.transaktion].animation_id = rel.animation;
+    }
+    /*Also saving the old data of all keyframes. needet to resize them later.*/
+    for(animation of compiled_animations)
+    {
+        /*resizing each keyframe of each animation*/
+        for(keyframe of animation.keyframes)
+        {
+            keyframe.oldx = keyframe.dx;
+            keyframe.oldy = keyframe.dy;
+        }
     }
 }
 
@@ -121,4 +131,18 @@ function animation_engine(animation)
 function runn_animation(target_animation_engine,deltatime)
 {
     target_animation_engine.runn(deltatime);
+}
+
+/*This code esures that the animations will be scaled acording to the mobile device screen*/
+compile_execute_stuff_after_resize.scale_animations_on_resize_event = function()
+{
+    for(animation of compiled_animations)
+    {
+        /*resizing each keyframe of each animation*/
+        for(keyframe of animation.keyframes)
+        {
+            keyframe.dx = calculate_ratio(keyframe.oldx,oldwidth,$("testscreencontainer").clientWidth);
+            keyframe.dy = calculate_ratio(keyframe.oldy,oldheight,$("testscreencontainer").offsetHeight);
+        }
+    }
 }

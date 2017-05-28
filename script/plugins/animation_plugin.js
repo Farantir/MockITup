@@ -35,7 +35,7 @@ function keyframe(time,x,y)
 {
     this.dtime = time;
     this.dx = x;
-    this.dy = y
+    this.dy = y;
 }
 
 /*Saves the animation data to data tags, so they will get stored inside the savafile*/
@@ -71,7 +71,7 @@ custom_logick_before_loading.clear_savedata = function()
 }
 
 /*Loads animations from the savefile*/
-custom_loading_datatag_info.load_animations = function(atrname,atrvalue,target)
+custom_loadingcompile_execute_stuff_after_resize_datatag_info.load_animations = function(atrname,atrvalue,target)
 {
     if(atrname[1] == "animation")
     {
