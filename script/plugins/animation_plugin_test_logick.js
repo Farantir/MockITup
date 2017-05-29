@@ -121,7 +121,6 @@ function animation_engine(animation)
     this.pause = function()
     {
        this.lastframetime = 0;
-console.log(this);
     }
 
     /*runns the animation, gets called each timestepp*/
@@ -144,42 +143,67 @@ console.log(this);
             deltax = -deltax;
             deltay = -deltay;
         }
+        
+        /*applying the delta values*/
+        this.distance_in_current_frame.x += deltax;
+        this.distance_in_current_frame.y += deltay;
 
         /*Ensures the distance travelt is allways maxing out at the max distance of the keyframe, looks komplicatet, but its really just size comparison*/
-        /*comperison ist altert, depending on witch direction the animation runns*/
-/*Tho folowing part is broken code. new metrik needs to be devised, that detects whether an objekt is moved further than ist next keyframe*/
-/****************************************************************/
         if(this.direction == "reverse")
         {
-            var nextminx = 0;
+        /*currently assuming only on keyframe animations. more complex logick needs to follow*/
+        	var nextminx = 0;
             var nextminy = 0;
-            if(Math.abs(deltax + this.distance_in_current_frame.x) <= Math.abs(nextminx) || Math.abs(deltay + this.distance_in_current_frame.y) <= Math.abs(nextminy))
-            {console.log("stuff happend, y:" + distance_in_current_frame.y + "dy: " + nextminy);
+        	if(detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.x,deltax,nextminx) || detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.y,deltay,nextminy))
+        	{
                 this.distance_in_current_frame.x = nextminx;
-                this.distance_in_current_frame.y = nextminY;
+                this.distance_in_current_frame.y = nextminy;
                 this.current_frame--;
-            }
-        } else if(Math.abs(deltax + this.distance_in_current_frame.x) >= Math.abs(this_keyframe.dx) || Math.abs(deltay + this.distance_in_current_frame.y) >= Math.abs(this_keyframe.dy))
+        	}
+        /*normal direction*/
+        /*if frame ist oversteppt by one value, max values are used*/
+        }else if(detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.x,deltax,this_keyframe.dx) || detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.y,deltay,this_keyframe.dy))
         {
-            this.distance_in_current_frame.x = this_keyframe.dx;
+        	this.distance_in_current_frame.x = this_keyframe.dx;
             this.distance_in_current_frame.y = this_keyframe.dy;
             this.current_frame++;
         }
-/***************************************************************/
-
-        this.distance_in_current_frame.x += deltax;
-        this.distance_in_current_frame.y += deltay;
 
         /*So, finaly we come to the actual animation code. using 2d translations to move the element*/
         this.animation.target.style.transform = "translate("+this.distance_in_current_frame.x+"px, "+this.distance_in_current_frame.y+"px)";
 
 
         /*stopping the animation if the end of the keyframes is reached*/
-        if(this.direction == "reverse" && this.current_frame < 0){this.pause();this.current_frame = 0; console.log("stopped")}
+        if(this.direction == "reverse" && this.current_frame < 0){this.pause();this.current_frame = 0;}
         else if(this.current_frame >= this.animation.keyframes.length){this.pause();this.current_frame = (this.animation.keyframes.length -1)}
         else{window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})
         }
     }
+}
+
+/*function to determen overstepping of keyframes using the current value, the keyframe value and the current step*/
+function detekt_overstepping_of_animation_keyframe(value,delta,keyframe_max)
+{
+	/*Trivial, overstepping is impossible*/
+	if(delta==0)
+	{
+		return 	false;
+	/*steps decrease the value, so it needs to be smaler*/
+	}else if(delta<0)
+	{
+		/*if its not smaller, overstepping has occured*/
+		if(value <= keyframe_max) return true;
+		else return false;
+	/*steps increase the value, so it needs to be larger*/
+	}else if(delta>0)
+	{
+		/*if its not greater, overstepping has occured*/
+		if(value >= keyframe_max) return true;
+		else return false;
+	}else
+	{
+		//something is really, really wrong
+	}
 }
 
 /*Function that gets called by the callback. it sumply calls the runn function of the coresponding animation engine*/
