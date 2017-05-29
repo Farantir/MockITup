@@ -11,6 +11,7 @@ var unresolved_relations = [];
 compile_read_data_from_html.initialize_animations = function()
 {
     compiled_animations = [];
+    unresolved_relations = [];
 }
 
 /*Loads the animations inside the compiled_animation array*/
@@ -23,16 +24,8 @@ compile_data_for_each_tag.get_Animations = function(attribute_name,attrigute_val
         compiled_animations[attribute_name[2]].target = current_element;
     }else if(attribute_name[1] == "animation_logik")
     {
-        /*Checks wether the logick transaktion already exists or not*/
-        if(test_logik_transaktions[attribute_name[2]])
-        {
-            /*Tells the logick transaktion whitch animation to use*/
-            test_logik_transaktions[attribute_name[2]].animation_id = attrigute_value;
-        }else
-        {
-            /*if not, the animation id and the transaktion id need to get stored, so the alorithem can try to fix it later on*/
-            unresolved_relations.push({"animation": attrigute_value, "transaktion": attribute_name[2]})
-        }        
+            /*the animation id and the transaktion id need to get stored, so the alorithem can try to fix it later on*/
+            unresolved_relations.push({"animation": attrigute_value, "transaktion": attribute_name[2]})       
     }
     
 }
@@ -132,10 +125,19 @@ function animation_engine(animation)
         this.lastframetime = curtime;
 
         var this_keyframe = this.animation.keyframes[this.current_frame];
+        /*sets positions of previous keyframe to zero*/
+        var prev_keyframe_x = 0;
+		var prev_keyframe_y = 0;
+		/*if there actually was a previous keyframe, set positions to its values*/
+        if(this.current_frame != 0)
+        {
+			prev_keyframe_x = this.animation.keyframes[this.current_frame-1].dx;
+			prev_keyframe_y = this.animation.keyframes[this.current_frame-1].dy;
+		}
 
         /*calculates the distance to be traveld in this frame*/
-        var deltax = -(this_keyframe.dx/(this_keyframe.dtime*1000))*deltatime;
-        var deltay = -(this_keyframe.dy/(this_keyframe.dtime*1000))*deltatime;
+        var deltax = -((this_keyframe.dx-prev_keyframe_x)/(this_keyframe.dtime*1000))*deltatime;
+        var deltay = -((this_keyframe.dy-prev_keyframe_y)/(this_keyframe.dtime*1000))*deltatime;
 
         /*calcualtion needs to be different, ich in reverse mode*/
         if(this.direction == "reverse")
@@ -152,12 +154,10 @@ function animation_engine(animation)
         if(this.direction == "reverse")
         {
         /*currently assuming only on keyframe animations. more complex logick needs to follow*/
-        	var nextminx = 0;
-            var nextminy = 0;
-        	if(detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.x,deltax,nextminx) || detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.y,deltay,nextminy))
+        	if(detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.x,deltax,prev_keyframe_x) || detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.y,deltay,prev_keyframe_y))
         	{
-                this.distance_in_current_frame.x = nextminx;
-                this.distance_in_current_frame.y = nextminy;
+                this.distance_in_current_frame.x = prev_keyframe_x;
+                this.distance_in_current_frame.y = prev_keyframe_y;
                 this.current_frame--;
         	}
         /*normal direction*/

@@ -186,6 +186,7 @@ function number_input_overlay(target,set,someobjekt)
 
     menu.accept.input = document.createElement("input");
     menu.accept.input.type = "number";
+    menu.accept.input.step = "0.01";
     menu.accept.set = set;
     menu.accept.target = target;
 
