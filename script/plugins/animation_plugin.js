@@ -235,21 +235,34 @@ function create_linear_two_point_animation()
     animation_confirm_abort = elementbar();
     animation_confirm_abort.add(menubar_Item("Confirm",apply_liear_two_point_animation));
     animation_confirm_abort.add(menubar_Item("Abort",()=>{animation_types.style.display = "";reset_position_after_creating_animation();}));
+    animation_confirm_abort.add(menubar_Item("Add another Keyframe",add_another_keyframe));
     animation_confirm_abort.style.display = "";
+    /*creating a keyframe aray*/
+    animation_types.keyframes = [];
 }
+
+/*used to create more than one keyframe in an animation*/
+function add_another_keyframe()
+{
+	
+	var endpoint = new keyframe(1,animation_types.target.offsetLeft - animation_types.oldx,animation_types.target.offsetTop - animation_types.oldy);
+	notifikationbar.show("Enter the Time for this Keyframe in Sekonds"); 
+    number_input_overlay(animation_types.target,function(value){this.additionaldata.dtime = value;notifikationbar.hide();},endpoint);
+    /*adds the new keyframe to the keyframe array*/
+    animation_types.keyframes.push(endpoint);
+}
+
 
 /*saves the animation*/
 function apply_liear_two_point_animation()
 {
-    /*Creates a new keyframe arry*/
-    var keyframes = [];
     /*creates a new keyframe using the endpoint of the animation*/
     var endpoint = new keyframe(1,animation_types.target.offsetLeft - animation_types.oldx,animation_types.target.offsetTop - animation_types.oldy);
     /*Adds the keyframe to the array*/
-    keyframes.push(endpoint);
+    animation_types.keyframes.push(endpoint);
 
     /*creates a new animation using the keyfame array*/
-    var linearanimation = new animation("linear",animation_types.target,keyframes);
+    var linearanimation = new animation("linear",animation_types.target,animation_types.keyframes);
 
     /*Repositions the objekt at its origin*/
     reset_position_after_creating_animation();
@@ -264,6 +277,8 @@ function apply_liear_two_point_animation()
     
     /*adds a logick button to the element, if it dosen't has one already*/
     add_animaton_specifik_logick_buttons(linearanimation);
+    /*Resetting the keyframe array*/
+    animation_types.keyframes = [];
 }
 
 /*Creates the buttons needet for the logick menu, to start the animation*/
