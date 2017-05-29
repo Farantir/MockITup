@@ -53,16 +53,30 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
             keyframe.oldy = keyframe.dy;
         }
     }
+    /*Creates a animation engine for each animation*/
+    for(animation of compiled_animations)
+    {
+        animation.engine = new animation_engine(animation);
+    }
 }
+
 
 /*Creates the logick needet to animate objekts*/
 test_logick_effekts["start_animation"] = function(target,unused,id)
 {
     /*reciving the id of the target animation*/
     var animation = test_logik_transaktions[id].animation_id;
-    /*creates a animation engine, using the animation objekt corrasponding to the id*/
-    var new_animation_engine = new animation_engine(compiled_animations[animation]);
-    new_animation_engine.start();
+    /*Starts the animation engine of the given animaton*/
+    compiled_animations[animation].engine.start();
+}
+
+/*Creates the logick needet to reverse the animation of objekts*/
+test_logick_effekts["reverse_animation"] = function(target,unused,id)
+{
+    /*reciving the id of the target animation*/
+    var animation = test_logik_transaktions[id].animation_id;
+    /*Starts the animation engine of the given animaton in reverse mode*/
+    compiled_animations[animation].engine.startreverse();
 }
 
 function animation_engine(animation)
@@ -73,21 +87,41 @@ function animation_engine(animation)
     this.lastframetime = 0;
     //this.time_in_current_frame = 0;
     this.distance_in_current_frame = {"x":0, "y":0};
-    /*gets the overflow, so repainting is only done, when movement is over 1px*/
-    this.overflow = {"x":0, "y":0};
+    /*gets the overflow, so repainting is only done, when movement is over 1px
+       currently diaabbled, works without*/
+    //this.overflow = {"x":0, "y":0};
 
     /*initializes the egine*/
     this.start = function()
     {
+        /*setting direction to forward*/
+        this.direction = "forward";
         /*Doing some lambda magick to pass this reference*/
-        window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})
+        window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);});
+    }
+
+    this.startreverse = function()
+    {
+        /*setting animation direction to reverse*/
+        this.direction = "reverse";
+        /*Doing some lambda magick to pass this reference*/
+        window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);});
+        
     }
     
-    /*unsubscribes the engine from the animation handler*/
+    /*resets the animation*/
     this.stop = function()
     {
         this.distance_in_current_frame.x = 0;
         this.distance_in_current_frame.y = 0;
+        this.lastframetime == 0;
+    }
+
+    /*pauses the animation, whithout resetting it*/
+    this.pause = function()
+    {
+       this.lastframetime = 0;
+console.log(this);
     }
 
     /*runns the animation, gets called each timestepp*/
@@ -104,14 +138,34 @@ function animation_engine(animation)
         var deltax = -(this_keyframe.dx/(this_keyframe.dtime*1000))*deltatime;
         var deltay = -(this_keyframe.dy/(this_keyframe.dtime*1000))*deltatime;
 
+        /*calcualtion needs to be different, ich in reverse mode*/
+        if(this.direction == "reverse")
+        {
+            deltax = -deltax;
+            deltay = -deltay;
+        }
+
         /*Ensures the distance travelt is allways maxing out at the max distance of the keyframe, looks komplicatet, but its really just size comparison*/
-        if(Math.abs(deltax + this.distance_in_current_frame.x) >= Math.abs(this_keyframe.dx) || Math.abs(deltay + this.distance_in_current_frame.y) >= Math.abs(this_keyframe.dy))
+        /*comperison ist altert, depending on witch direction the animation runns*/
+/*Tho folowing part is broken code. new metrik needs to be devised, that detects whether an objekt is moved further than ist next keyframe*/
+/****************************************************************/
+        if(this.direction == "reverse")
+        {
+            var nextminx = 0;
+            var nextminy = 0;
+            if(Math.abs(deltax + this.distance_in_current_frame.x) <= Math.abs(nextminx) || Math.abs(deltay + this.distance_in_current_frame.y) <= Math.abs(nextminy))
+            {console.log("stuff happend, y:" + distance_in_current_frame.y + "dy: " + nextminy);
+                this.distance_in_current_frame.x = nextminx;
+                this.distance_in_current_frame.y = nextminY;
+                this.current_frame--;
+            }
+        } else if(Math.abs(deltax + this.distance_in_current_frame.x) >= Math.abs(this_keyframe.dx) || Math.abs(deltay + this.distance_in_current_frame.y) >= Math.abs(this_keyframe.dy))
         {
             this.distance_in_current_frame.x = this_keyframe.dx;
             this.distance_in_current_frame.y = this_keyframe.dy;
             this.current_frame++;
         }
-
+/***************************************************************/
 
         this.distance_in_current_frame.x += deltax;
         this.distance_in_current_frame.y += deltay;
@@ -121,7 +175,8 @@ function animation_engine(animation)
 
 
         /*stopping the animation if the end of the keyframes is reached*/
-        if(this.current_frame >= this.animation.keyframes.length){this.stop();}
+        if(this.direction == "reverse" && this.current_frame < 0){this.pause();this.current_frame = 0; console.log("stopped")}
+        else if(this.current_frame >= this.animation.keyframes.length){this.pause();this.current_frame = (this.animation.keyframes.length -1)}
         else{window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})
         }
     }

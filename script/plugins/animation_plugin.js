@@ -71,7 +71,7 @@ custom_logick_before_loading.clear_savedata = function()
 }
 
 /*Loads animations from the savefile*/
-custom_loadingcompile_execute_stuff_after_resize_datatag_info.load_animations = function(atrname,atrvalue,target)
+custom_loading_datatag_info.load_animations = function(atrname,atrvalue,target)
 {
     if(atrname[1] == "animation")
     {
@@ -272,6 +272,7 @@ function add_animaton_specifik_logick_buttons(animation)
     { 
         /*Creates the entys for the logick menu*/
         animation.target.logick_menu.add(logick_menu_item("Play Animation",function(){select_specifik_animation(this.offsetParent.parent,logick_animation_start);}));
+        animation.target.logick_menu.add(logick_menu_item("Reverse Animation",function(){select_specifik_animation(this.offsetParent.parent,logick_animation_reverse);}));
 
         /*Creates the entrys for the animation menu, used to select one of the elements animations specifikally*/
         animation.target.animation_selection_menu = elementbar();
@@ -339,6 +340,16 @@ function logick_animation_start(animation)
     reset_transaktion_elementindependent();
 }
 logick_dictionary["start_animation"] = "Starts an animation for";
+
+/*Creates a funktion to regisrter the logick effekts to reverse an animation*/
+function logick_animation_reverse(animation)
+{
+    var transaktion = new logick_transaktion(evoker,evoking_aktion,animation.target,"reverse_animation");
+    transaktion.animation = animation.id;
+    logick_transaktions.push(transaktion);
+    reset_transaktion_elementindependent();
+}
+logick_dictionary["start_animation"] = "Reverses an animation for";
 
 /*displays a custom menu, to select an animation a ne specifik element. If the animation gets selected
 an overload function ist executetd*/
