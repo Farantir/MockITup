@@ -47,6 +47,7 @@ var compile_data_for_each_tag = {};
 of the mobile screen.*/
 var compile_execute_stuff_after_resize = {};
 
+
 /****************************************************************************/
 
 function testondevice()

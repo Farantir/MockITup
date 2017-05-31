@@ -58,14 +58,46 @@ custom_presave_logick.save_animations = function()
 /*Deletes the data tags of the animation after saving*/
 custom_presave_logick.save_animations.cleanup = function()
 {
-    for(anim in animations)
+    for(var anim in animations)
     {
         delete animations[anim].target.dataset["animation-"+anim];
     }
 }
 
-/*using the same function to save logic to a savefile and for creating the code for the pharser*/
-compile_save_data_to_html.save_animations = custom_presave_logick.save_animations;
+/*using the same function to save logic to a savefile and for creating the code for the pharser,
+however it needs to get expandet, so it is able to link the events of animation finished playing*/
+compile_save_data_to_html.save_animations = function()
+{
+    /*filtering the animation id and linking the animation to the logick event*/
+    for(var m in logick_transaktions)
+    {
+        var array = logick_transaktions[m].evoking_aktion.split("-");
+        if(array[0]=="animation_finished")
+        {
+            if(!animations[array[1]].event_on_finisched) animations[array[1]].event_on_finisched = [];
+            animations[array[1]].event_on_finisched.push(m);
+            logick_transaktions[m].evoking_aktion = "animation_finished";
+        }
+    }
+    custom_presave_logick.save_animations(); 
+}
+compile_save_data_to_html.save_animations.cleanup = function()
+{
+    /*restoring previous state*/
+    for(var anim in animations)
+    {
+        if(animations[anim].event_on_finisched)
+        {
+            /*resetting the evoking aktion*/
+            for(var id of animations[anim].event_on_finisched)
+            {
+                logick_transaktions[id].evoking_aktion = "animation_finished-" + animations[anim].id;
+            }
+            delete animations[anim].event_on_finisched;
+        }
+    }   
+    custom_presave_logick.save_animations.cleanup();
+}
 
 /*deletes the current animation array to allow the Savedata to be addet*/
 custom_logick_before_loading.clear_savedata = function()
@@ -272,7 +304,7 @@ function apply_simple_animation()
             kframe.dtime = (kframe.dtime - lasttime)/1000;
             lasttime = temp;
         }
-/*Compression code faulty and currently disabeld. needs to e reworked in the future*
+/*Compression code faulty and currently disabeld. needs to be reworked in the future*
 /********************************************************************************************/
         /*removing all keyframes that share the same vector direction
         yields insane data compression*/
@@ -381,7 +413,7 @@ function add_animaton_specifik_logick_buttons(animation)
         animation.target.animation_selection_menu.parent = animation.target;
         
         /*Creates the buttons for the animaton finished event*/
-        add_event_menu_to_element(animation.target,menubar_Item("Animation played",setclickevent),"animation finisched");
+        add_event_menu_to_element(animation.target,menubar_Item("Animation played",set_animation_finished_playing_event),"animation finisched");
         add_event_menu_to_element(animation.target,menubar_Item("Animation reversed",setclickevent),"animation reversed");       
 
         /*Sets the has animation menu property to true, so onl one menu is created per element*/
@@ -440,11 +472,8 @@ function clean_animation_screen()
 /*sets the event for animation finished playing*/
 function set_animation_finished_playing_event(e)
 {
-    general_event_stuff();
     evoker = this.parentElement.eventtarget;
-    evoking_aktion = "animation_finished";
-    select_specifik_animation(evoker,(x)=>{});
-///tooooooo dodooooooo
+    select_specifik_animation(evoker,function(x){evoking_aktion = "animation_finished-" + x.id;general_event_stuff();this.style.display = "none"});
 
 }
 logick_dictionary["animation_finished"] = "finisching an animaton";

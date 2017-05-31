@@ -52,9 +52,29 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
     for(var animation of compiled_animations)
     {
         animation.engine = new animation_engine(animation);
+        /*now we need to add the events to the animations*/
+        animation.tans_out = [];
+        for(var event_id of animation.event_on_finisched)
+        {
+            for(var trans_id in animation.target.tans_out)
+            {
+                if(animation.target.tans_out[trans_id].id == event_id)
+                {
+                    /*giving the aimations the trans out events of its parent element*/
+                    animation.tans_out.push(animation.target.tans_out[trans_id]);
+                    animation.target.tans_out.splice(trans_id, 1);
+                }
+            }
+        }
     }
 }
 
+/*only there because the event system needs it. 
+we use another function to ensure targets get linked to 
+the evoking animations*/
+test_logick_events["animation_finished"] = function(target,execute)
+{
+}
 
 /*Creates the logick needet to animate objekts*/
 test_logick_effekts["start_animation"] = function(target,unused,id)
@@ -110,6 +130,12 @@ function animation_engine(animation)
         this.distance_in_current_frame.x = 0;
         this.distance_in_current_frame.y = 0;
         this.lastframetime == 0;
+    }
+
+    this.finisched = function()
+    {
+        this.lastframetime = 0;
+        test_do_execute("animation_finished",this.animation);
     }
 
     /*pauses the animation, whithout resetting it*/
@@ -177,7 +203,7 @@ function animation_engine(animation)
 
         /*stopping the animation if the end of the keyframes is reached*/
         if(this.direction == "reverse" && this.current_frame < 0){this.pause();this.current_frame = 0;}
-        else if(this.current_frame >= this.animation.keyframes.length){this.pause();this.current_frame = (this.animation.keyframes.length -1)}
+        else if(this.current_frame >= this.animation.keyframes.length){this.finisched();this.current_frame = (this.animation.keyframes.length -1)}
         else{window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})
         }
     }
@@ -205,6 +231,7 @@ function detekt_overstepping_of_animation_keyframe(value,delta,keyframe_max)
 	}else
 	{
 		//something is really, really wrong
+        alert("its broken");
 	}
 }
 
