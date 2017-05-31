@@ -66,6 +66,18 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
                 }
             }
         }
+        for(var event_id of animation.event_on_reversed)
+        {
+            for(var trans_id in animation.target.tans_out)
+            {
+                if(animation.target.tans_out[trans_id].id == event_id)
+                {
+                    /*giving the aimations the trans out events of its parent element*/
+                    animation.tans_out.push(animation.target.tans_out[trans_id]);
+                    animation.target.tans_out.splice(trans_id, 1);
+                }
+            }
+        }
     }
 }
 
@@ -75,6 +87,10 @@ the evoking animations*/
 test_logick_events["animation_finished"] = function(target,execute)
 {
 }
+test_logick_events["animation_reversed"] = function(target,execute)
+{
+}
+
 
 /*Creates the logick needet to animate objekts*/
 test_logick_effekts["start_animation"] = function(target,unused,id)
@@ -135,7 +151,13 @@ function animation_engine(animation)
     this.finisched = function()
     {
         this.lastframetime = 0;
-        test_do_execute("animation_finished",this.animation);
+        if(this.direction == "reverse")
+        {
+            test_do_execute("animation_reversed",this.animation);
+        }else
+        {
+            test_do_execute("animation_finished",this.animation);
+        }
     }
 
     /*pauses the animation, whithout resetting it*/
@@ -202,7 +224,7 @@ function animation_engine(animation)
 
 
         /*stopping the animation if the end of the keyframes is reached*/
-        if(this.direction == "reverse" && this.current_frame < 0){this.pause();this.current_frame = 0;}
+        if(this.direction == "reverse" && this.current_frame < 0){this.finisched();this.current_frame = 0;}
         else if(this.current_frame >= this.animation.keyframes.length){this.finisched();this.current_frame = (this.animation.keyframes.length -1)}
         else{window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})
         }

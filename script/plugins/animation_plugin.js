@@ -77,6 +77,11 @@ compile_save_data_to_html.save_animations = function()
             if(!animations[array[1]].event_on_finisched) animations[array[1]].event_on_finisched = [];
             animations[array[1]].event_on_finisched.push(m);
             logick_transaktions[m].evoking_aktion = "animation_finished";
+        }else if(array[0]=="animation_reversed")
+        {
+            if(!animations[array[1]].event_on_reversed) animations[array[1]].event_on_reversed = [];
+            animations[array[1]].event_on_reversed.push(m);
+            logick_transaktions[m].evoking_aktion = "animation_reversed";
         }
     }
     custom_presave_logick.save_animations(); 
@@ -94,6 +99,15 @@ compile_save_data_to_html.save_animations.cleanup = function()
                 logick_transaktions[id].evoking_aktion = "animation_finished-" + animations[anim].id;
             }
             delete animations[anim].event_on_finisched;
+        }
+        if(animations[anim].event_on_reversed)
+        {
+            /*resetting the evoking aktion*/
+            for(var id of animations[anim].event_on_reversed)
+            {
+                logick_transaktions[id].evoking_aktion = "animation_reversed-" + animations[anim].id;
+            }
+            delete animations[anim].event_on_reversed;
         }
     }   
     custom_presave_logick.save_animations.cleanup();
@@ -414,7 +428,7 @@ function add_animaton_specifik_logick_buttons(animation)
         
         /*Creates the buttons for the animaton finished event*/
         add_event_menu_to_element(animation.target,menubar_Item("Animation played",set_animation_finished_playing_event),"animation finisched");
-        add_event_menu_to_element(animation.target,menubar_Item("Animation reversed",setclickevent),"animation reversed");       
+        add_event_menu_to_element(animation.target,menubar_Item("Animation reversed",set_animation_finished_reversing_event),"animation reversed");       
 
         /*Sets the has animation menu property to true, so onl one menu is created per element*/
         animation.target.hasAnimationMenu = true;
@@ -477,6 +491,13 @@ function set_animation_finished_playing_event(e)
 
 }
 logick_dictionary["animation_finished"] = "finisching an animaton";
+
+function set_animation_finished_reversing_event(e)
+{
+    evoker = this.parentElement.eventtarget;
+    select_specifik_animation(evoker,function(x){evoking_aktion = "animation_reversed-" + x.id;general_event_stuff();this.style.display = "none"});
+}
+logick_dictionary["animation_reversed"] = "finisched reversing an animaton";
 
 /*Creates a funktion to regisrter the logick effekts to sart an animation*/
 function logick_animation_start(animation)
