@@ -131,7 +131,7 @@ function initializeAnimationPlugin()
     /*Creates the menu bar containing all the animation types*/
     animation_types = elementbar();
     animation_types.add(menubar_Item("Linear two point",create_linear_two_point_animation));
-    animation_types.add(menubar_Item("Siple Animation",create_linear_two_point_animation));
+    animation_types.add(menubar_Item("Siple Animation",create_sipmle_animation));
 
     /*
     Allows other plugins to depent on the this plugin. 
@@ -251,7 +251,7 @@ function create_sipmle_animation()
 function obtain_keyframes_from_element_movement()
 {
     /*saving relative values for position and absolute values for time. time will be fixed later on*/
-    var newkeyframe = keyframe(window.performance.now(),animation_types.target.offsetLeft - animation_types.oldx,animation_types.target.offsetTop - animation_types.oldy)
+    var newkeyframe = new keyframe(window.performance.now(),animation_types.target.offsetLeft - animation_types.oldx,animation_types.target.offsetTop - animation_types.oldy)
     animation_types.keyframes.push(newkeyframe);
 }
 
@@ -262,13 +262,43 @@ function apply_simple_animation()
     {
         /*use time for firt keyframe as zero time. not 100% akurate, but simple and the user wont notice.
         this way time mesurement starts only, when the user drags the element*/
-        var lasttime = animation_types.keyframes[0];
+        var lasttime = animation_types.keyframes[0].dtime;
         /*Removes the first element, because time for keyframe can not be obtained*/
         animation_types.keyframes.shift();
-        for(var frame of animation_types.keyframes)
+        /*setting the times for the keyframes relative to its previous frametime*/
+        for(var kframe of animation_types.keyframes)
         {
+            var temp = kframe.dtime;
+            kframe.dtime = (kframe.dtime - lasttime)/1000;
+            lasttime = temp;
+        }
+
+        /*removing all keyframes that share the same vector direction
+        yields insane data compression*/
+        var newframes = [];
+        var curframe = animation_types.keyframes[0];
+        for(var kframe of animation_types.keyframes)
+        {
+            if((curframe.dx / curframe.dy) - (kframe.dx / kframe.dy) < 0.03)
+            {
+                curframe = new keyframe(curframe.dtime+kframe.dtime,kframe.dx,kframe.dy)
+            }else 
+            {
+                newframes.push(curframe);
+                curframe = kframe;
+            }
             
         }
+        newframes.push(curframe);
+        animation_types.keyframes = newframes;
+        /*creating the new animaton*/
+        var simpleanimation = new animation("linear",animation_types.target,animation_types.keyframes);
+        /*Pushes the animation into the animation Array*/
+        /*setting the array position as animation id. will be needet later on*/
+        simpleanimation.id = (animations.push(simpleanimation)-1);
+    
+        /*adds a logick button to the element, if it dosen't has one already*/
+        add_animaton_specifik_logick_buttons(simpleanimation);
     }
 
     /*Repositions the objekt at its origin*/
