@@ -272,10 +272,11 @@ function apply_simple_animation()
             kframe.dtime = (kframe.dtime - lasttime)/1000;
             lasttime = temp;
         }
-
+/*Compression code faulty and currently disabeld. needs to e reworked in the future*
+/********************************************************************************************/
         /*removing all keyframes that share the same vector direction
         yields insane data compression*/
-        var newframes = [];
+/*        var newframes = [];
         var curframe = animation_types.keyframes[0];
         for(var kframe of animation_types.keyframes)
         {
@@ -291,6 +292,8 @@ function apply_simple_animation()
         }
         newframes.push(curframe);
         animation_types.keyframes = newframes;
+*/
+/**********************************************************************************************/
         /*creating the new animaton*/
         var simpleanimation = new animation("linear",animation_types.target,animation_types.keyframes);
         /*Pushes the animation into the animation Array*/
