@@ -6,6 +6,8 @@
 
 /*some array needet to fix relation problems later on*/
 var unresolved_relations = [];
+/*needet to combine the animations with the events (animation finished, animation reversed, etc)*/
+var link_animations_to_events = [];
 
 /*initioalizes the animaton engine*/
 compile_read_data_from_html.initialize_animations = function()
@@ -37,17 +39,17 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
         test_logik_transaktions[rel.transaktion].animation_id = rel.animation;
     }
     /*Also saving the old data of all keyframes. needet to resize them later.*/
-    for(animation of compiled_animations)
+    for(var animation of compiled_animations)
     {
         /*resizing each keyframe of each animation*/
-        for(keyframe of animation.keyframes)
+        for(var keyframe of animation.keyframes)
         {
             keyframe.oldx = keyframe.dx;
             keyframe.oldy = keyframe.dy;
         }
     }
     /*Creates a animation engine for each animation*/
-    for(animation of compiled_animations)
+    for(var animation of compiled_animations)
     {
         animation.engine = new animation_engine(animation);
     }
@@ -215,10 +217,10 @@ function runn_animation(target_animation_engine,deltatime)
 /*This code esures that the animations will be scaled acording to the mobile device screen*/
 compile_execute_stuff_after_resize.scale_animations_on_resize_event = function()
 {
-    for(animation of compiled_animations)
+    for(var animation of compiled_animations)
     {
         /*resizing each keyframe of each animation*/
-        for(keyframe of animation.keyframes)
+        for(var keyframe of animation.keyframes)
         {
             keyframe.dx = calculate_ratio(keyframe.oldx,oldwidth,$("testscreencontainer").clientWidth);
             keyframe.dy = calculate_ratio(keyframe.oldy,oldheight,$("testscreencontainer").offsetHeight);

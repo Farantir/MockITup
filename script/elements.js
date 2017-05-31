@@ -1,3 +1,10 @@
+/*Allows plugins to execute their own code, after an element has been
+moved. the new psoition of the element will not be given, nor 
+will the element itself be given. To aquire these informations
+an eventlistener has to be bound to the element selected event.
+the selected element will allways be the moved one*/
+var execute_after_element_dragging = {};
+
 var elemToDrag = null;
 var elements = new function(){};
 var GLOBAL_OVERRIDE = null;
@@ -500,6 +507,15 @@ function moveelem(e)
   posx = (x - elemToDrag.offsetx);
 
   elemToDrag.setpos(posx,posy);
+
+  /*allows plugins to execute additional code, ater an element has been moved*/
+    for (var key in execute_after_element_dragging) 
+    {
+      if (execute_after_element_dragging.hasOwnProperty(key)) 
+      {
+        execute_after_element_dragging[key]();
+      }
+    }
 }
 
 
@@ -704,6 +720,7 @@ function make_Container(elem,elemtype)
 		},"Deletes this element and all its children"));
         this.settingsbar.make_Visible();
         this.settingsbar.initialise();
+        logick_elements.eventtarget = this;
 	}
 
     elem.create = function(target,x,y)

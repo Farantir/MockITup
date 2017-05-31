@@ -1,9 +1,12 @@
 /***************************************************************/
 /*This file is mostly needet for the UI part of the animations.*/
-/*it also handels the data structure of the animation objekt   */
+/*it also handels the data structure of the animation objekt   */ 
+/*to use animations, this file needs to be addet in the        */
+/*index.thml together with the animation_plugin_test_ligick.js */
 /***************************************************************/
 
 /*This plugin enabels the use of animations, if addet inside the index.html*/
+
 /*menu for the animation screen*/
 var animation_types;
 
@@ -128,6 +131,7 @@ function initializeAnimationPlugin()
     /*Creates the menu bar containing all the animation types*/
     animation_types = elementbar();
     animation_types.add(menubar_Item("Linear two point",create_linear_two_point_animation));
+    animation_types.add(menubar_Item("Siple Animation",create_linear_two_point_animation));
 
     /*
     Allows other plugins to depent on the this plugin. 
@@ -226,6 +230,55 @@ function element_selected(e)
     animation_bar_make_visible();
 }
 
+/*Simple way to create an animation. the user only needs to dra the element around*/
+function create_sipmle_animation()
+{
+    general_pre_animation_stuff();
+    notifikationbar.show("Drag the Element around to form the animation path");
+    animation_types.style.display = "none";
+    /*creating an empty keyframe aray*/
+    animation_types.keyframes = [];
+    /*Adding a funktion to the ondrag plugin handler to obtain keyframes.*/
+    execute_after_element_dragging.simple_animation_keyframe_generator = obtain_keyframes_from_element_movement;
+    /*Creates the menu needet to confirm the current animation*/
+    animation_confirm_abort = elementbar();
+    animation_confirm_abort.add(menubar_Item("Confirm",apply_simple_animation));
+    animation_confirm_abort.add(menubar_Item("Abort",()=>{animation_types.style.display = "";reset_position_after_creating_animation();}));
+    animation_confirm_abort.style.display = "";
+}
+
+/*obtains keyframes from element movement*/
+function obtain_keyframes_from_element_movement()
+{
+    /*saving relative values for position and absolute values for time. time will be fixed later on*/
+    var newkeyframe = keyframe(window.performance.now(),animation_types.target.offsetLeft - animation_types.oldx,animation_types.target.offsetTop - animation_types.oldy)
+    animation_types.keyframes.push(newkeyframe);
+}
+
+/*adds the animaton to the element and does some post-processing*/
+function apply_simple_animation()
+{
+    if(animation_types.keyframes.length > 1)
+    {
+        /*use time for firt keyframe as zero time. not 100% akurate, but simple and the user wont notice.
+        this way time mesurement starts only, when the user drags the element*/
+        var lasttime = animation_types.keyframes[0];
+        /*Removes the first element, because time for keyframe can not be obtained*/
+        animation_types.keyframes.shift();
+        for(var frame of animation_types.keyframes)
+        {
+            
+        }
+    }
+
+    /*Repositions the objekt at its origin*/
+    reset_position_after_creating_animation();
+
+    /*Resetting the keyframe array*/
+    animation_types.keyframes = [];
+    
+}
+
 function create_linear_two_point_animation()
 {
     general_pre_animation_stuff();
@@ -292,7 +345,11 @@ function add_animaton_specifik_logick_buttons(animation)
 
         /*Creates the entrys for the animation menu, used to select one of the elements animations specifikally*/
         animation.target.animation_selection_menu = elementbar();
-        animation.target.animation_selection_menu.parent = animation.target;        
+        animation.target.animation_selection_menu.parent = animation.target;
+        
+        /*Creates the buttons for the animaton finished event*/
+        add_event_menu_to_element(animation.target,menubar_Item("Animation played",setclickevent),"animation finisched");
+        add_event_menu_to_element(animation.target,menubar_Item("Animation reversed",setclickevent),"animation reversed");       
 
         /*Sets the has animation menu property to true, so onl one menu is created per element*/
         animation.target.hasAnimationMenu = true;
@@ -346,6 +403,18 @@ function clean_animation_screen()
     /*removes the cleaning funtion, so it won't get executet everytime the screen changes*/
     delete custom_screenchange_cleanup.clean_animation_screen;
 }
+
+/*sets the event for animation finished playing*/
+function set_animation_finished_playing_event(e)
+{
+    general_event_stuff();
+    evoker = this.parentElement.eventtarget;
+    evoking_aktion = "animation_finished";
+    select_specifik_animation(evoker,(x)=>{});
+///tooooooo dodooooooo
+
+}
+logick_dictionary["animation_finished"] = "finisching an animaton";
 
 /*Creates a funktion to regisrter the logick effekts to sart an animation*/
 function logick_animation_start(animation)
