@@ -517,7 +517,7 @@ function logick_animation_reverse(animation)
     logick_transaktions.push(transaktion);
     reset_transaktion_elementindependent();
 }
-logick_dictionary["start_animation"] = "Reverses an animation for";
+logick_dictionary["reverse_animation"] = "Reverses an animation for";
 
 /*displays a custom menu, to select an animation a ne specifik element. If the animation gets selected
 an overload function ist executetd*/
