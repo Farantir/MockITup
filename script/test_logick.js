@@ -10,8 +10,7 @@ var test_logick_complex_targets = {};
 
 /*Executes all aktions, whitch ar linked to the event identifier (e.g. click)*/
 function test_do_execute(event,target,passedvalue)
-{console.log(target)
-console.log(target.tans_out)
+{
     for(m of target.tans_out)
     {
         if(m.name == event)

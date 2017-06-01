@@ -54,27 +54,33 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
         animation.engine = new animation_engine(animation);
         /*now we need to add the events to the animations*/
         animation.tans_out = [];
-        for(var event_id of animation.event_on_finisched)
+        if(animation.event_on_finisched)
         {
-            for(var trans_id in animation.target.tans_out)
+            for(var event_id of animation.event_on_finisched)
             {
-                if(animation.target.tans_out[trans_id].id == event_id)
+                for(var trans_id in animation.target.tans_out)
                 {
-                    /*giving the aimations the trans out events of its parent element*/
-                    animation.tans_out.push(animation.target.tans_out[trans_id]);
-                    animation.target.tans_out.splice(trans_id, 1);
+                    if(animation.target.tans_out[trans_id].id == event_id)
+                    {
+                        /*giving the aimations the trans out events of its parent element*/
+                        animation.tans_out.push(animation.target.tans_out[trans_id]);
+                        animation.target.tans_out.splice(trans_id, 1);
+                    }
                 }
             }
         }
-        for(var event_id of animation.event_on_reversed)
+        if(animation.event_on_reversed)
         {
-            for(var trans_id in animation.target.tans_out)
+            for(var event_id of animation.event_on_reversed)
             {
-                if(animation.target.tans_out[trans_id].id == event_id)
+                for(var trans_id in animation.target.tans_out)
                 {
-                    /*giving the aimations the trans out events of its parent element*/
-                    animation.tans_out.push(animation.target.tans_out[trans_id]);
-                    animation.target.tans_out.splice(trans_id, 1);
+                    if(animation.target.tans_out[trans_id].id == event_id)
+                    {
+                        /*giving the aimations the trans out events of its parent element*/
+                        animation.tans_out.push(animation.target.tans_out[trans_id]);
+                        animation.target.tans_out.splice(trans_id, 1);
+                    }
                 }
             }
         }
