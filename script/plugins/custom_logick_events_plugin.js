@@ -19,7 +19,7 @@ function add_event_menu_to_element(element,menu,menu_name)
 function enable_custom_events_after_change_to_logick_menu(e)
 {
     /*sets the new custom elements*/
-    logick_elements.custom_logick_elements = logick_elements.eventtarget.custom_logick_elements;
+    logick_elements.custom_logick_elements = logick_elements.eventtarget.custom_logick_menu;
 
     /*if the element had custom logick menu entrys, they must be added now*/
     if(logick_elements.custom_logick_elements)

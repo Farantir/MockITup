@@ -334,7 +334,7 @@ function TreeCompile(target)
     for(m of target.children) TreeCompile(m);
     
     /*ensures elements out of its parents are invisible*/
-    target.style.overflow = "hidden";    
+    if(target.dataset.elementtype != "Liste") target.style.overflow = "hidden";    
 
     if(target.dataset.elementtype == "Container") target.style.border = "";
 
