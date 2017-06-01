@@ -31,7 +31,7 @@ function addActionToSettings(png, transaction) {
 		this.evoker.style.border = "solid #ea5a00";
 		this.target.style.border = "solid #b43092";		
 		
-		notifikationbar.show("[Click To Delete] <br>" + logick_dictionary[this.transaction.evoking_aktion] + " the Orange Element " + logick_dictionary[this.transaction.name] + " the Purpil Element");		
+		notifikationbar.show("[Click To Delete] <br>" + logick_dictionary[this.transaction.evoking_aktion.split("-")[0]] + " the Orange Element " + logick_dictionary[this.transaction.name].split("-")[0] + " the Purpil Element");		
 	}
 	
 	icon.onmouseout = function(e){

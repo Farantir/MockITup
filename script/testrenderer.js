@@ -97,6 +97,9 @@ function make_qrcode(qrcodevalue)
 
 function get_html()
 {
+        /*Hides all settingsbars, in case some element may stimm be selected*/
+        hide_settingsbar()
+
         /*allows plugins to save their own data inside the html to complile later on*/
         for (var key in compile_save_data_to_html) 
         {
