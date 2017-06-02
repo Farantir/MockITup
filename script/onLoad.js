@@ -112,6 +112,27 @@ function initialize(selection)
    pictureEdit.add(menubar_Item("Clear Canvas",canvas_erase_picture));
    pictureEdit.add(menubar_Item("Toggle Background Color",toggel_dark_mode));
 
+
+   /*chekbox to toggle element boundarys*/
+   toggle_boundrys_checkbox = document.createElement("div");
+   toggle_boundrys_checkbox.checkbox = document.createElement("input");
+   toggle_boundrys_checkbox.appendChild(toggle_boundrys_checkbox.checkbox);
+   var textstuff = document.createElement("span");
+   textstuff.innerHTML = " Enable boundrys";
+   toggle_boundrys_checkbox.appendChild(textstuff);
+   toggle_boundrys_checkbox.checkbox.type = "checkbox";
+   document.body.appendChild(toggle_boundrys_checkbox);
+   toggle_boundrys_checkbox.checkbox.checked = true;
+   toggle_boundrys_checkbox.style.position = "absolute";
+   toggle_boundrys_checkbox.style.top = "80px";
+   toggle_boundrys_checkbox.style.left = "200px";
+   toggle_boundrys_checkbox.checkbox.onclick = function()
+   {
+        can_move_out_of_bounderys = !toggle_boundrys_checkbox.checkbox.checked;
+   }
+   
+    
+
    //creates the "new screen" button
    if(landscape_mode) newscreenbutton = $("createnewscreenlandscape");
    else newscreenbutton = $("createnewscreenportrait");
