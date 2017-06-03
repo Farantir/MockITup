@@ -178,6 +178,7 @@ function initializeAnimationPlugin()
     animation_types = elementbar();
     animation_types.add(menubar_Item("Linear two point",create_linear_two_point_animation));
     animation_types.add(menubar_Item("Siple Animation",create_sipmle_animation));
+    animation_types.add(menubar_Item("Stepped swiping Animation",create_swipe_animation));
 
     /*
     Allows other plugins to depent on the this plugin. 
@@ -274,6 +275,55 @@ function element_selected(e)
     animation_types.target = e.param1;
     /*makes the animation bar visible to the user, if he ist currently inside the animationview*/
     animation_bar_make_visible();
+}
+
+/*used to create an animation that ist executet on swiping.
+can be used to drag large elements between keypoints
+(like a tab view)*/
+function create_swipe_animation()
+{
+    general_pre_animation_stuff();
+    notifikationbar.show("Drag the Element to its Target Position");
+    animation_types.style.display = "none";
+    /*Creates the menu needet to confirm the current animation*/
+    animation_confirm_abort = elementbar();
+    animation_confirm_abort.add(menubar_Item("Confirm",()=>{apply_liear_two_point_animation();refacktor_to_swipe_animation()}));
+    animation_confirm_abort.add(menubar_Item("Abort",()=>{animation_types.style.display = "";reset_position_after_creating_animation();}));
+    animation_confirm_abort.add(menubar_Item("Add another Swipe Position",add_another_keyframe));
+    animation_confirm_abort.style.display = "";
+    /*creating a keyframe aray*/
+    animation_types.keyframes = [];
+}
+
+/*Funktion to refactor the last animtion into a swipe animation,
+swipe animations are basikly draggin an element between keypoints and autosnapping to the keypoints
+by the element*/
+function refacktor_to_swipe_animation()
+{
+    /*optains the animtion needet to refactor*/
+    var torefactor = animations[animations.length-1];
+    /*some simple sort algorithem. overhead vor more performant 
+    versions would be to high, considering the expectet maximum array size 
+    is 5-6 and the expectet size is 2-3*/
+    var hasswapped = true;
+    while(hasswapped)
+    {
+        /*havent swapped anything this runn*/
+        hasswapped = false;
+        for(var i in torefactor.keyframes)
+        {console.log(i + " : " + (torefactor.keyframes.length -1))
+            /*Swapping elements, if current dx larger than next*/
+            if(i < (torefactor.keyframes.length -1) && torefactor.keyframes[i].dx > torefactor.keyframes[(i+1)*1].dx)
+            {
+                var swap = torefactor.keyframes[i];
+                torefactor.keyframes[i] = torefactor.keyframes[(i+1)*1];
+                torefactor.keyframes[(i+1)*1] = swap;
+                hasswapped = true;
+            }        
+        }
+    } 
+    /*Applys the logick needet, to create the swiping effekt*/
+    logick_transaktions.push(new logick_transaktion(torefactor.target,"swipe animation-"+torefactor.id,torefactor.target,"swipe animation execute"));   
 }
 
 /*Simple way to create an animation. the user only needs to dra the element around*/
@@ -384,7 +434,6 @@ function add_another_keyframe()
     animation_types.keyframes.push(endpoint);
 }
 
-
 /*saves the animation*/
 function apply_liear_two_point_animation()
 {
@@ -421,6 +470,8 @@ function add_animaton_specifik_logick_buttons(animation)
         /*Creates the entys for the logick menu*/
         animation.target.logick_menu.add(logick_menu_item("Play Animation",function(){select_specifik_animation(this.offsetParent.parent,logick_animation_start);}));
         animation.target.logick_menu.add(logick_menu_item("Reverse Animation",function(){select_specifik_animation(this.offsetParent.parent,logick_animation_reverse);}));
+        animation.target.logick_menu.add(logick_menu_item("Play one frame",function(){select_specifik_animation(this.offsetParent.parent,logick_animation_play_one_step);}));
+        animation.target.logick_menu.add(logick_menu_item("reverse one frame",function(){select_specifik_animation(this.offsetParent.parent,logick_animation_reverse_one_step);}));
 
         /*Creates the entrys for the animation menu, used to select one of the elements animations specifikally*/
         animation.target.animation_selection_menu = elementbar();
@@ -518,6 +569,26 @@ function logick_animation_reverse(animation)
     reset_transaktion_elementindependent();
 }
 logick_dictionary["reverse_animation"] = "Reverses an animation for";
+
+/*registers the logick effekt to jump one animation step*/
+function logick_animation_play_one_step(animation)
+{
+    var transaktion = new logick_transaktion(evoker,evoking_aktion,animation.target,"play_one_step");
+    transaktion.animation = animation.id;
+    logick_transaktions.push(transaktion);
+    reset_transaktion_elementindependent();
+}
+logick_dictionary["play_one_step"] = "plays an animation step of ";
+
+/*registers the logick effekt to jump one animation step*/
+function logick_animation_reverse_one_step(animation)
+{
+    var transaktion = new logick_transaktion(evoker,evoking_aktion,animation.target,"reverse_one_step");
+    transaktion.animation = animation.id;
+    logick_transaktions.push(transaktion);
+    reset_transaktion_elementindependent();
+}
+logick_dictionary["reverse_one_step"] = "reverses an animation step of ";
 
 /*displays a custom menu, to select an animation a ne specifik element. If the animation gets selected
 an overload function ist executetd*/

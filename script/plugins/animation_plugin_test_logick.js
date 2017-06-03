@@ -96,7 +96,15 @@ test_logick_events["animation_finished"] = function(target,execute)
 test_logick_events["animation_reversed"] = function(target,execute)
 {
 }
+test_logick_events["swipe animation execute"] = function(target,execute)
+{
+}
 
+/*Needet for swipe animations. registers them to the mousemove event*/
+test_logick_events["swipe animation"] = function(target,execute)
+{
+    /*todo*/
+}
 
 /*Creates the logick needet to animate objekts*/
 test_logick_effekts["start_animation"] = function(target,unused,id)
@@ -116,6 +124,25 @@ test_logick_effekts["reverse_animation"] = function(target,unused,id)
     compiled_animations[animation].engine.startreverse();
 }
 
+/*Creates the logick needet to jump one animation step*/
+test_logick_effekts["play_one_step"] = function(target,unused,id)
+{
+    /*reciving the id of the target animation*/
+    var animation = test_logik_transaktions[id].animation_id;
+    /*Starts the animation engine of the given animaton*/
+    compiled_animations[animation].engine.play_step();
+}
+
+/*Creates the logick needet to jump one animation step*/
+test_logick_effekts["reverse_one_step"] = function(target,unused,id)
+{
+    /*reciving the id of the target animation*/
+    var animation = test_logik_transaktions[id].animation_id;
+    /*Starts the animation engine of the given animaton*/
+    compiled_animations[animation].engine.reverse_step();
+}
+
+
 function animation_engine(animation)
 {
     this.animation = animation;
@@ -127,6 +154,8 @@ function animation_engine(animation)
     /*gets the overflow, so repainting is only done, when movement is over 1px
        currently diaabbled, works without*/
     //this.overflow = {"x":0, "y":0};
+    /*setting default play mode*/
+    this.mode = "continuus";
 
     /*initializes the egine*/
     this.start = function()
@@ -166,11 +195,37 @@ function animation_engine(animation)
         }
     }
 
+    this.play_step = function()
+    {
+        /*setting direction to forward*/
+        this.direction = "forward";
+        /*Setting mode to one step only*/
+        this.mode = "one step";
+        this.firstframe = true; 
+        this.endcurrent = false;
+        /*Doing some lambda magick to pass this reference*/
+        window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);});
+    }
+
+    this.reverse_step = function()
+    {
+        /*setting animation direction to reverse*/
+        this.direction = "reverse";
+        /*Setting mode to one step only*/
+        this.mode = "one step";
+        this.firstframe = true; 
+        this.endcurrent = false;
+        /*Doing some lambda magick to pass this reference*/
+        window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);});
+        
+    }
+
     /*pauses the animation, whithout resetting it*/
     this.pause = function()
     {
        this.lastframetime = 0;
     }
+
 
     /*runns the animation, gets called each timestepp*/
     this.runn = function(curtime)
@@ -178,7 +233,6 @@ function animation_engine(animation)
         /*determening the delta time (the time between two frames)*/
         if(this.lastframetime == 0) this.lastframetime = curtime;
         deltatime = this.lastframetime - curtime;
-        this.lastframetime = curtime;
 
         var this_keyframe = this.animation.keyframes[this.current_frame];
         /*sets positions of previous keyframe to zero*/
@@ -215,6 +269,10 @@ function animation_engine(animation)
                 this.distance_in_current_frame.x = prev_keyframe_x;
                 this.distance_in_current_frame.y = prev_keyframe_y;
                 this.current_frame--;
+                if(this.mode == "one step" && !this.firstframe)
+                {
+                    this.endcurrent = true;            
+                }
         	}
         /*normal direction*/
         /*if frame ist oversteppt by one value, max values are used*/
@@ -223,17 +281,27 @@ function animation_engine(animation)
         	this.distance_in_current_frame.x = this_keyframe.dx;
             this.distance_in_current_frame.y = this_keyframe.dy;
             this.current_frame++;
+            if(this.mode == "one step" && !this.firstframe)
+            {
+                this.endcurrent = true;            
+            }
         }
+        /*needet for single step mode.
+        bug occurs, when delta already at the end or beginning
+        of the frame, so next frame needs to be used*/
+        if(this.lastframetime != curtime) this.firstframe = false;    
 
         /*So, finaly we come to the actual animation code. using 2d translations to move the element*/
         this.animation.target.style.transform = "translate("+this.distance_in_current_frame.x+"px, "+this.distance_in_current_frame.y+"px)";
 
+        /*Setting old frame time to this frame*/
+        this.lastframetime = curtime;
 
         /*stopping the animation if the end of the keyframes is reached*/
         if(this.direction == "reverse" && this.current_frame < 0){this.finisched();this.current_frame = 0;}
         else if(this.current_frame >= this.animation.keyframes.length){this.finisched();this.current_frame = (this.animation.keyframes.length -1)}
-        else{window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})
-        }
+        else if(this.endcurrent){this.lastframetime = 0;this.endcurrent = false;this.mode = "continuus";}
+        else{window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})}
     }
 }
 
