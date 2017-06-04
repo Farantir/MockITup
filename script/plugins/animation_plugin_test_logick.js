@@ -8,6 +8,8 @@
 var unresolved_relations = [];
 /*needet to combine the animations with the events (animation finished, animation reversed, etc)*/
 var link_animations_to_events = [];
+/*swiping animation that gets selectet, if one elment gets dragged*/
+var swiping_animation_to_drag;
 
 /*initioalizes the animaton engine*/
 compile_read_data_from_html.initialize_animations = function()
@@ -84,7 +86,43 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
                 }
             }
         }
+        if(animation.swiping_animation)
+        {
+            animation.target.addEventListener("mousedown",initialize_dragging_on_swipe_animation);
+            /*on element can only have one swiping animation*/
+            animation.target.swipe_animtion = animation
+        }
     }
+}
+
+function initialize_dragging_on_swipe_animation(e)
+{
+    document.addEventListener("mouseup",abort_dragging_on_swipe_animation);
+    document.addEventListener("mousemove",swiping_animation_gets_dragged);
+    swiping_animation_to_drag = e.target.swipe_animtion;
+    /*swiping should always move only the top most element*/
+    e.stopPropagation();
+}
+
+function abort_dragging_on_swipe_animation()
+{
+    document.removeEventListener("mouseup",abort_dragging_on_swipe_animation);
+    document.removeEventListener("mousemove",swiping_animation_gets_dragged);
+    swiping_animation_to_drag = null;
+    /*mouseup should only affekt the moved element*/
+    e.stopPropagation();
+}
+
+function swiping_animation_gets_dragged(e)
+{
+  var x = e.clientX;
+  var y = e.clientY + document.documentElement.scrollTop;
+
+  var posy = (y - swiping_animation_to_drag.target.offsety);
+  var posx = (x - swiping_animation_to_drag.target.offsetx);
+  
+  swiping_animation_to_drag.target.style.top = posy;
+  swiping_animation_to_drag.target.style.left = posx;
 }
 
 /*only there because the event system needs it. 
@@ -95,15 +133,6 @@ test_logick_events["animation_finished"] = function(target,execute)
 }
 test_logick_events["animation_reversed"] = function(target,execute)
 {
-}
-test_logick_events["swipe animation execute"] = function(target,execute)
-{
-}
-
-/*Needet for swipe animations. registers them to the mousemove event*/
-test_logick_events["swipe animation"] = function(target,execute)
-{
-    /*todo*/
 }
 
 /*Creates the logick needet to animate objekts*/
@@ -149,6 +178,8 @@ function animation_engine(animation)
     this.current_frame = 0;
     /*time at witch the last frame was*/
     this.lastframetime = 0;
+    /*playtime of the current frame*/
+    this.time_in_current_frame = 0;
     //this.time_in_current_frame = 0;
     this.distance_in_current_frame = {"x":0, "y":0};
     /*gets the overflow, so repainting is only done, when movement is over 1px
@@ -232,7 +263,10 @@ function animation_engine(animation)
     {
         /*determening the delta time (the time between two frames)*/
         if(this.lastframetime == 0) this.lastframetime = curtime;
-        deltatime = this.lastframetime - curtime;
+        deltatime = curtime - this.lastframetime;
+        
+        /*accumulates the time in the current frame*/
+        this.time_in_current_frame += deltatime;
 
         var this_keyframe = this.animation.keyframes[this.current_frame];
         /*sets positions of previous keyframe to zero*/
@@ -246,8 +280,8 @@ function animation_engine(animation)
 		}
 
         /*calculates the distance to be traveld in this frame*/
-        var deltax = -((this_keyframe.dx-prev_keyframe_x)/(this_keyframe.dtime*1000))*deltatime;
-        var deltay = -((this_keyframe.dy-prev_keyframe_y)/(this_keyframe.dtime*1000))*deltatime;
+        var deltax = ((this_keyframe.dx-prev_keyframe_x)/(this_keyframe.dtime*1000))*deltatime;
+        var deltay = ((this_keyframe.dy-prev_keyframe_y)/(this_keyframe.dtime*1000))*deltatime;
 
         /*calcualtion needs to be different, ich in reverse mode*/
         if(this.direction == "reverse")
@@ -264,11 +298,12 @@ function animation_engine(animation)
         if(this.direction == "reverse")
         {
         /*currently assuming only on keyframe animations. more complex logick needs to follow*/
-        	if(detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.x,deltax,prev_keyframe_x) || detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.y,deltay,prev_keyframe_y))
+        	if(this.overstepp(this.distance_in_current_frame.x,deltax,prev_keyframe_x) || this.overstepp(this.distance_in_current_frame.y,deltay,prev_keyframe_y))
         	{
                 this.distance_in_current_frame.x = prev_keyframe_x;
                 this.distance_in_current_frame.y = prev_keyframe_y;
                 this.current_frame--;
+                this.time_in_current_frame = 0;
                 if(this.mode == "one step" && !this.firstframe)
                 {
                     this.endcurrent = true;            
@@ -276,11 +311,12 @@ function animation_engine(animation)
         	}
         /*normal direction*/
         /*if frame ist oversteppt by one value, max values are used*/
-        }else if(detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.x,deltax,this_keyframe.dx) || detekt_overstepping_of_animation_keyframe(this.distance_in_current_frame.y,deltay,this_keyframe.dy))
+        }else if(this.overstepp(this.distance_in_current_frame.x,deltax,this_keyframe.dx) || this.overstepp(this.distance_in_current_frame.y,deltay,this_keyframe.dy))
         {
         	this.distance_in_current_frame.x = this_keyframe.dx;
             this.distance_in_current_frame.y = this_keyframe.dy;
             this.current_frame++;
+            this.time_in_current_frame = 0;
             if(this.mode == "one step" && !this.firstframe)
             {
                 this.endcurrent = true;            
@@ -300,18 +336,22 @@ function animation_engine(animation)
         /*stopping the animation if the end of the keyframes is reached*/
         if(this.direction == "reverse" && this.current_frame < 0){this.finisched();this.current_frame = 0;}
         else if(this.current_frame >= this.animation.keyframes.length){this.finisched();this.current_frame = (this.animation.keyframes.length -1)}
-        else if(this.endcurrent){this.lastframetime = 0;this.endcurrent = false;this.mode = "continuus";}
+        else if(this.endcurrent && this.mode == "one step"){this.lastframetime = 0;this.endcurrent = false;this.mode = "continuus";}
         else{window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})}
     }
+    
+    this.overstepp = detekt_overstepping_of_animation_keyframe;
 }
 
 /*function to determen overstepping of keyframes using the current value, the keyframe value and the current step*/
 function detekt_overstepping_of_animation_keyframe(value,delta,keyframe_max)
 {
-	/*Trivial, overstepping is impossible*/
+	/*Trivial, overstepping is impossible - at least i thougt so.
+	turns out, overstepping can occour, if two frames share the exakt same point.*/
 	if(delta==0)
 	{
-		return 	false;
+	    if(this.time_in_current_frame >= this.animation.keyframes[this.current_frame].dtime) return true;
+	    else return false;
 	/*steps decrease the value, so it needs to be smaler*/
 	}else if(delta<0)
 	{

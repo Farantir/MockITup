@@ -74,18 +74,24 @@ compile_save_data_to_html.save_animations = function()
         var array = logick_transaktions[m].evoking_aktion.split("-");
         if(array[0]=="animation_finished")
         {
-            if(!animations[array[1]].event_on_finisched) animations[array[1]].event_on_finisched = [];
-            animations[array[1]].event_on_finisched.push(m);
-            logick_transaktions[m].evoking_aktion = "animation_finished";
+            save_animation_events_to_html(array[1],"animation_finished","event_on_finisched",m)
         }else if(array[0]=="animation_reversed")
         {
-            if(!animations[array[1]].event_on_reversed) animations[array[1]].event_on_reversed = [];
-            animations[array[1]].event_on_reversed.push(m);
-            logick_transaktions[m].evoking_aktion = "animation_reversed";
+            save_animation_events_to_html(array[1],"animation_reversed","event_on_reversed",m)
         }
     }
     custom_presave_logick.save_animations(); 
 }
+
+/*function to save events to html, that a specifik animation owns*/
+function save_animation_events_to_html(animation_id,event_name,event_array_name,logick_transaktion)
+{
+    if(!animations[animation_id][event_array_name]) animations[animation_id][event_array_name] = [];
+    animations[animation_id][event_array_name].push(logick_transaktion);
+    logick_transaktions[logick_transaktion].evoking_aktion = event_name;
+}
+
+
 compile_save_data_to_html.save_animations.cleanup = function()
 {
     /*restoring previous state*/
@@ -93,24 +99,25 @@ compile_save_data_to_html.save_animations.cleanup = function()
     {
         if(animations[anim].event_on_finisched)
         {
-            /*resetting the evoking aktion*/
-            for(var id of animations[anim].event_on_finisched)
-            {
-                logick_transaktions[id].evoking_aktion = "animation_finished-" + animations[anim].id;
-            }
-            delete animations[anim].event_on_finisched;
+            precompile_restore_link_logick_to_animation(anim,"animation_finished","event_on_finisched");
         }
         if(animations[anim].event_on_reversed)
         {
-            /*resetting the evoking aktion*/
-            for(var id of animations[anim].event_on_reversed)
-            {
-                logick_transaktions[id].evoking_aktion = "animation_reversed-" + animations[anim].id;
-            }
-            delete animations[anim].event_on_reversed;
+            precompile_restore_link_logick_to_animation(anim,"animation_reversed","event_on_reversed");   
         }
     }   
     custom_presave_logick.save_animations.cleanup();
+}
+
+/*removes data addet to the animations for transfer to the logick view*/
+function precompile_restore_link_logick_to_animation(animation_id,evoking_name,proparty_name)
+{
+    /*resetting the evoking aktion*/
+    for(var id of animations[animation_id][proparty_name])
+    {
+        logick_transaktions[id].evoking_aktion = evoking_name+ "-" + animations[anim].id;
+    }
+    delete animations[animation_id][proparty_name];
 }
 
 /*deletes the current animation array to allow the Savedata to be addet*/
@@ -311,7 +318,7 @@ function refacktor_to_swipe_animation()
         /*havent swapped anything this runn*/
         hasswapped = false;
         for(var i in torefactor.keyframes)
-        {console.log(i + " : " + (torefactor.keyframes.length -1))
+        {
             /*Swapping elements, if current dx larger than next*/
             if(i < (torefactor.keyframes.length -1) && torefactor.keyframes[i].dx > torefactor.keyframes[(i+1)*1].dx)
             {
@@ -323,7 +330,7 @@ function refacktor_to_swipe_animation()
         }
     } 
     /*Applys the logick needet, to create the swiping effekt*/
-    logick_transaktions.push(new logick_transaktion(torefactor.target,"swipe animation-"+torefactor.id,torefactor.target,"swipe animation execute"));   
+    torefactor.swiping_animation = true;
 }
 
 /*Simple way to create an animation. the user only needs to dra the element around*/
@@ -368,6 +375,30 @@ function apply_simple_animation()
             kframe.dtime = (kframe.dtime - lasttime)/1000;
             lasttime = temp;
         }
+
+        /*Simple compression code, used to remove doubles
+        needet, becouse (for some reason) some touchpads 
+        fire movement events, eaven when the mouse pointer hasent moved.
+        yields (depending on the movementspeed)
+        0-50% of compression*/
+        var newframes = [];
+        var curframe = animation_types.keyframes[0];
+        for(var kframe of animation_types.keyframes)
+        {
+            if(kframe.dx == curframe.dx && kframe.dy == curframe.dy)
+            {
+                curframe = new keyframe(curframe.dtime+kframe.dtime,kframe.dx,kframe.dy)
+            }else 
+            {
+                newframes.push(curframe);
+                curframe = kframe;
+            }
+            
+        }
+
+        animation_types.keyframes = newframes;
+        console.log(animation_types.keyframes)
+        
 /*Compression code faulty and currently disabeld. needs to be reworked in the future*
 /********************************************************************************************/
         /*removing all keyframes that share the same vector direction
