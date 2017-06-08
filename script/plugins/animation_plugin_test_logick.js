@@ -100,11 +100,19 @@ function initialize_dragging_on_swipe_animation(e)
     document.addEventListener("mouseup",abort_dragging_on_swipe_animation);
     document.addEventListener("mousemove",swiping_animation_gets_dragged);
     swiping_animation_to_drag = e.target.swipe_animtion;
+    /*this value is the offset needet to set the translate values later on.
+    translate is relative to the objekts origin, so this calculation is different
+    from other offset calculations.*/
+    /*                 origin of the       current Mouse                     current translation of the objekt*/
+    /*                 Element               Position                        or 0, if objekt hasent been moved jet*/
+    e.target.offsetx = getPos(e.target).x + (e.pageX - getPos(e.target).x - (e.target.current_x_value || 0)); 
+    //e.target.offsety = e.pageY; //- e.target.offsetTop;
+        
     /*swiping should always move only the top most element*/
     e.stopPropagation();
 }
 
-function abort_dragging_on_swipe_animation()
+function abort_dragging_on_swipe_animation(e)
 {
     document.removeEventListener("mouseup",abort_dragging_on_swipe_animation);
     document.removeEventListener("mousemove",swiping_animation_gets_dragged);
@@ -113,16 +121,46 @@ function abort_dragging_on_swipe_animation()
     e.stopPropagation();
 }
 
+//todo
 function swiping_animation_gets_dragged(e)
 {
   var x = e.clientX;
-  var y = e.clientY + document.documentElement.scrollTop;
+  //var y = e.clientY + document.documentElement.scrollTop;
 
-  var posy = (y - swiping_animation_to_drag.target.offsety);
+  //var posy = (y - swiping_animation_to_drag.target.offsety);
   var posx = (x - swiping_animation_to_drag.target.offsetx);
-  
-  swiping_animation_to_drag.target.style.top = posy;
-  swiping_animation_to_drag.target.style.left = posx;
+
+/*segment not working, should determen the y value of the animation*/
+/*************************************************************************************************/
+  var keyframes = swiping_animation_to_drag.keyframes;
+  var posy = null;
+  for(var i in keyframes)
+  {console.log(keyframes[i].dx + " " + posx + " " + i)
+    if(keyframes[i].dx>posx)
+    {
+        if(i == 0)
+        {      
+            posx = keyframes[0].dx;
+            swiping_animation_to_drag.target.current_x_value = posx;
+            posy = keyframes[0].dy;     
+        }else
+        {
+            /*Calculation the slope between the two frames*/
+            posy = ((keyframes[i].dy - keyframes[i-1].dy)/(keyframes[i].dx - keyframes[i-1].dx))*posx;
+        }
+    }
+  }
+  if(posy == null)
+  {
+    posx = keyframes[keyframes.length-1].dx;
+    swiping_animation_to_drag.target.current_x_value = posx;
+    posy = keyframes[keyframes.length-1].dy;
+  }
+/*******************************************************************************************************************/
+  //swiping_animation_to_drag.target.style.top = posy + "px";
+  //swiping_animation_to_drag.target.style.left = posx + "px";
+  swiping_animation_to_drag.target.style.transform = "translate("+posx+"px, "+ "0px");//+ posy + "px)";
+  swiping_animation_to_drag.target.current_x_value = posx;
 }
 
 /*only there because the event system needs it. 

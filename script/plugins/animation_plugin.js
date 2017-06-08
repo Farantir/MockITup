@@ -320,11 +320,11 @@ function refacktor_to_swipe_animation()
         for(var i in torefactor.keyframes)
         {
             /*Swapping elements, if current dx larger than next*/
-            if(i < (torefactor.keyframes.length -1) && torefactor.keyframes[i].dx > torefactor.keyframes[(i+1)*1].dx)
+            if(i < (torefactor.keyframes.length -1) && torefactor.keyframes[i].dx > torefactor.keyframes[i*1+1].dx)
             {
                 var swap = torefactor.keyframes[i];
-                torefactor.keyframes[i] = torefactor.keyframes[(i+1)*1];
-                torefactor.keyframes[(i+1)*1] = swap;
+                torefactor.keyframes[i] = torefactor.keyframes[i*1+1];
+                torefactor.keyframes[i*1+1] = swap;
                 hasswapped = true;
             }        
         }
