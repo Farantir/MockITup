@@ -144,6 +144,15 @@ test_logick_effekts["start_animation"] = function(target,unused,id)
     compiled_animations[animation].engine.start();
 }
 
+/*Creates the logick needet to pause the animation of objekts*/
+test_logick_effekts["pause_animation"] = function(target,unused,id)
+{
+    /*reciving the id of the target animation*/
+    var animation = test_logik_transaktions[id].animation_id;
+    /*pauses the animation engine of the given animaton*/
+    compiled_animations[animation].engine.halt_animation();
+}
+
 /*Creates the logick needet to reverse the animation of objekts*/
 test_logick_effekts["reverse_animation"] = function(target,unused,id)
 {
@@ -193,6 +202,8 @@ function animation_engine(animation)
     {
         /*setting direction to forward*/
         this.direction = "forward";
+        /*unpausig the animation*/
+        this.pause_animation = false;
         /*Doing some lambda magick to pass this reference*/
         window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);});
     }
@@ -201,9 +212,17 @@ function animation_engine(animation)
     {
         /*setting animation direction to reverse*/
         this.direction = "reverse";
+        /*unpausig the animation*/
+        this.pause_animation = false;
         /*Doing some lambda magick to pass this reference*/
         window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);});
         
+    }
+    
+    /*pauses the current animation*/
+    this.halt_animation = function()
+    {
+        this.pause_animation = true;
     }
     
     /*resets the animation*/
@@ -234,6 +253,8 @@ function animation_engine(animation)
         this.mode = "one step";
         this.firstframe = true; 
         this.endcurrent = false;
+        /*unpausig the animation*/
+        this.pause_animation = false;
         /*Doing some lambda magick to pass this reference*/
         window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);});
     }
@@ -246,6 +267,8 @@ function animation_engine(animation)
         this.mode = "one step";
         this.firstframe = true; 
         this.endcurrent = false;
+        /*unpausig the animation*/
+        this.pause_animation = false;
         /*Doing some lambda magick to pass this reference*/
         window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);});
         
@@ -334,7 +357,8 @@ function animation_engine(animation)
         this.lastframetime = curtime;
 
         /*stopping the animation if the end of the keyframes is reached*/
-        if(this.direction == "reverse" && this.current_frame < 0){this.finisched();this.current_frame = 0;}
+        if(this.pause_animation) {this.pause_animation=false;}
+        else if(this.direction == "reverse" && this.current_frame < 0){this.finisched();this.current_frame = 0;}
         else if(this.current_frame >= this.animation.keyframes.length){this.finisched();this.current_frame = (this.animation.keyframes.length -1)}
         else if(this.endcurrent && this.mode == "one step"){this.lastframetime = 0;this.endcurrent = false;this.mode = "continuus";}
         else{window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);})}

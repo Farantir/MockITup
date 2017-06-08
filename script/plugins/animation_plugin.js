@@ -503,6 +503,7 @@ function add_animaton_specifik_logick_buttons(animation)
         animation.target.logick_menu.add(logick_menu_item("Reverse Animation",function(){select_specifik_animation(this.offsetParent.parent,logick_animation_reverse);}));
         animation.target.logick_menu.add(logick_menu_item("Play one frame",function(){select_specifik_animation(this.offsetParent.parent,logick_animation_play_one_step);}));
         animation.target.logick_menu.add(logick_menu_item("reverse one frame",function(){select_specifik_animation(this.offsetParent.parent,logick_animation_reverse_one_step);}));
+        animation.target.logick_menu.add(logick_menu_item("Pause Animation",function(){select_specifik_animation(this.offsetParent.parent,logick_animation_pause_animation);}));
 
         /*Creates the entrys for the animation menu, used to select one of the elements animations specifikally*/
         animation.target.animation_selection_menu = elementbar();
@@ -620,6 +621,16 @@ function logick_animation_reverse_one_step(animation)
     reset_transaktion_elementindependent();
 }
 logick_dictionary["reverse_one_step"] = "reverses an animation step of ";
+
+/*registers the logick effekt to pause the animation*/
+function logick_animation_pause_animation(animation)
+{
+    var transaktion = new logick_transaktion(evoker,evoking_aktion,animation.target,"pause_animation");
+    transaktion.animation = animation.id;
+    logick_transaktions.push(transaktion);
+    reset_transaktion_elementindependent();
+}
+logick_dictionary["pause_animation"] = "pauses an animation of ";
 
 /*displays a custom menu, to select an animation a ne specifik element. If the animation gets selected
 an overload function ist executetd*/
