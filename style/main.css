@@ -31,6 +31,23 @@ ul.menubar li a {
 	
 }
 
+.toggle_boundrys_checkbox
+{
+    left: 140px;
+    position: absolute;
+    color: white;
+    padding: 14px 16px;
+}
+.toggle_boundrys_checkbox input
+{
+    margin: 0px;
+}
+.toggle_boundrys_checkbox span
+{
+    position:relative;
+    top: -2px;
+}
+
 ul.menubar li a:hover:not(.active) {
     background-color: #ea5a00;
 }

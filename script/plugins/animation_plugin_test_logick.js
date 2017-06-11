@@ -132,7 +132,7 @@ function swiping_animation_gets_dragged(e)
 
 /*segment not working, should determen the y value of the animation*/
 /*************************************************************************************************/
-  var keyframes = swiping_animation_to_drag.keyframes;
+/*  var keyframes = swiping_animation_to_drag.keyframes;
   var posy = null;
   for(var i in keyframes)
   {console.log(keyframes[i].dx + " " + posx + " " + i)
@@ -144,9 +144,9 @@ function swiping_animation_gets_dragged(e)
             swiping_animation_to_drag.target.current_x_value = posx;
             posy = keyframes[0].dy;     
         }else
-        {
+        {*/
             /*Calculation the slope between the two frames*/
-            posy = ((keyframes[i].dy - keyframes[i-1].dy)/(keyframes[i].dx - keyframes[i-1].dx))*posx;
+     /*       posy = ((keyframes[i].dy - keyframes[i-1].dy)/(keyframes[i].dx - keyframes[i-1].dx))*posx;
         }
     }
   }
@@ -155,12 +155,12 @@ function swiping_animation_gets_dragged(e)
     posx = keyframes[keyframes.length-1].dx;
     swiping_animation_to_drag.target.current_x_value = posx;
     posy = keyframes[keyframes.length-1].dy;
-  }
+  }*/
 /*******************************************************************************************************************/
   //swiping_animation_to_drag.target.style.top = posy + "px";
   //swiping_animation_to_drag.target.style.left = posx + "px";
-  swiping_animation_to_drag.target.style.transform = "translate("+posx+"px, "+ "0px");//+ posy + "px)";
-  swiping_animation_to_drag.target.current_x_value = posx;
+ /* swiping_animation_to_drag.target.style.transform = "translate("+posx+"px, "+ "0px"); 
+  swiping_animation_to_drag.target.current_x_value = posx;*/
 }
 
 /*only there because the event system needs it. 

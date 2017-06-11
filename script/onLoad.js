@@ -121,15 +121,14 @@ function initialize(selection)
    textstuff.innerHTML = " Enable boundrys";
    toggle_boundrys_checkbox.appendChild(textstuff);
    toggle_boundrys_checkbox.checkbox.type = "checkbox";
-   document.body.appendChild(toggle_boundrys_checkbox);
+   //document.body.appendChild(toggle_boundrys_checkbox);
    toggle_boundrys_checkbox.checkbox.checked = true;
-   toggle_boundrys_checkbox.style.position = "absolute";
-   toggle_boundrys_checkbox.style.top = "80px";
-   toggle_boundrys_checkbox.style.left = "200px";
+   toggle_boundrys_checkbox.classList.add("toggle_boundrys_checkbox");
    toggle_boundrys_checkbox.checkbox.onclick = function()
    {
         can_move_out_of_bounderys = !toggle_boundrys_checkbox.checkbox.checked;
    }
+   default_Menu.appendChild(toggle_boundrys_checkbox);
    
     
 
