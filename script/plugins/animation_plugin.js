@@ -232,6 +232,20 @@ function changetoAnimationView()
     fireEvent("in animation View", document);
 }
 
+/*before an element gets deletet, all of its animations need to be deletet to*/
+execute_before_element_deletion.delete_all_animtions_of_the_element = function(element)
+{
+    for(var anim_id = 0; anim_id<animations.length; anim_id++)
+    {
+        if(animations[anim_id].target == element)
+        {
+            delete_animation(anim_id);
+            anim_id--;
+            continue;
+        }
+    }
+}
+
 /*deletes an anmation with its given animation id.
 deletes all logick transaktions containing this animation 
 afterwards*/

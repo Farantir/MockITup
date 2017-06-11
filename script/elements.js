@@ -1,5 +1,12 @@
-/*************************/
-/*This File contains all the logic */
+/*******************************************************/
+/*This File contains all the logik around Elements.    */
+/*It contains the function make_container whitch       */
+/*is used to create elements out of a dom structure.   */
+/*it also contais the elements array, where all current*/ 
+/*elements get registert. All core elements are also   */
+/*inside this file.                                    */
+/*******************************************************/
+
 /*Allows plugins to execute their own code, after an element has been
 moved. the new psoition of the element will not be given, nor 
 will the element itself be given. To aquire these informations
@@ -723,15 +730,17 @@ function make_Container(elem,elemtype)
 			        execute_before_element_deletion[key](this);
 		          }
 		        }
-				for (trans of logick_transaktions)
+				for (var trans = 0; trans<logick_transaktions.length;trans++)
 				{
-					if (this == trans.evoker)
+					if (this == logick_transaktions[trans].evoker)
 					{
-						remove_element_actionbar(trans);	
+						remove_element_actionbar(logick_transaktions[trans]);	
+						trans--;
 					}
-					else if (this == trans.target)
+					else if (this == logick_transaktions[trans].target)
 					{
-						remove_element_actionbar(trans);	
+						remove_element_actionbar(logick_transaktions[trans]);	
+						trans--;
 					}
 			 	}
 				this.settingsbar.remove();
