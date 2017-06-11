@@ -288,6 +288,20 @@ function delete_animation(anim_id)
     }
 }
 
+/*Function to create the animaton menu bar next to the screen*/
+function create_animation_menu(parent)
+{
+    //todo
+    menu = document.createElement("div");
+    menu.ul = document.createElement("ul");
+	//List of Animation images
+    menu.appendChild(menu.ul);   	
+	
+    menu.classList.add("settingsbar");
+    menu.style.display = "";
+    menu.parent = parent;
+}
+
 /*Function to create a menu used to input numbers*/
 function number_input_overlay(target,set,someobjekt)
 {
