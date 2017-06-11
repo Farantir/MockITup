@@ -1,9 +1,15 @@
+/*************************/
+/*This File contains all the logic */
 /*Allows plugins to execute their own code, after an element has been
 moved. the new psoition of the element will not be given, nor 
 will the element itself be given. To aquire these informations
 an eventlistener has to be bound to the element selected event.
 the selected element will allways be the moved one*/
 var execute_after_element_dragging = {};
+/*Allows plugins to execute their own code, when an element gets deletet.
+all functions addes to this object will get calles on element deletion 
+with the element to delete as a parameter*/
+var execute_before_element_deletion = {};
 
 /*defines if an element is able to move aut of its parents 
 bounderys*/
@@ -709,6 +715,14 @@ function make_Container(elem,elemtype)
 					m.removeme = this.removeme;
 					m.removeme();
 				}
+			    /*allows plugins to perform aktions before an element gets deletet*/
+		        for (var key in execute_before_element_deletion) 
+		        {
+		          if (execute_before_element_deletion.hasOwnProperty(key)) 
+		          {
+			        execute_before_element_deletion[key](this);
+		          }
+		        }
 				for (trans of logick_transaktions)
 				{
 					if (this == trans.evoker)

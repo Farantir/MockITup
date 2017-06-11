@@ -231,6 +231,49 @@ function changetoAnimationView()
     /*event used to signal other plugins, that the animation view got selectet*/
     fireEvent("in animation View", document);
 }
+
+/*deletes an anmation with its given animation id.
+deletes all logick transaktions containing this animation 
+afterwards*/
+function delete_animation(anim_id)
+{
+    /*loops trough array*/
+    for(var trans_id = 0; trans_id < logick_transaktions.length; trans_id++)
+    {
+        if(logick_transaktions[trans_id].animation == anim_id)
+        {
+            remove_element_actionbar(logick_transaktions[trans_id]);
+            /*If element got deletet, index needs to be reduced and loop continues*/
+            trans_id--;
+            continue;
+        }else if(logick_transaktions[trans_id].evoking_aktion.split("_")[0] == "animation" && logick_transaktions[trans_id].evoking_aktion.split("-")[1] == anim_id)
+        {
+            remove_element_actionbar(logick_transaktions[trans_id]);
+            trans_id--;
+            continue;
+        }
+    }
+    /*removing the animation from the array*/
+    animations.splice(anim_id, 1);
+    /*fixing the ids of all following animatons*/
+    for(anim_id; anim_id<animations.length; anim_id++)
+    {
+    /*Fixes id of logick transaktions*/
+        for(var trans_id = 0; trans_id < logick_transaktions.length; trans_id++)
+        {
+            if(logick_transaktions[trans_id].animation == animations[anim_id].id)
+            {
+                logick_transaktions[trans_id].animation = anim_id;
+            }else if(logick_transaktions[trans_id].evoking_aktion.split("_")[0] == "animation" && logick_transaktions[trans_id].evoking_aktion.split("-")[1] == animations[anim_id].id)
+            {
+                logick_transaktions[trans_id].evoking_aktion = logick_transaktions[trans_id].evoking_aktion.split("-")[0] + "-" + anim_id;
+            }
+        }
+        /*finaly, fixing the id of the animation itself*/
+        animations[anim_id].id = anim_id;
+    }
+}
+
 /*Function to create a menu used to input numbers*/
 function number_input_overlay(target,set,someobjekt)
 {
