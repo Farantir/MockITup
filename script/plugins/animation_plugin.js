@@ -19,6 +19,9 @@ var animations = [];
 /*This event gets fired, after the initialisation in the onload.js has finisched*/
 document.addEventListener("initialize",initializeAnimationPlugin);
 
+/*div that displays animation previews*/
+var aniamtion_preview_container = null;
+
 /*constructor for animations*/
 function animation(type,target,keyframes,name)
 {
@@ -342,6 +345,7 @@ function animation_menu_entry(animation)
     animation_menu.menuEntrys.push(icon_remane);
     animation_menu.onmouseover = function()
     {
+        show_animation_prewiew(this.target);
         for(var entry of this.menuEntrys)
         {
             this.appendChild(entry);
@@ -349,6 +353,7 @@ function animation_menu_entry(animation)
     }
     animation_menu.onmouseleave = function()
     {
+        remove_animation_prewiev();
         this.innerHTML = "";
         this.appendChild(this.animation_icon);
     }
@@ -670,8 +675,20 @@ function add_animaton_specifik_logick_buttons(animation)
     /*giving the new item its target animation*/
     itemtoadd.animationtselect = animation;
     animation.target.animation_selection_menu.add(itemtoadd);
+    
+    /*applays the preview function on mouse over, so the user knows whitch animation is
+    whitch eaven without naming them*/
+    itemtoadd.onmouseover = function()
+    {
+        show_animation_prewiew(this.animationtselect);
+    }
+    itemtoadd.onmouseleave = remove_animation_prewiev;
+    
 }
 
+/*Function used to rename animatons
+changest the name of the animation and then the name of the 
+menu entry accordingly*/
 function rename_animation(animation,name)
 {
     /*fixes the name in the animation menu entry*/
@@ -681,6 +698,44 @@ function rename_animation(animation,name)
     }
     /*Setting new name of the animation*/
     animation.name = name;
+}
+
+/*draws a preview of an animation onto the screen*/
+function show_animation_prewiew(animation)
+{
+    remove_animation_prewiev();
+    aniamtion_preview_container = document.createElement("div");
+    var proto = animation.target.cloneNode(true);
+    proto.style.opacity = "0.3";
+    proto.style.top = 0;
+    proto.style.left = 0;
+    var delta = 1;
+    /*if keyframe array is to large, only a fraction of the frames is rendert, to ensure performance doesen drop 
+    redically*/
+    if(animation.keyframes.length>30) delta = 2;
+    if(animation.keyframes.length>60) delta = 4;
+    if(animation.keyframes.length>100) delta = 10;
+    if(animation.keyframes.length>200) delta = 20;
+    if(animation.keyframes.length>500) delta = 30
+    if(animation.keyframes.length>700) delta = 50;
+    if(animation.keyframes.length>1500) delta = 100;
+    for(var i = 0; i < animation.keyframes.length; i=i+delta)
+    {
+        k = animation.keyframes[i];
+        var new_proto = proto.cloneNode(true);
+        new_proto.style.transform = "translate("+k.dx+"px, "+k.dy+"px)";
+        aniamtion_preview_container.appendChild(new_proto);
+    }   
+    animation.target.appendChild(aniamtion_preview_container);
+}
+/*removes previews of animations*/
+function remove_animation_prewiev()
+{
+    if(aniamtion_preview_container != null) 
+    {
+        aniamtion_preview_container.remove();
+        aniamtion_preview_container = null;
+    }
 }
 
 /*this function is used to obtain the parent screen, of an emlement recursively*/
