@@ -337,7 +337,7 @@ function animation_menu_entry(animation)
     animation_menu.animation_icon = animation_settings_Icon("animation.svg",null,"");
     animation_menu.appendChild(animation_menu.animation_icon);
     animation_menu.menuEntrys = [];
-    var icon_delete = animation_settings_Icon("delete.svg",function(){delete_animation(this.parent.target.id);},"Deletes the Animation");
+    var icon_delete = animation_settings_Icon("delete.svg",function(){delete_animation(this.parent.target.id);remove_animation_prewiev();},"Deletes the Animation");
     var icon_remane = animation_settings_Icon("textedit.svg",function(){text_input_overlay(this.parent,function(value){rename_animation(this.target.target,value);})},"Renames the Animation");
     icon_remane.parent = animation_menu;
     icon_delete.parent = animation_menu;

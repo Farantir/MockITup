@@ -33,6 +33,14 @@ compile_data_for_each_tag.get_Animations = function(attribute_name,attrigute_val
     }
     
 }
+
+compile_data_for_each_element.fix_dragging_problem = function(element)
+{
+   //element.classList.add("post_compiling_fixup");
+   if(element.tagName.toLowerCase() == "img") element.setAttribute('draggable', false);
+}
+ 
+
 /*Fixing those relation problems mentiond earlier, also saves values for resizing on mobile devices*/
 compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = function()
 {
@@ -95,17 +103,27 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
     }
 }
 
+/*pubbels the DOM tree up, until an elemnte was found, that has a swipe animation*/
+function get_element_to_be_swiped(element)
+{
+    if(element.swipe_animtion == null)
+    {
+        return get_element_to_be_swiped(element.offsetParent);
+    }
+    return element;
+}
+
 function initialize_dragging_on_swipe_animation(e)
 {
     document.addEventListener("mouseup",abort_dragging_on_swipe_animation);
     document.addEventListener("mousemove",swiping_animation_gets_dragged);
-    swiping_animation_to_drag = e.target.swipe_animtion;
+    swiping_animation_to_drag = get_element_to_be_swiped(e.target).swipe_animtion;
     /*this value is the offset needet to set the translate values later on.
     translate is relative to the objekts origin, so this calculation is different
     from other offset calculations.*/
     /*                 origin of the       current Mouse                     current translation of the objekt*/
     /*                 Element               Position                        or 0, if objekt hasent been moved jet*/
-    e.target.offsetx = getPos(e.target).x + (e.pageX - getPos(e.target).x - (e.target.current_x_value || 0)); 
+    swiping_animation_to_drag.target.offsetx = getPos(swiping_animation_to_drag.target).x + (e.pageX - getPos(swiping_animation_to_drag.target).x - (swiping_animation_to_drag.engine.distance_in_current_frame.x  || 0)); 
     //e.target.offsety = e.pageY; //- e.target.offsetTop;
         
     /*swiping should always move only the top most element*/
@@ -116,6 +134,10 @@ function abort_dragging_on_swipe_animation(e)
 {
     document.removeEventListener("mouseup",abort_dragging_on_swipe_animation);
     document.removeEventListener("mousemove",swiping_animation_gets_dragged);
+    
+    if(swiping_animation_to_drag.target.swiping_animation_direction == "reverse") swiping_animation_to_drag.engine.reverse_step();
+    else if(swiping_animation_to_drag.target.swiping_animation_direction == "forward") swiping_animation_to_drag.engine.play_step();
+    
     swiping_animation_to_drag = null;
     /*mouseup should only affekt the moved element*/
     e.stopPropagation();
@@ -130,37 +152,50 @@ function swiping_animation_gets_dragged(e)
   //var posy = (y - swiping_animation_to_drag.target.offsety);
   var posx = (x - swiping_animation_to_drag.target.offsetx);
 
-/*segment not working, should determen the y value of the animation*/
-/*************************************************************************************************/
-/*  var keyframes = swiping_animation_to_drag.keyframes;
+
+  var keyframes = swiping_animation_to_drag.keyframes;
   var posy = null;
   for(var i in keyframes)
-  {console.log(keyframes[i].dx + " " + posx + " " + i)
+  {
     if(keyframes[i].dx>posx)
     {
+        /*setting the current frame of the aniation*/
+        swiping_animation_to_drag.engine.current_frame = i;
         if(i == 0)
         {      
             posx = keyframes[0].dx;
-            swiping_animation_to_drag.target.current_x_value = posx;
-            posy = keyframes[0].dy;     
+            swiping_animation_to_drag.engine.distance_in_current_frame.x = posx;
+            posy = keyframes[0].dy;
+            /*no need to move anywhere*/
+            swiping_animation_to_drag.target.swiping_animation_direction = "";
+            break;     
         }else
-        {*/
-            /*Calculation the slope between the two frames*/
-     /*       posy = ((keyframes[i].dy - keyframes[i-1].dy)/(keyframes[i].dx - keyframes[i-1].dx))*posx;
+        {
+            /*     maxy of the last frame +   Calculation of the slope between the two frames * the distance on that slope (currentx-last frame x)*/
+            posy = keyframes[i-1].dy + ((keyframes[i].dy - keyframes[i-1].dy)/(keyframes[i].dx - keyframes[i-1].dx))*(posx-keyframes[i-1].dx);
+            
+            /*calculation the direction the element should move, if it gets released*/
+            /*if  travelt distance between frames is greater than half the distance between frames,
+            direction ist forward*/
+            if((posx-keyframes[i-1].dx)>(keyframes[i].dx - keyframes[i-1].dx)*0.5) swiping_animation_to_drag.target.swiping_animation_direction = "forward";
+            else swiping_animation_to_drag.target.swiping_animation_direction = "reverse";
+            
+            break;
         }
     }
   }
   if(posy == null)
   {
     posx = keyframes[keyframes.length-1].dx;
-    swiping_animation_to_drag.target.current_x_value = posx;
+    swiping_animation_to_drag.engine.distance_in_current_frame.x  = posx;
     posy = keyframes[keyframes.length-1].dy;
-  }*/
-/*******************************************************************************************************************/
-  //swiping_animation_to_drag.target.style.top = posy + "px";
-  //swiping_animation_to_drag.target.style.left = posx + "px";
- /* swiping_animation_to_drag.target.style.transform = "translate("+posx+"px, "+ "0px"); 
-  swiping_animation_to_drag.target.current_x_value = posx;*/
+    /*no need to move anywhere*/
+    swiping_animation_to_drag.target.swiping_animation_direction = "";
+  }
+
+  swiping_animation_to_drag.target.style.transform = "translate("+posx+"px, "+ posy +"px)"; 
+  swiping_animation_to_drag.engine.distance_in_current_frame.x = posx;
+  swiping_animation_to_drag.engine.distance_in_current_frame.y = posy;
 }
 
 /*only there because the event system needs it. 
