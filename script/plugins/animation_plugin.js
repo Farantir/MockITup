@@ -320,7 +320,6 @@ function create_animation_menu(parent)
         this.appendChild(target);
         this.entrys.push(target);
     }
-    animation
     menu.hide = function(){};
     
     return menu;
@@ -336,8 +335,11 @@ function animation_menu_entry(animation)
     animation_menu.appendChild(animation_menu.animation_icon);
     animation_menu.menuEntrys = [];
     var icon_delete = animation_settings_Icon("delete.svg",function(){delete_animation(this.parent.target.id);},"Deletes the Animation");
+    var icon_remane = animation_settings_Icon("textedit.svg",function(){text_input_overlay(this.parent,function(value){rename_animation(this.target.target,value);})},"Renames the Animation");
+    icon_remane.parent = animation_menu;
     icon_delete.parent = animation_menu;
     animation_menu.menuEntrys.push(icon_delete);
+    animation_menu.menuEntrys.push(icon_remane);
     animation_menu.onmouseover = function()
     {
         for(var entry of this.menuEntrys)
@@ -663,11 +665,22 @@ function add_animaton_specifik_logick_buttons(animation)
     /*now, add a new enty tho the animation menu, containing the current animation*/
     screen.animation_menu.add(animation_menu_entry(animation));
     
-    /*finally, we are adding the new animation to the animation menu
+    /*finally, we are adding the new animation to the animation menu*/
     var itemtoadd = elementbar_Item(animation.name,animation_selection_menu_button_click);
     /*giving the new item its target animation*/
     itemtoadd.animationtselect = animation;
     animation.target.animation_selection_menu.add(itemtoadd);
+}
+
+function rename_animation(animation,name)
+{
+    /*fixes the name in the animation menu entry*/
+    for(child of animation.target.animation_selection_menu.children)
+    {
+        if(child.animationtselect == animation) child.innerHTML = "<a>" + name + "</a>";
+    }
+    /*Setting new name of the animation*/
+    animation.name = name;
 }
 
 /*this function is used to obtain the parent screen, of an emlement recursively*/
