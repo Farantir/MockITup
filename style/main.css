@@ -194,9 +194,8 @@ div.settingsbar {
 }
 
 div.settingsbar ul {
-	postition: absolute;
-	top : 0px;
-	left: 0px;
+    position: relative;
+    display: block;
 	margin: 0px;
 	padding: 0px;
 }

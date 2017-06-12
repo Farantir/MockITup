@@ -1,0 +1,38 @@
+.animation_menu
+{
+	position: absolute;
+	margin: 0px;
+	padding: 0px;
+
+}
+
+div.animation_menu_entry
+{
+    position: relative;
+	margin: 0px;
+	padding: 0px;
+	height: 30px;
+}
+
+div.animation_menu div div {
+	border-radius: 10px 10px 10px 10px;
+	float: left;
+	border-style: solid;
+	border-width: medium;
+	background-color: #CCC;
+    padding-left: 1px;
+	padding-right: 1px;
+	margin-right: 1px;
+	cursor: pointer; cursor: hand;
+}
+
+div.animation_menu img {
+	margin: 0px;
+	width: 18px;
+	height: 18px;
+}
+
+div.animation_menu div div:hover {	
+	color: #b43092;
+}
+

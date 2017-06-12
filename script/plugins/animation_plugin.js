@@ -20,12 +20,13 @@ var animations = [];
 document.addEventListener("initialize",initializeAnimationPlugin);
 
 /*constructor for animations*/
-function animation(type,target,keyframes)
+function animation(type,target,keyframes,name)
 {
     this.target = target;
     this.type = type;
     this.keyframes = keyframes || [];
     this.id;
+    this.name = name || "Animation"
     
     this.addKeyframe = function(frame)
     {
@@ -49,7 +50,7 @@ custom_presave_logick.save_animations = function()
         /*Looks complicatet, but its really just using json stringify on the animation objekt and 
         doing some stuff to prevent a cyclic objekt exeption*/
         var animationtarget = animations[anim].target
-        animations[anim].target = null;
+        animations[anim].target = null;animation
         animationtarget.dataset["animation-"+anim] = JSON.stringify(animations[anim]);
         animations[anim].target = animationtarget;
     }
@@ -211,7 +212,7 @@ function changetoAnimationView()
     /*registers the cleaning funtion, so it gets executed everytime the screen is changed*/
     custom_screenchange_cleanup.clean_animation_screen = clean_animation_screen;
 
-    notifikationbar.show("Klick on the Element you want to Animate"); 
+    notifikationbar.show("Klick on the Element you want to Animate"); animation
     $("screencontainer").style.display="";
 
     /*Checks whether an element had been pree-selected in another screen.
@@ -251,6 +252,17 @@ deletes all logick transaktions containing this animation
 afterwards*/
 function delete_animation(anim_id)
 {
+    /*remves the corresponding animation icon from the screen*/
+    var screen_animation_menu = find_parent_screen(animations[anim_id].target).animation_menu.entrys;
+    for (var anim_menu of screen_animation_menu)
+    {
+        if(anim_menu.target.id == anim_id)
+        {
+            screen_animation_menu.splice(screen_animation_menu.indexOf(anim_menu),1);
+            anim_menu.remove();
+            break;
+        }
+    }
     /*loops trough array*/
     for(var trans_id = 0; trans_id < logick_transaktions.length; trans_id++)
     {
@@ -291,15 +303,70 @@ function delete_animation(anim_id)
 /*Function to create the animaton menu bar next to the screen*/
 function create_animation_menu(parent)
 {
-    //todo
     menu = document.createElement("div");
-    menu.ul = document.createElement("ul");
-	//List of Animation images
-    menu.appendChild(menu.ul);   	
-	
-    menu.classList.add("settingsbar");
+    menu.entrys = [];
+
+    menu.classList.add("animation_menu");
     menu.style.display = "";
     menu.parent = parent;
+    
+    document.body.appendChild(menu);
+    var parent_position = getPos(parent);
+    menu.style.top = parent_position.y + "px";
+    menu.style.left = (parent_position.x + parent.offsetWidth)*1 +  "px";
+    
+    menu.add = function(target)
+    {
+        this.appendChild(target);
+        this.entrys.push(target);
+    }
+    animation
+    menu.hide = function(){};
+    
+    return menu;
+}
+
+/*creates a new entry for the animaton menu*/
+function animation_menu_entry(animation)
+{
+    var animation_menu = document.createElement("div");
+    animation_menu.target = animation;
+    animation_menu.classList.add("animation_menu_entry");
+    animation_menu.animation_icon = animation_settings_Icon("animation.svg",null,"");
+    animation_menu.appendChild(animation_menu.animation_icon);
+    animation_menu.menuEntrys = [];
+    var icon_delete = animation_settings_Icon("delete.svg",function(){delete_animation(this.parent.target.id);},"Deletes the Animation");
+    icon_delete.parent = animation_menu;
+    animation_menu.menuEntrys.push(icon_delete);
+    animation_menu.onmouseover = function()
+    {
+        for(var entry of this.menuEntrys)
+        {
+            this.appendChild(entry);
+        }
+    }
+    animation_menu.onmouseleave = function()
+    {
+        this.innerHTML = "";
+        this.appendChild(this.animation_icon);
+    }
+    return animation_menu;
+}
+
+/*function to create an icon in the custom settings bar of an element*/
+function animation_settings_Icon(icon,onclick,explanation)
+{
+    elem = document.createElement("div");
+    elem.img = document.createElement("img");
+    elem.title = explanation || "";
+    elem.appendChild(elem.img);
+    elem.img.src = icon;
+    elem.img.height = 25;
+    elem.img.width = 25;
+    
+    elem.onclick = onclick;
+
+    return elem;
 }
 
 /*Function to create a menu used to input numbers*/
@@ -468,13 +535,11 @@ function apply_simple_animation()
         }
 
         animation_types.keyframes = newframes;
-        console.log(animation_types.keyframes)
         
 /*Compression code faulty and currently disabeld. needs to be reworked in the future*
 /********************************************************************************************/
         /*removing all keyframes that share the same vector direction
-        yields insane data compression*/
-/*        var newframes = [];
+        /*        var newframes = [];
         var curframe = animation_types.keyframes[0];
         for(var kframe of animation_types.keyframes)
         {
@@ -587,13 +652,29 @@ function add_animaton_specifik_logick_buttons(animation)
         /*Sets the has animation menu property to true, so onl one menu is created per element*/
         animation.target.hasAnimationMenu = true;
     }
-
+    /*obtian the screen, on whitch the animation was created*/
+    var screen = find_parent_screen(animation.target);
+    
+    /*if there is no animaton menu on this screen, add one*/
+    if(!screen.animation_menu)
+    {
+        screen.animation_menu = create_animation_menu(screen);
+    }
+    /*now, add a new enty tho the animation menu, containing the current animation*/
+    screen.animation_menu.add(animation_menu_entry(animation));
+    
     /*finally, we are adding the new animation to the animation menu
-    todoo: add animation name*/
-    var itemtoadd = elementbar_Item("Animation",animation_selection_menu_button_click);
+    var itemtoadd = elementbar_Item(animation.name,animation_selection_menu_button_click);
     /*giving the new item its target animation*/
     itemtoadd.animationtselect = animation;
     animation.target.animation_selection_menu.add(itemtoadd);
+}
+
+/*this function is used to obtain the parent screen, of an emlement recursively*/
+function find_parent_screen(element)
+{
+    if(element.dataset["elementtype"] == "screen") return element;
+    else return find_parent_screen(element.offsetParent);
 }
 
 /*Does all the things that need to be done before registering an animation, like saving the original position of the element*/
