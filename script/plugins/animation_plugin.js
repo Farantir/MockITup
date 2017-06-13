@@ -266,6 +266,11 @@ function delete_animation(anim_id)
             break;
         }
     }
+    /*Removes the corresponding entry in the menu of the animation target*/
+    for(child of animations[anim_id].target.animation_selection_menu.children)
+    {
+        if(child.animationtselect == animations[anim_id]) child.remove();
+    }
     /*loops trough array*/
     for(var trans_id = 0; trans_id < logick_transaktions.length; trans_id++)
     {

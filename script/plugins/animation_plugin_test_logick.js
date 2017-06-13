@@ -36,8 +36,8 @@ compile_data_for_each_tag.get_Animations = function(attribute_name,attrigute_val
 
 compile_data_for_each_element.fix_dragging_problem = function(element)
 {
-   //element.classList.add("post_compiling_fixup");
-   if(element.tagName.toLowerCase() == "img") element.setAttribute('draggable', false);
+   element.classList.add("post_compiling_fixup");
+   if(element.tagName.toLowerCase() == "img") element.ondragstart = function(){return false;}
 }
  
 
@@ -96,7 +96,25 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
         }
         if(animation.swiping_animation)
         {
+            /*Swipe Animation code only works, if the originx is smaller, than the smallest keyframex,
+            so reorientation is needet*/
+            var old_origin = animation.target.offsetLeft;
+            var firsrframe = animation.keyframes[0].dx
+            /*resetting the origin to the smalest frame:*/
+            animation.target.style.left = (old_origin + firsrframe)*1 + "px";
+            
+            /*translation the element to its previous location*/
+            animation.target.style.transform = "translate("+(firsrframe)*-1+"px, 0px)";
+            animation.engine.distance_in_current_frame.x = firsrframe;
+            
+            /*adjusting the value of all keyframes*/
+            for(var frame of animation.keyframes)
+            {
+                frame.dx -= firsrframe;
+                frame.oldx -= firsrframe;
+            }
             animation.target.addEventListener("mousedown",initialize_dragging_on_swipe_animation);
+            
             /*on element can only have one swiping animation*/
             animation.target.swipe_animtion = animation
         }
@@ -151,7 +169,6 @@ function swiping_animation_gets_dragged(e)
 
   //var posy = (y - swiping_animation_to_drag.target.offsety);
   var posx = (x - swiping_animation_to_drag.target.offsetx);
-
 
   var keyframes = swiping_animation_to_drag.keyframes;
   var posy = null;
@@ -296,6 +313,7 @@ function animation_engine(animation)
     this.halt_animation = function()
     {
         this.pause_animation = true;
+        this.lastframetime = 0;
     }
     
     /*resets the animation*/
@@ -303,7 +321,7 @@ function animation_engine(animation)
     {
         this.distance_in_current_frame.x = 0;
         this.distance_in_current_frame.y = 0;
-        this.lastframetime == 0;
+        this.lastframetime = 0;
     }
 
     this.finisched = function()
@@ -363,7 +381,6 @@ function animation_engine(animation)
         
         /*accumulates the time in the current frame*/
         this.time_in_current_frame += deltatime;
-
         var this_keyframe = this.animation.keyframes[this.current_frame];
         /*sets positions of previous keyframe to zero*/
         var prev_keyframe_x = 0;
