@@ -1,30 +1,18 @@
-/*
-function test()
-{
-   test = menubar();
-   test.add(menubar_Item("Test1"));
-   test.add(menubar_Item("Test2"));
-   test.add(menubar_Item("Test3"));
-   test.add(menubar_Item("Test4"));
-   test.make_Visible();
+/*********************************************/
+/*This file contains general funktions of the*/
+/*Applikation. mainly all sorts of menus and */
+/*menu elements but also utility functions.  */
+/*Most things here are basic elements, used  */
+/*frequently other files                     */
+/*********************************************/
 
-    li = document.createElement("div");
-    li.style.backgroundColor = "red";
-    li.style.height = "50px";
-    li.style.width = "20px";
-    li.style.top = "200px";
-    li.style.left = "300px";
-    li = make_Container(li);
-    document.body.appendChild(li);
-
-   test = elementbar();
-   test.add(menubar_Item("Test1"));
-   test.add(menubar_Item("Test2"));
-   test.add(menubar_Item("Test3"));
-   test.add(menubar_Item("Test4"));
-   test.make_Visible();
-}
+/*allows plugins to add custom functions
+to restore the integrity after the screen changes.
+simply call general_screenchange_cleanup.prototype.myfunction = function()...
+to add your own one.
+javascript ist magical sometimes
 */
+custom_screenchange_cleanup = {};
 
 /*uses create screen function to add a new scrren html element.
 utilizes decorator pattern to add all the functionality needet for the logick anbd grafik screen, so the 
@@ -576,7 +564,6 @@ function fireEvent(name, target, param1, param2) {
     target.dispatchEvent(evt);
 }
 
-custom_screenchange_cleanup = {};
 function general_screenchange_cleanup()
 {
     if(canvas_to_edit_picture_on) {canvas_to_edit_picture_on.remove(); canvas_to_edit_picture_on = null;}

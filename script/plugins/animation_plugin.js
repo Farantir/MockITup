@@ -6,6 +6,23 @@
 /***************************************************************/
 
 /*This plugin enabels the use of animations, if addet inside the index.html*/
+/*This objekt can be used by other plugins, that depend on the animation plugin
+it enables plugins to execute code, before a specifik animation gets deleted.
+any function addet to this objekt will be called before an animation gets deletet.
+the id of the animation to delete will be passed as parameter*/
+execute_before_animation_deletion = {};
+
+/*Adding a function to this objekt will cause it to be excutet,
+before the id of a specifik animaton gets changed.
+the given parameters are: 
+old_animation_id and new_animation_id*/
+execut_before_animation_changes_id = {};
+
+/*Adding a funktion to this objekt lets plugins
+add cutom icons to the animation settings-bar.
+the function will recive the target animation as 
+parameter and should return the DOM objekt to add*/
+add_custom_icon_to_animation_settings = {};
 
 /*menu for the animation screen*/
 var animation_types;
@@ -119,7 +136,7 @@ function precompile_restore_link_logick_to_animation(animation_id,evoking_name,p
     /*resetting the evoking aktion*/
     for(var id of animations[animation_id][proparty_name])
     {
-        logick_transaktions[id].evoking_aktion = evoking_name+ "-" + animations[anim].id;
+        logick_transaktions[id].evoking_aktion = evoking_name+ "-" + animation_id;
     }
     delete animations[animation_id][proparty_name];
 }
@@ -255,13 +272,22 @@ deletes all logick transaktions containing this animation
 afterwards*/
 function delete_animation(anim_id)
 {
+    /*allows plugins to perform aktions before an animation gets deletet*/
+    for (var key in execute_before_animation_deletion) 
+    {
+      if (execute_before_animation_deletion.hasOwnProperty(key)) 
+      {
+        execute_before_animation_deletion[key](anim_id);
+      }
+    }
+
     /*remves the corresponding animation icon from the screen*/
-    var screen_animation_menu = find_parent_screen(animations[anim_id].target).animation_menu.entrys;
+    var screen_animation_menu = find_parent_screen(animations[anim_id].target).animation_menu.children;
     for (var anim_menu of screen_animation_menu)
     {
         if(anim_menu.target.id == anim_id)
         {
-            screen_animation_menu.splice(screen_animation_menu.indexOf(anim_menu),1);
+            //screen_animation_menu.splice(screen_animation_menu.indexOf(anim_menu),1);
             anim_menu.remove();
             break;
         }
@@ -292,6 +318,15 @@ function delete_animation(anim_id)
     /*fixing the ids of all following animatons*/
     for(anim_id; anim_id<animations.length; anim_id++)
     {
+        /*allows plugins to perform aktions before an animation changes its id*/
+        for (var key in execut_before_animation_changes_id) 
+        {
+          if (execut_before_animation_changes_id.hasOwnProperty(key)) 
+          {
+            execut_before_animation_changes_id[key](animations[anim_id].id,anim_id);
+          }
+        }
+        
     /*Fixes id of logick transaktions*/
         for(var trans_id = 0; trans_id < logick_transaktions.length; trans_id++)
         {
@@ -312,7 +347,7 @@ function delete_animation(anim_id)
 function create_animation_menu(parent)
 {
     menu = document.createElement("div");
-    menu.entrys = [];
+    //menu.entrys = [];
 
     menu.classList.add("animation_menu");
     menu.style.display = "";
@@ -326,7 +361,7 @@ function create_animation_menu(parent)
     menu.add = function(target)
     {
         this.appendChild(target);
-        this.entrys.push(target);
+        //this.entrys.push(target);
     }
     menu.hide = function(){};
     
@@ -348,6 +383,18 @@ function animation_menu_entry(animation)
     icon_delete.parent = animation_menu;
     animation_menu.menuEntrys.push(icon_delete);
     animation_menu.menuEntrys.push(icon_remane);
+    
+    /*allows plugins to add custom icons to the animaton settings bar*/
+    for (var key in add_custom_icon_to_animation_settings) 
+    {
+      if (add_custom_icon_to_animation_settings.hasOwnProperty(key)) 
+      {
+        var new_icon = add_custom_icon_to_animation_settings[key](animation);
+        animation_menu.parent = animation_menu;
+        animation_menu.menuEntrys.push(new_icon);
+      }
+    }
+    
     animation_menu.onmouseover = function()
     {
         show_animation_prewiew(this.target);
@@ -496,7 +543,7 @@ function create_sipmle_animation()
     /*Creates the menu needet to confirm the current animation*/
     animation_confirm_abort = elementbar();
     animation_confirm_abort.add(menubar_Item("Confirm",apply_simple_animation));
-    animation_confirm_abort.add(menubar_Item("Abort",()=>{animation_types.style.display = "";reset_position_after_creating_animation();}));
+    animation_confirm_abort.add(menubar_Item("Abort",()=>{animation_types.style.display = "";reset_position_after_creating_animation();delete execute_after_element_dragging.simple_animation_keyframe_generator;}));
     animation_confirm_abort.style.display = "";
 }
 
@@ -511,6 +558,8 @@ function obtain_keyframes_from_element_movement()
 /*adds the animaton to the element and does some post-processing*/
 function apply_simple_animation()
 {
+    delete execute_after_element_dragging.simple_animation_keyframe_generator;
+    
     if(animation_types.keyframes.length > 1)
     {
         /*use time for firt keyframe as zero time. not 100% akurate, but simple and the user wont notice.

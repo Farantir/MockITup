@@ -44,6 +44,9 @@ compile_data_for_each_element.fix_dragging_problem = function(element)
 /*Fixing those relation problems mentiond earlier, also saves values for resizing on mobile devices*/
 compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = function()
 {
+    /*fixing the bug, that one can see the animation icons, by changing the screen background from translucent to white*/
+    $("testscreencontainer").style.backgroundColor = "white"
+    
     for(var rel of unresolved_relations)
     {
         test_logik_transaktions[rel.transaktion].animation_id = rel.animation;
@@ -64,22 +67,24 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
         animation.engine = new animation_engine(animation);
         /*now we need to add the events to the animations*/
         animation.tans_out = [];
-        if(animation.event_on_finisched)
+        if(animation.event_on_finisched != null)
         {
             for(var event_id of animation.event_on_finisched)
-            {
+            {console.log(event_id);
+            console.log(animation.target.tans_out)
                 for(var trans_id in animation.target.tans_out)
                 {
                     if(animation.target.tans_out[trans_id].id == event_id)
                     {
                         /*giving the aimations the trans out events of its parent element*/
                         animation.tans_out.push(animation.target.tans_out[trans_id]);
+                        /*removes the event from the animation-target, so the onimations owns it*/
                         animation.target.tans_out.splice(trans_id, 1);
                     }
                 }
             }
         }
-        if(animation.event_on_reversed)
+        if(animation.event_on_reversed != null)
         {
             for(var event_id of animation.event_on_reversed)
             {
@@ -89,6 +94,7 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
                     {
                         /*giving the aimations the trans out events of its parent element*/
                         animation.tans_out.push(animation.target.tans_out[trans_id]);
+                        /*removes the event from the animation-target, so the animations owns it*/
                         animation.target.tans_out.splice(trans_id, 1);
                     }
                 }
@@ -161,13 +167,10 @@ function abort_dragging_on_swipe_animation(e)
     e.stopPropagation();
 }
 
-//todo
 function swiping_animation_gets_dragged(e)
 {
   var x = e.clientX;
-  //var y = e.clientY + document.documentElement.scrollTop;
 
-  //var posy = (y - swiping_animation_to_drag.target.offsety);
   var posx = (x - swiping_animation_to_drag.target.offsetx);
 
   var keyframes = swiping_animation_to_drag.keyframes;
@@ -408,9 +411,9 @@ function animation_engine(animation)
         this.distance_in_current_frame.y += deltay;
 
         /*Ensures the distance travelt is allways maxing out at the max distance of the keyframe, looks komplicatet, but its really just size comparison*/
+        /*if the direction is reversed, coparison needs to be between the current frame and the next frame*/
         if(this.direction == "reverse")
         {
-        /*currently assuming only on keyframe animations. more complex logick needs to follow*/
         	if(this.overstepp(this.distance_in_current_frame.x,deltax,prev_keyframe_x) || this.overstepp(this.distance_in_current_frame.y,deltay,prev_keyframe_y))
         	{
                 this.distance_in_current_frame.x = prev_keyframe_x;
