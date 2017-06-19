@@ -246,6 +246,15 @@ test_logick_effekts["pause_animation"] = function(target,unused,id)
     compiled_animations[animation].engine.halt_animation();
 }
 
+/*Creates the logick needet to restet the animation of objekts*/
+test_logick_effekts["reset_animation"] = function(target,unused,id)
+{
+    /*reciving the id of the target animation*/
+    var animation = test_logik_transaktions[id].animation_id;
+    /*resets the animation engine of the given animaton*/
+    compiled_animations[animation].engine.reset_animation();
+}
+
 /*Creates the logick needet to reverse the animation of objekts*/
 test_logick_effekts["reverse_animation"] = function(target,unused,id)
 {
@@ -310,6 +319,12 @@ function animation_engine(animation)
         /*Doing some lambda magick to pass this reference*/
         window.requestAnimationFrame((deltatime)=>{runn_animation(this,deltatime);});
         
+    }
+    this.reset_animation = function()
+    {
+        this.distance_in_current_frame.x = 0;
+        this.distance_in_current_frame.y = 0;
+        this.lastframetime = 0;
     }
     
     /*pauses the current animation*/
