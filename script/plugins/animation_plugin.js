@@ -208,6 +208,7 @@ function initializeAnimationPlugin()
     animation_types.add(menubar_Item("Siple Animation",create_sipmle_animation));
     animation_types.add(menubar_Item("Stepped swiping Animation",create_swipe_animation));
     animation_types.add(menubar_Item("Fly in Animation",select_flyin_orientation));
+    animation_types.add(menubar_Item("Fly out Animation",select_flyout_orientation));
 
     /*
     Allows other plugins to depent on the this plugin. 
@@ -652,7 +653,7 @@ function create_linear_two_point_animation()
     animation_types.keyframes = [];
 }
 
-/*Provides the user with a menu, so he can choose from whitch sied the animated objekt shall fly in*/
+/*Provides the user with a menu, so he can choose from whitch side the animated objekt shall fly in*/
 function select_flyin_orientation()
 {
     animation_confirm_abort = elementbar();
@@ -663,6 +664,19 @@ function select_flyin_orientation()
     animation_confirm_abort.add(menubar_Item("From the Bottom",()=>{create_flyin_animation("bottom");}));
     animation_confirm_abort.style.display = "";
 }
+
+/*Provides the user with a menu, so he can choose to whitch side the animated objekt shall fly out*/
+function select_flyout_orientation()
+{
+    animation_confirm_abort = elementbar();
+    animation_confirm_abort.add(menubar_Item("Abort",()=>{animation_types.style.display = "";}));
+    animation_confirm_abort.add(menubar_Item("to the Right",()=>{create_flyout_animation("right");}));
+    animation_confirm_abort.add(menubar_Item("to the Left",()=>{create_flyout_animation("left");}));
+    animation_confirm_abort.add(menubar_Item("to the Top",()=>{create_flyout_animation("top");}));
+    animation_confirm_abort.add(menubar_Item("to the Bottom",()=>{create_flyout_animation("bottom");}));
+    animation_confirm_abort.style.display = "";
+}
+
 /*auto - creates a linear 2 point animation for an element, so that ist flies into the screen*/
 function create_flyin_animation(orientation)
 {
@@ -684,6 +698,32 @@ function create_flyin_animation(orientation)
         case "bottom":
             animation_types.oldx = animation_types.target.offsetLeft; 
             animation_types.oldy = animation_types.target.offsetParent.offsetHeight +20;  
+            break;
+            
+    }
+    /*creating a keyframe aray*/
+    animation_types.keyframes = [];
+    apply_liear_two_point_animation();
+}
+
+/*auto - creates a linear 2 point animation or the tartget, so that it flyes aut to a specified side of its container */
+function create_flyout_animation(orientation)
+{
+    general_pre_animation_stuff();
+    /*Sets the new position of the element, to create the keyframe*/
+    switch(orientation) 
+    {
+        case "left":
+           animation_types.target.style.left = (-animation_types.target.offsetWidth - 20)*1 + "px"; 
+            break;
+        case "right":
+            animation_types.target.style.left = (animation_types.target.offsetParent.offsetWidth + 20)*1 + "px"; 
+            break;
+        case "top": 
+            animation_types.target.style.top = (-animation_types.target.offsetHeight -20)*1 + "px";  
+            break;
+        case "bottom":
+            animation_types.target.style.top = (animation_types.target.offsetParent.offsetHeight +20)*1 + "px";  
             break;
             
     }
