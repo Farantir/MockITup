@@ -70,8 +70,7 @@ compile_execute_stuff_after_compiling.resolve_animation_and_logick_relations = f
         if(animation.event_on_finisched != null)
         {
             for(var event_id of animation.event_on_finisched)
-            {console.log(event_id);
-            console.log(animation.target.tans_out)
+            {
                 for(var trans_id in animation.target.tans_out)
                 {
                     if(animation.target.tans_out[trans_id].id == event_id)
@@ -399,12 +398,15 @@ function animation_engine(animation)
         
         /*accumulates the time in the current frame*/
         this.time_in_current_frame += deltatime;
+        if(this.current_frame >= this.animation.keyframes.length) this.current_frame = this.animation.keyframes.length - 1;
+        else if(this.current_frame < 0)this.current_frame = 0;
+        
         var this_keyframe = this.animation.keyframes[this.current_frame];
         /*sets positions of previous keyframe to zero*/
         var prev_keyframe_x = 0;
 		var prev_keyframe_y = 0;
 		/*if there actually was a previous keyframe, set positions to its values*/
-        if(this.current_frame != 0)
+        if(this.current_frame > 0)
         {
 			prev_keyframe_x = this.animation.keyframes[this.current_frame-1].dx;
 			prev_keyframe_y = this.animation.keyframes[this.current_frame-1].dy;

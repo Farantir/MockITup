@@ -193,7 +193,6 @@ function restorelogik(target)
 	if(target.dataset.isVisible == "false" || target.dataset.isVisible == false)
 	{
 		target.isVisible = false;
-		console.log(target);
 	}
 
 	/*allows plugins to use custom data before parsing data tags.*/
