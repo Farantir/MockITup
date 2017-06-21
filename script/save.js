@@ -28,7 +28,27 @@ custom_logick_before_loading = {};
 
 function save()
 {
-		/*allows plugins to add custom data to the savefile*/
+    prepare_html_for_save();
+
+    /*Copies over innerHTML. This way the logik (onclick events, etc) from the other two screens gets lost*/
+    datatosave = $("screencontainer").innerHTML;
+
+    clean_html_after_save();
+
+	/*Aktual saving of the file*/
+	var link = document.createElement('a');
+	link.download = 'Savefile.sav';
+	var blob = new Blob([datatosave], {type: 'text/plain'});
+	link.href = window.URL.createObjectURL(blob);
+	document.body.appendChild(link);
+	link.click();
+	link.remove();
+}
+
+/*saves all the js data into the html file*/
+function prepare_html_for_save()
+{
+        /*allows plugins to add custom data to the savefile*/
 		for (var key in custom_presave_logick) 
 		{
 		  if (custom_presave_logick.hasOwnProperty(key)) 
@@ -61,11 +81,11 @@ function save()
         
         /*Ensures all textbox text stay the same + all checkboxes keep their state*/
 		save_preenterd_values($("screencontainer"));
+}
 
-      /*Copies over innerHTML. This way the logik (onclick events, etc) from the other two screens gets lost*/
-	  datatosave = $("screencontainer").innerHTML;
-
-       /*removes data-tags after creation of the save string, as they are no longer needet */
+function clean_html_after_save()
+{
+        /*removes data-tags after creation of the save string, as they are no longer needet */
         for(m in logick_transaktions)
         {
             delete logick_transaktions[m].evoker.dataset["logik-"+m];
@@ -85,15 +105,6 @@ function save()
 		  	if(custom_presave_logick[key].cleanup) custom_presave_logick[key].cleanup();
 		  }
 		}
-
-	/*Aktual saving of the file*/
-	var link = document.createElement('a');
-	link.download = 'Savefile.sav';
-	var blob = new Blob([datatosave], {type: 'text/plain'});
-	link.href = window.URL.createObjectURL(blob);
-	document.body.appendChild(link);
-	link.click();
-	link.remove();
 }
 
 function load()
@@ -161,6 +172,9 @@ function restoredata(saveddata)
 	  	if(custom_presave_logick[key].cleanup) custom_presave_logick[key].cleanup();
 	  }
 	}
+    
+    /*cleaning all the data tags from the load file*/
+    clean_html_after_save();
 
 	/*fiering event to tell everyone we are done loading*/
 	fireEvent("doneloading", document);
