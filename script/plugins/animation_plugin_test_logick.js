@@ -429,7 +429,7 @@ function animation_engine(animation)
         /*if the direction is reversed, coparison needs to be between the current frame and the next frame*/
         if(this.direction == "reverse")
         {
-        	if(this.overstepp(this.distance_in_current_frame.x,deltax,prev_keyframe_x) || this.overstepp(this.distance_in_current_frame.y,deltay,prev_keyframe_y))
+        	if(this.overstepp(this.distance_in_current_frame.x,deltax,prev_keyframe_x) && this.overstepp(this.distance_in_current_frame.y,deltay,prev_keyframe_y))
         	{
                 this.distance_in_current_frame.x = prev_keyframe_x;
                 this.distance_in_current_frame.y = prev_keyframe_y;
@@ -442,7 +442,7 @@ function animation_engine(animation)
         	}
         /*normal direction*/
         /*if frame ist oversteppt by one value, max values are used*/
-        }else if(this.overstepp(this.distance_in_current_frame.x,deltax,this_keyframe.dx) || this.overstepp(this.distance_in_current_frame.y,deltay,this_keyframe.dy))
+        }else if(this.overstepp(this.distance_in_current_frame.x,deltax,this_keyframe.dx) && this.overstepp(this.distance_in_current_frame.y,deltay,this_keyframe.dy))
         {
         	this.distance_in_current_frame.x = this_keyframe.dx;
             this.distance_in_current_frame.y = this_keyframe.dy;

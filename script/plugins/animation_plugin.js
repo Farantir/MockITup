@@ -207,6 +207,7 @@ function initializeAnimationPlugin()
     animation_types.add(menubar_Item("Linear two point",create_linear_two_point_animation));
     animation_types.add(menubar_Item("Siple Animation",create_sipmle_animation));
     animation_types.add(menubar_Item("Stepped swiping Animation",create_swipe_animation));
+    animation_types.add(menubar_Item("Fly in Animation",select_flyin_orientation));
 
     /*
     Allows other plugins to depent on the this plugin. 
@@ -651,6 +652,46 @@ function create_linear_two_point_animation()
     animation_types.keyframes = [];
 }
 
+/*Provides the user with a menu, so he can choose from whitch sied the animated objekt shall fly in*/
+function select_flyin_orientation()
+{
+    animation_confirm_abort = elementbar();
+    animation_confirm_abort.add(menubar_Item("Abort",()=>{animation_types.style.display = "";}));
+    animation_confirm_abort.add(menubar_Item("From the Right",()=>{create_flyin_animation("right");}));
+    animation_confirm_abort.add(menubar_Item("From the Left",()=>{create_flyin_animation("left");}));
+    animation_confirm_abort.add(menubar_Item("From the Top",()=>{create_flyin_animation("top");}));
+    animation_confirm_abort.add(menubar_Item("From the Bottom",()=>{create_flyin_animation("bottom");}));
+    animation_confirm_abort.style.display = "";
+}
+/*auto - creates a linear 2 point animation for an element, so that ist flies into the screen*/
+function create_flyin_animation(orientation)
+{
+    /*Lies about the old origin of the animation target, so it will be placed outside of the screen container afterwards*/
+    switch(orientation) 
+    {
+        case "left":
+            animation_types.oldx = -animation_types.target.offsetWidth - 20; 
+            animation_types.oldy = animation_types.target.offsetTop;
+            break;
+        case "right":
+            animation_types.oldx = animation_types.target.offsetParent.offsetWidth + 20; 
+            animation_types.oldy = animation_types.target.offsetTop;  
+            break;
+        case "top":
+            animation_types.oldx = animation_types.target.offsetLeft; 
+            animation_types.oldy = -animation_types.target.offsetHeight -20;  
+            break;
+        case "bottom":
+            animation_types.oldx = animation_types.target.offsetLeft; 
+            animation_types.oldy = animation_types.target.offsetParent.offsetHeight +20;  
+            break;
+            
+    }
+    /*creating a keyframe aray*/
+    animation_types.keyframes = [];
+    apply_liear_two_point_animation();
+}
+
 /*used to create more than one keyframe in an animation*/
 function add_another_keyframe()
 {
@@ -811,6 +852,10 @@ function general_pre_animation_stuff()
 /*restetting position after the creation of an animation, or after someone hit the abort button*/
 function reset_position_after_creating_animation()
 {
+    /*disables the positioning restriction of DOM elements*/
+    var oldmoveout = can_move_out_of_bounderys;
+    can_move_out_of_bounderys = true;
+    
     /*Restores the previous position of an element, after the animation got created*/
     animation_types.target.setpos(animation_types.oldx,animation_types.oldy);
 
@@ -820,6 +865,9 @@ function reset_position_after_creating_animation()
 
     /*removes the orange message bar*/
     notifikationbar.hide();
+    
+    /*restores the previous setting of moving restriction*/
+    can_move_out_of_bounderys = oldmoveout;
 }
 
 function simulate_bubbelingfor_screen_select()
