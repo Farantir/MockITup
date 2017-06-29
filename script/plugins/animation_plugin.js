@@ -36,6 +36,10 @@ var animations = [];
 /*This event gets fired, after the initialisation in the onload.js has finisched*/
 document.addEventListener("initialize",initializeAnimationPlugin);
 
+/*event listener used to remomove animation icons when testcreen is loadet*/
+document.addEventListener("testview started",hide_animation_icons);
+document.addEventListener("test-on-device-started",hide_animation_icons);
+
 /*div that displays animation previews*/
 var aniamtion_preview_container = null;
 
@@ -60,6 +64,23 @@ function keyframe(time,x,y)
     this.dtime = time;
     this.dx = x;
     this.dy = y;
+}
+
+/*hides all animation icons, next to the screens, when testview is loadet*/
+function hide_animation_icons()
+{
+    for( var elem of document.getElementsByClassName("animation_menu"))
+    {
+        elem.style.display = "none";
+    }
+    /*Makes them visble agian, after test-view is left*/
+    custom_screenchange_cleanup.make_animation_icons_visible_again = function()
+    {
+        for( var elem of document.getElementsByClassName("animation_menu"))
+        {
+            elem.style.display = "";
+        }
+    }
 }
 
 /*Saves the animation data to data tags, so they will get stored inside the savafile*/
@@ -295,10 +316,42 @@ function delete_animation(anim_id)
         }
     }
     /*Removes the corresponding entry in the menu of the animation target*/
-    for(child of animations[anim_id].target.animation_selection_menu.children)
+    for(var child of animations[anim_id].target.animation_selection_menu.children)
     {
         if(child.animationtselect == animations[anim_id]) child.remove();
     }
+    /*entrys that need to be removed*/
+    var animationSpecifikEntrys = [
+        "<a>Play Animation</a>",
+        "<a>Reverse Animation</a>",
+        "<a>Play one frame</a>",
+        "<a>reverse one frame</a>",
+        "<a>Pause Animation</a>",
+        "<a>Reset Animation</a>"];
+        
+    /*removes Animation specific logick buttons, if the Element has no othr Animations left*/
+    if(animations[anim_id].target.animation_selection_menu.children.length == 0)
+    {
+        /*Sets the has animation menu property to false, so menu gets recreated, after adding another animation to the Element*/
+        animations[anim_id].target.hasAnimationMenu = false;
+    
+        /*removes the event buttons from the elements*/
+        remove_event_menu_from_element(animations[anim_id].target,"animation finisched");
+        remove_event_menu_from_element(animations[anim_id].target,"animation reversed");       
+        
+        /*removes the logick target buttons from the elments*/
+        var toremove = [];
+        for(var child of animations[anim_id].target.logick_menu.children)
+        {
+            if(animationSpecifikEntrys.indexOf(child.innerHTML) != -1)
+            {
+               toremove.push(child);
+
+            }
+        }
+        for(var x of toremove) x.remove();
+    }
+    
     /*loops trough array*/
     for(var trans_id = 0; trans_id < logick_transaktions.length; trans_id++)
     {
@@ -1009,14 +1062,23 @@ logick_dictionary["reset_animation"] = "resets an animation of ";
 an overload function ist executetd*/
 function select_specifik_animation(target,overload)
 {
+    /*no need to select an Aimation, if only one ist present*/
+    if(target.animation_selection_menu.children.length == 1)
+    {
+        overload(target.animation_selection_menu.children[0].animationtselect);
+        return;
+    }
     /*Passes the overload to the menu and makes it visible, so the animations can be clicked*/
     target.animation_selection_menu.overload = overload;
     target.animation_selection_menu.style.display = "";
+    notifikationbar.show("Select The Target Animation");
 }
 /*this function gets executet, when a specifik animation of the animation selcection menu, whitch each
 element has, gets clicked*/
 function animation_selection_menu_button_click()
 {
+    /*hides the text to choost a target element*/
+    notifikationbar.hide();
     /*Hides the menu again, as it is no longer needet*/
     this.offsetParent.style.display = ""; 
     /*executes the overload funktion given by select_specifik_animation(target,overload)

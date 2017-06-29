@@ -47,11 +47,17 @@ var compile_data_for_each_tag = {};
 of the mobile screen.*/
 var compile_execute_stuff_after_resize = {};
 
+/*"testview started" is an event fired by the application, after the test view is loadet
+the event "test-on-device-started" gest fired, when the user clicks on the test on device tab*/
+
 
 /****************************************************************************/
 
 function testondevice()
 {
+    /*event fired after test on device gets loadet*/
+	fireEvent("test-on-device-started", document);
+	
 	var http = new XMLHttpRequest();
 	var url = "php/publish.php";
 	var params = "data=" + encodeURIComponent(get_html());
@@ -162,6 +168,9 @@ function get_html()
 /*Displays the elements in a rendert view*/
 function test_renderer()
 {
+    /*event fired after testview gets loadet*/
+	fireEvent("testview started", document);
+
 	testscreen = $("testscreencontainer")
 	/*Makes all but the first screen invisile*/
       for(m of testscreen.children) m.style.display = "none";
