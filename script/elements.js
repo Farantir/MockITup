@@ -517,7 +517,7 @@ function element_Listelem(e,x,y)
 /*function used to reposition an element onto a target container (eg. another screen or an list element)*/
 function moveelem(e) 
 {
-  x = e.clientX;
+  x = e.clientX + document.documentElement.scrollLeft;
   y = e.clientY + document.documentElement.scrollTop;
 
   posy = (y - elemToDrag.offsety);
