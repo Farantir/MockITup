@@ -3,6 +3,8 @@
 /*it also handels the data structure of the animation objekt   */ 
 /*to use animations, this file needs to be addet in the        */
 /*index.thml together with the animation_plugin_test_ligick.js */
+/*The animation Plugin also needs A number input plugin thats  */
+/*Compatible with the number_input_overlay.js plugin           */
 /***************************************************************/
 
 /*This plugin enabels the use of animations, if addet inside the index.html*/
@@ -80,6 +82,16 @@ function hide_animation_icons()
         {
             elem.style.display = "";
         }
+    }
+}
+
+/*repositions all Animaton menues, if the drag screens plugin is enabled.*/
+document.addEventListener("Screencontainer Moved",recalculate_animation_icon_position);
+function recalculate_animation_icon_position()
+{
+    for( var elem of document.getElementsByClassName("animation_menu"))
+    {
+        elem.reposition();
     }
 }
 
@@ -413,6 +425,14 @@ function create_animation_menu(parent)
     menu.style.top = parent_position.y + "px";
     menu.style.left = (parent_position.x + parent.offsetWidth)*1 +  "px";
     
+    /*function used to reposition the animation menu, if the parent gets moved*/
+    menu.reposition = function()
+    {
+        var parent_position = getPos(this.parent);
+        this.style.top = parent_position.y + "px";
+        this.style.left = (parent_position.x + this.parent.offsetWidth)*1 +  "px";
+    }
+    
     menu.add = function(target)
     {
         this.appendChild(target);
@@ -481,36 +501,6 @@ function animation_settings_Icon(icon,onclick,explanation)
     elem.onclick = onclick;
 
     return elem;
-}
-
-/*Function to create a menu used to input numbers*/
-function number_input_overlay(target,set,someobjekt)
-{
-    var menu = document.createElement("div");
-    menu.classList.add("textinput");
-    
-    menu.onmousedown = (x)=>{x.stopPropagation();};    
-
-    menu.accept = document.createElement("button");
-    menu.accept.appendChild(document.createTextNode("Accept"));
-
-    menu.accept.input = document.createElement("input");
-    menu.accept.input.type = "number";
-    menu.accept.input.step = "0.01";
-    menu.accept.set = set;
-    menu.accept.target = target;
-
-    menu.appendChild(menu.accept.input);
-    menu.appendChild(menu.accept);
-
-    document.body.appendChild(menu);
-    
-    menu.style.top = (getPos(menu.accept.target).y + menu.accept.target.offsetHeight + 5) + "px";
-    menu.style.left = getPos(menu.accept.target).x + "px";
-
-    menu.accept.onclick = function(){this.set(this.input.value);this.parentElement.remove();}
-
-    menu.accept.additionaldata = someobjekt
 }
 
 function animation_bar_make_visible()

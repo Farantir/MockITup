@@ -70,6 +70,9 @@ elements["screen"].createfromsave = function make_Screen(screen)
         logik_bar_make_visible();
         this.settingsbar.make_Visible();
         e.stopPropagation();
+        /*This event is needet, if plugins want to add their own functionality, after a Screen got selected.
+        the message of the Event contains the selected Screen*/
+        fireEvent("Screen Selected", document, this, e);
     }
     screen.settingsbar = settingsbar(screen);
     screen.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.style.backgroundImage = "url('"+value+"')";})},"Lets you select a custom background image, either by url or filpicker, to coose from your own device"));
