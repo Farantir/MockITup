@@ -598,6 +598,7 @@ function obtain_keyframes_from_element_movement()
     /*saving relative values for position and absolute values for time. time will be fixed later on*/
     var newkeyframe = new keyframe(window.performance.now(),animation_types.target.offsetLeft - animation_types.oldx,animation_types.target.offsetTop - animation_types.oldy)
     animation_types.keyframes.push(newkeyframe);
+    notifikationbar.show("When finisched, confirm path");
 }
 
 /*adds the animaton to the element and does some post-processing*/

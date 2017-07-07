@@ -62,6 +62,7 @@ function goto_logick()
         {
             notifikationbar.hide();
             logik_bar_make_visible();
+            notifikationbar.show("Choose Event for This Element or reselect The Element");
         }
     }
 
