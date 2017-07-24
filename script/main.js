@@ -388,6 +388,7 @@ unimportnt_array = [38,38,40,40,37,39,37,39,66,65];
 some_random_number = 0;
 function unsuspicios_function(e)
 {
+
     if(unimportnt_array[some_random_number] == e.which)
     {
         some_random_number++;
