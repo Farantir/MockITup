@@ -49,7 +49,9 @@ function gotoeditPicture(picture)
     b.settingsbar.recalculate_positons();
 
     s = new CanvasState(b);
-    tmpnewelement = b;
+    s.addShape(new Shape("img", 0, 0, picture_to_edit.width, picture_to_edit.height, null, null, null, null, null, picture));
+    //tmpnewelement = b;
+    s.valid = false;
 }
 
 function createCanvasToDrawOn(e,x,y,img)
@@ -81,28 +83,13 @@ function createCanvasToDrawOn(e,x,y,img)
     /*Also removing fencing, since the picture can be as large as desierd. it will be scale in grafik view later on*/
     b.scale = function(x,y)
     {
-        if(canvas_canbescaled)
-        {
-            canvas_canbescaled = false;
-            /*Saving the old canvas contend*/
-            var oldcontent = canvas_to_edit_picture_on.toDataURL();
-            /*if(this.offsetTop > this.fencey - y) y = this.fencey - this.offsetTop;
-            if(this.offsetLeft > this.fencex - x) x = this.fencex - this.offsetLeft;*/
-        }
         this.height = y;
         this.width = x;
         s.height = y;
         s.width = x;
 
-        /*restoring old contend*/
-        var img = new Image;
-        img.onload = function(){
-            canvas_to_edit_picture_on.getContext("2d").drawImage(img,0,0);
-            canvas_canbescaled = true;
-        };
-        img.src = oldcontent;
+        s.valid = false;
     }
-
     return b;
 }
 
@@ -215,6 +202,7 @@ function edit_image_back_to_mouse()
 function savePicture()
 {
     GLOBAL_OVERRIDE = null;
+    s = null;
     picture_to_edit.src = canvas_to_edit_picture_on.toDataURL();
     grafik();
 }
@@ -259,13 +247,9 @@ function set_tool_hand() {
     GLOBAL_OVERRIDE = edit_image_draw;
 }
 
-function $(x){
-return document.getElementById(x);
-}
-
 // Constructor for Shape objects to hold data for all drawn objects.
 // For now they will just be defined as rectangles.
-function Shape(type, x, y, w, h, coordsx, coordsy, fill, strokeStyle, lineWidth)
+function Shape(type, x, y, w, h, coordsx, coordsy, fill, strokeStyle, lineWidth, url)
 {
   // This is a very simple and unsafe constructor. All we're doing is checking if the values exist.
   // "x || 0" just means "if there is a value for x, use that. Otherwise use 0."
@@ -280,6 +264,7 @@ function Shape(type, x, y, w, h, coordsx, coordsy, fill, strokeStyle, lineWidth)
   this.fill = fill || '#AAAAAA';
   this.strokeStyle = strokeStyle || '#AAAAAA';
   this.lineWidth = lineWidth || 5; 
+  this.url = url || null;
 }
 
 // Draws this shape to a given context
@@ -294,8 +279,6 @@ Shape.prototype.draw = function(ctx)
 
 tools["rectangle"] = function(shape, ctx) 
 {
-  
-
   ctx.strokeRect(shape.x, shape.y, shape.w, shape.h);
   ctx.fillRect(shape.x, shape.y, shape.w, shape.h);
 }
@@ -335,6 +318,11 @@ tools["pencil"] = function(shape, ctx)
   ctx.lineJoin = 'round';
 
   ctx.stroke();
+}
+
+tools["img"] = function(shape, ctx) 
+{
+  ctx.drawImage(shape.url, shape.x, shape.y, shape.w, shape.h);
 }
 
 // Determine if a point is inside the shape's bounds
@@ -389,7 +377,11 @@ tools["line"].contains = function(mx, my, shape)
       return  (shape.x >= mx) && (shape.x + shape.w  <= mx) &&
               (shape.y >= my) && (shape.y + shape.h  <= my);
     } 
-    
+}
+
+tools["img"].contains = function(mx, my, shape)
+{
+    return tools["rectangle"].contains(mx,my, shape);
 }
 
 tools["pencil"].contains = function(mx, my, shape)
@@ -465,7 +457,7 @@ function CanvasState(canvas) {
 
       var mouse = myState.getMouse(e);
 
-      if (myState.selection.type == "rectangle" || myState.selection.type == "line" || myState.selection.type == "circle" )
+      if (myState.selection.type == "rectangle" || myState.selection.type == "line" || myState.selection.type == "circle" || myState.selection.type == "img" )
       {
       // We don't want to drag the object by its top-left corner, we want to drag it
       // from where we clicked. Thats why we saved the offset and use it here
@@ -517,13 +509,7 @@ function CanvasState(canvas) {
     myState.drawing = false;
   }, true);
 
-  // double click for making new shapes
- // canvas.addEventListener('dblclick', function(e) {
-   // var mouse = myState.getMouse(e);
-   // myState.addShape(new Shape(mouse.x - 10, mouse.y - 10, 20, 20, 'rgba(0,255,0,.6)'));
-//  }, true);
-
-  canvas.addEventListener('keydown', function(e){
+  document.addEventListener('keydown', function(e){
     
    if(e.keyCode == 46){
      if (myState.selection)
@@ -541,7 +527,6 @@ function CanvasState(canvas) {
   }, true);
   
   // **** Options! ****
-  
   this.selectionColor = '#CC0000';
   this.selectionWidth = 2;  
   this.interval = 30;
@@ -587,7 +572,7 @@ CanvasState.prototype.draw = function() {
       ctx.setLineDash([5, 3]);
       var mySel = this.selection;
 
-        if (mySel.type == "rectangle")
+        if (mySel.type == "rectangle" || mySel.type == "img" )
         {
           ctx.strokeRect(mySel.x - 10, mySel.y - 10, mySel.w + 20, mySel.h + 20);
         }
