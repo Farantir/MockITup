@@ -49,7 +49,7 @@ function gotoeditPicture(picture)
     b.settingsbar.recalculate_positons();
 
     s = new CanvasState(b);
-    s.addShape(new Shape("img", 0, 0, picture_to_edit.width, picture_to_edit.height, null, null, null, null, null, picture));
+    s.addShape(new Shape("img", 0, 0, picture_to_edit.width, picture_to_edit.height, null, null, null, null, null, picture_to_edit));
     //tmpnewelement = b;
     s.valid = false;
 }

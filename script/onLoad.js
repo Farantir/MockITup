@@ -104,8 +104,8 @@ function initialize(selection)
 
    //creates the menu bar containing the elements for Editing a picture
    pictureEdit = elementbar();
-   pictureEdit.add(menubar_Item("Mouse",edit_image_back_to_mouse));
-   pictureEdit.appendChild(menubar_Item("Hand", set_tool_hand));
+   pictureEdit.add(menubar_Item("Canvas Transformation",edit_image_back_to_mouse));
+   pictureEdit.appendChild(menubar_Item("Shape Transformation", set_tool_hand));
    pictureEdit.appendChild(menubar_Item("Rectangle", set_tool_rectangle));  
    pictureEdit.appendChild(menubar_Item("Circle", set_tool_circle));
    pictureEdit.appendChild(menubar_Item("Line", set_tool_line));
