@@ -355,28 +355,73 @@ tools["rectangle"].contains = function(mx, my, shape)
     } 
 }
 
-tools["line"].contains = function(mx, my, shape)
-{
-    if (shape.w > 0 && shape.h > 0)
-    {
-       return  (shape.x <= mx) && (shape.x + shape.w  >= mx) &&
-               (shape.y <= my) && (shape.y + shape.h  >= my);
-    }
-    else if  (shape.w < 0 && shape.h > 0)
-    {
-       return  (shape.x >= mx) && (shape.x + shape.w  <= mx) &&
-               (shape.y <= my) && (shape.y + shape.h  >= my);
-    }
-    else if (shape.w > 0 && shape.h < 0)
-    {
-      return  (shape.x <= mx) && (shape.x + shape.w  >= mx) &&
-              (shape.y >= my) && (shape.y + shape.h  <= my);
-    }
-    else
-    {
-      return  (shape.x >= mx) && (shape.x + shape.w  <= mx) &&
-              (shape.y >= my) && (shape.y + shape.h  <= my);
-    } 
+tools["line"].contains = function(mx, my, shape, x, y, w, h)
+{ //SIEHE SKIZZE
+    var vecx = w || shape.h * -1;
+    var vecy = h || shape.w;
+
+    var shapew = w || shape.w;
+    var shapeh = h || shape.h;
+
+    var shapex = x || shape.x;
+    var shapey = y || shape.y; 
+
+    var abs = Math.sqrt((vecx * vecx) + (vecy * vecy));
+
+    vecx = vecx / abs;
+    vecy = vecy / abs;
+
+    var p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y;
+
+    p1x = vecx * shape.lineWidth * 1.5 * 0.5 + shapex;
+    p1y = vecy * shape.lineWidth * 1.5 * 0.5 + shapey;
+
+    p2x = vecx * shape.lineWidth * 1.5 * -0.5 + shapex;
+    p2y = vecy * shape.lineWidth * 1.5 * -0.5 + shapey;
+
+    p3x = vecx * shape.lineWidth * 1.5 * 0.5 + shapex + shapew;
+    p3y = vecy * shape.lineWidth * 1.5 * 0.5 + shapey + shapeh;
+
+    var e1x = p3x - p1x;
+    var e1y = p3y - p1y;
+
+    var e2x = p2x - p1x;
+    var e2y = p2y - p1y;
+
+    var mvecx = mx - p1x;
+    var mvecy = my - p1y;
+
+    var abse1 = Math.sqrt((e1x * e1x) + (e1y * e1y));
+    
+    e1x = e1x / abse1;
+    e1y = e1y / abse1;
+
+    var abse2 = Math.sqrt((e2x * e2x) + (e2y * e2y));
+
+    e2x = e2x / abse2;
+    e2y = e2y / abse2;
+    
+    var absmvec = Math.sqrt((mvecx * mvecx) + (mvecy * mvecy));
+
+    mvecx = mvecx / abs;
+    mvecy = mvecy / abs;   
+    
+    var earlyquit1 = mvecx * e1x + mvecy * e1y;
+    var earlyquit2 = mvecx * e2x + mvecy * e2y;
+
+    if (earlyquit1 < 0 || earlyquit2 < 0)
+      {return false;}
+
+    var absp1 = absmvec * ((mvecx * e1x) + (mvecy * e1y)); 
+    var absp2 = absmvec * ((mvecx * e2x) + (mvecy * e2y));
+
+    if (absp1 <= abse1 && absp2 <= abse2)
+      {
+        return true;
+      }
+
+      return false;
+
 }
 
 tools["img"].contains = function(mx, my, shape)
@@ -387,22 +432,33 @@ tools["img"].contains = function(mx, my, shape)
 tools["pencil"].contains = function(mx, my, shape)
 {
   var l = shape.coordsx.length;
+  var t = false;
+  var r = shape.lineWidth * 2;
 
-  var maxX = shape.coordsx.max() + shape.x;
-  var maxY = shape.coordsy.max() + shape.y;
-  var minX = shape.coordsx.min() + shape.x;
-  var minY = shape.coordsy.min() + shape.y;
+  var r2 = Math.sqrt(Math.pow(mx - shape.x, 2) + Math.pow(my - shape.y, 2));
 
-  return  (minX <= mx) && (minX + (maxX - minX) >= mx) &&
-          (minY <= my) && (minY + (maxX - minX) >= my);
+  t = (r2 <= r);
+
+  if (t) return t;
+
+  for (i = 0; i < l-1; i++)
+    {
+      r2 = Math.sqrt(Math.pow(mx - (shape.x + shape.coordsx[i]), 2) + Math.pow(my - (shape.y + shape.coordsy[i]), 2));
+
+      t = (r2 <= r);
+      if (t) return t;
+    }
+  
+  return t;
 }
 
 tools["circle"].contains = function(mx, my, shape)
 {
   var r = Math.sqrt(Math.pow(shape.w, 2) + Math.pow(shape.h, 2));
 
-  return (shape.x + r >= mx) && (shape.x - r <= mx ) &&
-         (shape.y + r >= my) && (shape.y - r <= my);
+  var r2 = Math.sqrt(Math.pow(mx - shape.x, 2) + Math.pow(my - shape.y, 2));
+
+  return (r2 <= r);
 }
 
 
@@ -586,7 +642,42 @@ CanvasState.prototype.draw = function() {
         }
         else if (mySel.type == "line")
         {
-          ctx.strokeRect(mySel.x,mySel.y,mySel.w,mySel.h);
+          var vecx = mySel.h * -1;
+          var vecy = mySel.w;
+
+          var abs = Math.sqrt((vecx * vecx) + (vecy * vecy));
+
+          vecx = vecx / abs;
+          vecy = vecy / abs;
+
+          var p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y;
+
+          p1x = vecx * mySel.lineWidth * 1.5 * 0.5 + mySel.x;
+          p1y = vecy * mySel.lineWidth * 1.5 * 0.5 + mySel.y;
+
+          p2x = vecx * mySel.lineWidth * 1.5 * -0.5 + mySel.x;
+          p2y = vecy * mySel.lineWidth * 1.5 * -0.5 + mySel.y;
+
+          p3x = vecx * mySel.lineWidth * 1.5 * 0.5 + mySel.x + mySel.w;
+          p3y = vecy * mySel.lineWidth * 1.5 * 0.5 + mySel.y + mySel.h;
+
+          p4x = vecx * mySel.lineWidth * 1.5 * -0.5 + mySel.x + mySel.w;
+          p4y = vecy * mySel.lineWidth * 1.5 * -0.5 + mySel.y + mySel.h;
+
+          ctx.beginPath();
+          ctx.moveTo(p1x, p1y);
+          ctx.lineTo(p3x, p3y);
+          ctx.lineTo(p4x, p4y);
+          ctx.lineTo(p2x, p2y);
+          ctx.lineTo(p1x, p1y);
+          ctx.stroke(); 
+
+          var e1x = p3x - p1x;
+          var e1y = p3y - p1y;
+
+          var e2x = p2x - p1x;
+          var e2y = p2y - p1y;
+            
         }
         else if (mySel.type == "pencil")
         {    
