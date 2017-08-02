@@ -14,6 +14,8 @@ editImage_strokesize.style.width = "50px";
 editImage_strokesize.value = "5";
 editImage_strokesize.type = "number";
 
+
+
 // have to write real functions, adding new prototype functions fucks up all for each loops in the whole project for some unapparent reason ...
 /*Array.prototype.max = function() {
   return Math.max.apply(null, this);
@@ -35,18 +37,8 @@ function gotoeditPicture(picture)
     pictureEdit.make_Visible();
 
 /*Sets the target Picture*/
-    if (sketchScreen)
-      {
-        picture_to_edit = document.createElement("IMG");
-        picture_to_edit.height = picture.height;
-        picture_to_edit.width = picture.width;
-        picture_to_edit.dataset = picture.dataset;
-        picture.src = picture.style.backgroundImage;
-      }
-      else
-      {
+
         picture_to_edit = picture;
-      }
 
 /*Creates a custom container for the new element*/
   picturescreen = document.createElement("div");
@@ -155,6 +147,9 @@ function edit_image_draw(e)
         s.dragging = true;
         s.selection = mySel;
         s.valid = false;
+        editImage_FillColor.value = mySel.fill;
+        editImage_StrokeColor.value = mySel.strokeStyle;
+        editImage_strokesize.value = mySel.lineWidth;
         return;
       }
     }
@@ -232,15 +227,6 @@ function savePicture()
         sketch = false;
         newesketchelement();
       }
-      else if(sketchScreen == true)
-        {
-          sketchScreen = false;
-          picture_to_edit.style.backgroundImage = canvas_to_edit_picture_on.toDataURL();
-          picture_to_edit.dataset["picturestate"] = JSON.stringify(JSON.decycle(s.shapes));
-
-          s = null;
-          grafik();
-        }
       else
      {
       GLOBAL_OVERRIDE = null;
@@ -665,6 +651,33 @@ function CanvasState(canvas) {
     myState.dragging = false;
     myState.drawing = false;
   }, true);
+
+  editImage_FillColor.addEventListener("change", function()
+{
+  if (myState.selection)
+    {
+      myState.selection.fill = editImage_FillColor.value;
+      myState.valid = false;
+    }
+});
+
+editImage_StrokeColor.addEventListener("change", function()
+{
+  if (myState.selection)
+    {
+      myState.selection.strokeStyle = editImage_StrokeColor.value;
+      myState.valid = false;
+    }
+});
+
+editImage_strokesize.addEventListener("change", function()
+{
+  if (myState.selection)
+    {
+      myState.selection.lineWidth = editImage_strokesize.value;
+      myState.valid = false;
+    }
+});
 
   document.addEventListener('keydown', function(e){
     
