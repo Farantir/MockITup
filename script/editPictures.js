@@ -29,28 +29,40 @@ function gotoeditPicture(picture)
 	$("screencontainer").style.display="none";
     grafic_elements.style.display = "none";
     editPicture_menubar.make_Visible();
-    default_Menu.hide();
     editPicture_menubar.flush();
+  
+    default_Menu.hide();
     pictureEdit.make_Visible();
 
 /*Sets the target Picture*/
-    picture_to_edit = picture;
+    if (sketchScreen)
+      {
+        picture_to_edit = document.createElement("IMG");
+        picture_to_edit.height = picture.height;
+        picture_to_edit.width = picture.width;
+        picture_to_edit.dataset = picture.dataset;
+        picture.src = picture.style.backgroundImage;
+      }
+      else
+      {
+        picture_to_edit = picture;
+      }
 
 /*Creates a custom container for the new element*/
-  newelscreen = document.createElement("div");
-  newelscreen.classList.add("screencontainer");
-  newelscreen.id="testscreencontainer";
-  document.body.appendChild(newelscreen);
+  picturescreen = document.createElement("div");
+  picturescreen.classList.add("screencontainer");
+  picturescreen.id="testscreencontainer";
+  document.body.appendChild(picturescreen);
 
   screen = create_Screen();
-  newelscreen.appendChild(screen);
+  picturescreen.appendChild(screen);
 
 /*Creates the canvas to edit the pcture on*/
-    canvas_to_edit_picture_on = createCanvasToDrawOn(newelscreen,50,50,picture);
+    canvas_to_edit_picture_on = createCanvasToDrawOn(picturescreen,50,50,picture);
     b.settingsbar.recalculate_positons();
     s = new CanvasState(b);
 
-    if (picture.dataset["picturestate"]) 
+   if (picture.dataset["picturestate"]) 
       { 
         tmp = JSON.parse(JSON.retrocycle(picture_to_edit.dataset["picturestate"]));
 
@@ -78,7 +90,7 @@ function createCanvasToDrawOn(e,x,y,img)
     ctx.drawImage(img,0,0);
     b.draggable="false";
     b.ondragstart = function() { return false; };
-	b = make_Container(b);
+	  b = make_Container(b);
     b.jsoncreate = function(target)
     {
         this.settingsbar.ul.remove();
@@ -215,13 +227,83 @@ function edit_image_back_to_mouse()
 
 function savePicture()
 {
-    GLOBAL_OVERRIDE = null;
-    picture_to_edit.dataset["picturestate"] = JSON.stringify(JSON.decycle(s.shapes));
-    picture_to_edit.src = canvas_to_edit_picture_on.toDataURL();
+    if (sketch == true)
+      {
+        sketch = false;
+        newesketchelement();
+      }
+      else if(sketchScreen == true)
+        {
+          sketchScreen = false;
+          picture_to_edit.style.backgroundImage = canvas_to_edit_picture_on.toDataURL();
+          picture_to_edit.dataset["picturestate"] = JSON.stringify(JSON.decycle(s.shapes));
+
+          s = null;
+          grafik();
+        }
+      else
+     {
+      GLOBAL_OVERRIDE = null;
+      picture_to_edit.dataset["picturestate"] = JSON.stringify(JSON.decycle(s.shapes));
+      picture_to_edit.src = canvas_to_edit_picture_on.toDataURL();
+      s = null;
+      grafik();
+    }
+}
+
+var newelementname;
+function newesketchelement()
+{
+    text_input_overlay(s.canvas,(x)=>{newelementname=x;saveSketch();})
+    notifikationbar.show("Enter a name for the element");
+}
+
+function saveSketch()
+{ 
+    GLOBAL_OVERRIDE = null;  
+
+    name = newelementname;
+    grafic_elements.add(elementbar_Item(name));
+
+    dataurls[name] = canvas_to_edit_picture_on.toDataURL();
+    picturestates[name] = JSON.stringify(JSON.decycle(s.shapes));
+
+    elements[name] = function(e,x,y)
+    {
+       b = document.createElement("img");
+       b.src = dataurls[name];
+       b.draggable="false";
+       b.ondragstart = function() { return false; };
+	   b = make_Container(b,"Picture");
+       b.jsoncreate = function(target)
+       {
+           this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.src = value;})},"Lets you select a custom image, either by url or filpicker, to coose from your own device"));
+           this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)},"Opens a seperate Screen, on whitch you can paint your own picture for this Container"));
+       }
+	   b.create(e,x,y);
+       b.logick_menu.add(logick_menu_item("Change Image",logick_button_change_image));
+	   b.style.width = "100px";
+       b.style.height = "100px";
+       b.dataset["picturestate"] = picturestates[name];
+    }
+    elements[name].createfromsave = function recreatelogick(b)
+    {
+	    b = make_Container(b,"Picture");
+	    b.draggable="false";
+        b.ondragstart = function() { return false; };
+	    b = make_Container(b,"Picture");
+        b.jsoncreate = function(target)
+        {
+            this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.src = value;})},"Lets you select a custom image, either by url or filpicker, to coose from your own device"));
+            this.settingsbar.add(settings_Icon("edit_icon.svg",function(){gotoeditPicture(this.parentElement.parentElement.parent)},"Opens a seperate Screen, on whitch you can paint your own picture for this Container"));
+        }
+        b.logick_menu.add(logick_menu_item("Change Image",logick_button_change_image));
+	    b.afterceration();
+    }
+
     s = null;
     grafik();
 }
-
 
 
 function canvas_erase_picture()

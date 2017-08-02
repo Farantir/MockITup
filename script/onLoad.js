@@ -3,6 +3,7 @@ var newscreenbutton;
 var grafic_elements;
 var logick_elements;
 var newElement_menubar;
+var editPicture_menubar;
 var notifikationbar;
 var pictureEdit;
 var preloadetimages = [];
@@ -98,9 +99,10 @@ function initialize(selection)
    logick_elements.add(menubar_Item("Text Changed",settextchanged));
 
     //Creates the menu bar for the Edit picture screen
-	editPicture_menubar = menubar();
+    editPicture_menubar = menubar();
  	editPicture_menubar.add(menubar_Item("Save",savePicture));
     editPicture_menubar.add(menubar_Item("Back",grafik));
+
 
    //creates the menu bar containing the elements for Editing a picture
    pictureEdit = elementbar();
