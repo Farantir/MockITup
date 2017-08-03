@@ -112,6 +112,7 @@ function initialize(selection)
    pictureEdit.appendChild(menubar_Item("Circle", set_tool_circle));
    pictureEdit.appendChild(menubar_Item("Line", set_tool_line));
    pictureEdit.appendChild(menubar_Item("Pencil", set_tool_pencil));
+   pictureEdit.appendChild(menubar_Item("Duplicate", set_tool_duplicate));
    pictureEdit.add(menubar_Item("Fill Color",null,null,null,editImage_FillColor));
    pictureEdit.add(menubar_Item("Stroke Color",null,null,null,editImage_StrokeColor));
    pictureEdit.add(menubar_Item("Stroke Size",null,null,null,editImage_strokesize));

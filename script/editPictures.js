@@ -126,7 +126,7 @@ function edit_image_draw(e)
        canvas_to_edit_picture_on.offsetx = offset.x;
        canvas_to_edit_picture_on.offsety = offset.y;
        draw_on_canvas_draw_dot(e.pageX - canvas_to_edit_picture_on.offsetx,e.pageY - canvas_to_edit_picture_on.offsety) */
-    if(currenttool == "hand")
+    if(currenttool == "hand" || currenttool == "duplicate")
     {
     var mouse = s.getMouse(e);
     var mx = mouse.x;
@@ -150,6 +150,13 @@ function edit_image_draw(e)
         editImage_FillColor.value = mySel.fill;
         editImage_StrokeColor.value = mySel.strokeStyle;
         editImage_strokesize.value = mySel.lineWidth;
+
+        if (currenttool == "duplicate")
+          {
+            s.addShape(new Shape(mySel.type, mySel.x + 20, mySel.y + 20, mySel.w, mySel.h, mySel.coordsx, mySel.coordsy, mySel.fill, mySel.strokeStyle, mySel.lineWidth, mySel.url));
+            set_tool_hand();
+          }
+
         return;
       }
     }
@@ -301,6 +308,13 @@ function canvas_erase_picture()
 
 function set_tool_rectangle() {
     currenttool = "rectangle";
+    GLOBAL_OVERRIDE = edit_image_draw;
+    s.selection = null;
+    s.valid = false;
+}
+
+function set_tool_duplicate() {
+    currenttool = "duplicate";
     GLOBAL_OVERRIDE = edit_image_draw;
     s.selection = null;
     s.valid = false;
