@@ -102,6 +102,7 @@ function initialize(selection)
     editPicture_menubar = menubar();
  	editPicture_menubar.add(menubar_Item("Save",savePicture));
     editPicture_menubar.add(menubar_Item("Back",grafik));
+   // editPicture_menubar.add(menubar_Item("Undo", undo));
 
 
    //creates the menu bar containing the elements for Editing a picture

@@ -7,6 +7,7 @@ var editImage_strokesize = document.createElement("input");
 var currenttool = "hand";
 var s;
 var tools = new function(){};
+var undoStack = [];
 
 editImage_FillColor.type = "color";
 editImage_StrokeColor.type = "color";
@@ -117,15 +118,9 @@ function draw_on_canvas()
     GLOBAL_OVERRIDE = edit_image_draw;
 }
 
-/*Intialises onmosedown and mousemove functions to make a dot on the screen*/
 function edit_image_draw(e)
 {
-     /*  canvas_to_edit_picture_on.addEventListener('mousemove',draw_on_canvas_drawing);
-       document.addEventListener('mouseup',draw_on_canvas_end_draw);
-        var offset = getPos(canvas_to_edit_picture_on);;
-       canvas_to_edit_picture_on.offsetx = offset.x;
-       canvas_to_edit_picture_on.offsety = offset.y;
-       draw_on_canvas_draw_dot(e.pageX - canvas_to_edit_picture_on.offsetx,e.pageY - canvas_to_edit_picture_on.offsety) */
+    
     if(currenttool == "hand" || currenttool == "duplicate")
     {
     var mouse = s.getMouse(e);
@@ -160,7 +155,6 @@ function edit_image_draw(e)
         return;
       }
     }
-  
     // havent returned means we have failed to select anything.
     // If there was an object selected, we deselect it
     if (s.selection) {
@@ -169,9 +163,6 @@ function edit_image_draw(e)
     }
   }
 
-  if(currenttool != "hand")
-  {
-  
   var mouse = s.getMouse(e);
   dx = mouse.x;
   dy = mouse.y;
@@ -180,29 +171,22 @@ function edit_image_draw(e)
   shape = new Shape("rectangle", mouse.x, mouse.y, 0, 0, null, null, editImage_FillColor.value, editImage_StrokeColor.value, editImage_strokesize.value);
   s.addShape(shape);
   }
-
   if(currenttool == "line")
   {
   shape = new Shape("line", mouse.x, mouse.y, 0, 0, null, null, editImage_FillColor.value, editImage_StrokeColor.value, editImage_strokesize.value);
   s.addShape(shape);
   }
-
   if(currenttool == "pencil")
   {
   shape = new Shape("pencil", mouse.x, mouse.y, 0, 0, null, null, editImage_FillColor.value, editImage_StrokeColor.value, editImage_strokesize.value);
   s.addShape(shape);
   }
-
   if(currenttool == "circle")
   {
-  
   shape = new Shape("circle", mouse.x, mouse.y, 0, 0, null, null, editImage_FillColor.value, editImage_StrokeColor.value, editImage_strokesize.value);
   s.addShape(shape);
   }
-
   s.drawing = true;
-  }
-
 }
 
 function toggel_dark_mode()
@@ -240,8 +224,14 @@ function savePicture()
       picture_to_edit.dataset["picturestate"] = JSON.stringify(JSON.decycle(s.shapes));
       picture_to_edit.src = canvas_to_edit_picture_on.toDataURL();
       s = null;
+      undoStack = {};
       grafik();
     }
+}
+
+function undo(){
+  if (undoStack.length >= 1) s = undoStack.pop();
+  s.valid = false;
 }
 
 var newelementname;
@@ -295,6 +285,7 @@ function saveSketch()
     }
 
     s = null;
+    undoStack = {};
     grafik();
 }
 
@@ -393,7 +384,6 @@ tools["circle"] = function(shape, ctx)
   ctx.stroke();
 }
 
-
 tools["line"] = function(shape, ctx)
 {
   ctx.beginPath();
@@ -413,9 +403,7 @@ tools["pencil"] = function(shape, ctx)
    {
       ctx.lineTo(shape.x + shape.coordsx[i], shape.y + shape.coordsy[i]);
    }
-
   ctx.lineJoin = 'round';
-
   ctx.stroke();
 }
 
@@ -442,7 +430,7 @@ tools["rectangle"].contains = function(mx, my, shape)
     else if  (shape.w < 0 && shape.h > 0)
     {
        return  (shape.x >= mx) && (shape.x + shape.w <= mx) &&
-                  (shape.y <= my) && (shape.y + shape.h >= my);
+               (shape.y <= my) && (shape.y + shape.h >= my);
     }
     else if (shape.w > 0 && shape.h < 0)
     {
@@ -596,6 +584,7 @@ function CanvasState(canvas) {
   this.dragoffx = 0; // See mousedown and mousemove events for explanation
   this.dragoffy = 0;
   
+  
   // **** Then events! ****
   
   // This is an example of a closure!
@@ -607,7 +596,7 @@ function CanvasState(canvas) {
   
   //fixes a problem where double clicking causes text to get selected on the canvas
   canvas.addEventListener('selectstart', function(e) { e.preventDefault(); return false; }, false);
-  // Up, down, and move are for dragging
+  // Up, down, and move are for dragging and drawing
 
   canvas.addEventListener('mousemove', function(e) {
     if (myState.dragging){
@@ -657,11 +646,7 @@ function CanvasState(canvas) {
   }, true);
 
   canvas.addEventListener('mouseup', function(e) {
-    if (currenttool == "path")
-    {
-      return;
-    }
- 
+    undoStack.push(myState); 
     myState.dragging = false;
     myState.drawing = false;
   }, true);
@@ -799,20 +784,14 @@ CanvasState.prototype.draw = function() {
           ctx.lineTo(p2x, p2y);
           ctx.lineTo(p1x, p1y);
           ctx.stroke(); 
-
-          var e1x = p3x - p1x;
-          var e1y = p3y - p1y;
-
-          var e2x = p2x - p1x;
-          var e2y = p2y - p1y;
             
         }
         else if (mySel.type == "pencil")
         {    
-          var maxX = Math.max.apply(null, mySel.coordsx) + mySel.x;
-          var maxY = Math.max.apply(null, mySel.coordsy) + mySel.y;
-          var minX = Math.max.apply(null, mySel.coordsx) + mySel.x;
-          var minY = Math.max.apply(null, mySel.coordsy) + mySel.y;
+          var maxX = Math.max.apply(Math, mySel.coordsx) + mySel.x;
+          var maxY = Math.max.apply(Math, mySel.coordsy) + mySel.y;
+          var minX = Math.min.apply(Math, mySel.coordsx) + mySel.x;
+          var minY = Math.min.apply(Math, mySel.coordsy) + mySel.y;
 
           ctx.beginPath();
           ctx.moveTo(minX, minY);
