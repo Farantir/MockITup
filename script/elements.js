@@ -104,7 +104,7 @@ elements["Button"] = function element_button(e,x,y)
 }
 elements["Button"].createfromsave = function recreatelogick(b)
 {
-	b = make_Container(b,"Button");
+	b = make_Container(b,"Button",true);
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
@@ -141,7 +141,7 @@ elements["Text Input"] = function element_text(e,x,y)
 }
 elements["Text Input"].createfromsave = function recreatelogick(b)
 {
-	b = make_Container(b,"Text Input");
+	b = make_Container(b,"Text Input",true);
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
@@ -183,7 +183,7 @@ elements["Textarea"] = function element_text(e,x,y)
 }
 elements["Textarea"].createfromsave = function recreatelogick(b)
 {
-	b = make_Container(b,"Textarea");
+	b = make_Container(b,"Textarea",true);
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("minus.svg",()=>{make_text_smaler(this);},"Makes the font size smaller"));
@@ -220,7 +220,7 @@ elements["Checkbox"] = function element_checkbox(e,x,y)
 }
 elements["Checkbox"].createfromsave = function recreatelogick(b)
 {
-	b = make_Container(b,"Checkbox");
+	b = make_Container(b,"Checkbox",true);
 	b.afterceration();
 	
 	b.settingsbar.scaleBottomRight.remove();
@@ -273,7 +273,7 @@ elements["Label"] = function element_Label(e,x,y)
 }
 elements["Label"].createfromsave = function recreatelogick(b)
 {
-	b = make_Container(b,"Label");
+	b = make_Container(b,"Label",true);
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("textedit.svg",function(){text_input_overlay(this.parentElement.parentElement,function(value){this.target.parent.innerHTML = value;})},"Canges the Text of the Label"));
@@ -323,8 +323,7 @@ elements["Container"] = function element_container(e,x,y)
 }
 elements["Container"].createfromsave = function recreatelogick(b)
 {
-	b = make_Container(b,"Container");
-
+	b = make_Container(b,"Container",true);
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.style.backgroundImage = "url('"+value+"')";})},"Lets you select a custom background image, either by url or filpicker, to coose from your own device"));
@@ -360,10 +359,9 @@ elements["Picture"] = function element_Label(e,x,y)
 }
 elements["Picture"].createfromsave = function recreatelogick(b)
 {
-	b = make_Container(b,"Picture");
+	b = make_Container(b,"Picture",true);
 	b.draggable="false";
     b.ondragstart = function() { return false; };
-	b = make_Container(b,"Picture");
     b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("picture.png",function(){imageSelect(this.parentElement.parentElement,function(value){this.target.parent.src = value;})},"Lets you select a custom image, either by url or filpicker, to coose from your own device"));
@@ -406,7 +404,7 @@ elements["Liste"] = function element_List(e,x,y)
 }
 elements["Liste"].createfromsave = function recreatelogick(b)
 {
-	var b = make_Container(b,"Liste");
+	var b = make_Container(b,"Liste",true);
 	b.jsoncreate = function(target)
     {
         this.settingsbar.add(settings_Icon("plus.png",function(){element_Listelem(this.parentElement.parentElement.parent);},"Creates a new List Entry"));
@@ -435,7 +433,7 @@ elements["Liste"].createfromsave = function recreatelogick(b)
 elements["listelement"] = element_Listelem;
 elements["listelement"].createfromsave = function recreatelogick(b)
 {
-	var b = make_Container(b,"listelement");
+	var b = make_Container(b,"listelement",true);
 	b.setpos = ()=>{};
 	b.scale = ()=>{};
 	b.jsoncreate = function(target)
@@ -638,12 +636,11 @@ function recreate_jsfunktions_after_copy(elemelement)
 /*Adds all functions and properties needed for an element in the Grafik edit view
 gets calloed by nearly every elemten funktion.
 uses the decorator pattern to fit the dom elements with js functionality*/
-function make_Container(elem,elemtype)
+function make_Container(elem,elemtype,restore_from_save)
 {
 	/*Saves the type of element in the data tags*/
 	elem.dataset["elementtype"] = elemtype;
-
-    elem.style.position = "absolute";
+    if(restore_from_save != true) elem.style.position = "absolute";
     elem.settingsbar = settingsbar(elem);
     elem.jsoncreate = function(){};
 
