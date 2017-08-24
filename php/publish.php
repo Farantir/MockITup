@@ -28,8 +28,8 @@ $htmlfile = '<!DOCTYPE html>
 
 fwrite($f, $htmlfile);
 fclose($f);
-
-print "http://".$_SERVER['SERVER_ADDR'].":".$_SERVER['SERVER_PORT']."/MockITup/published/".$filename.".html";
+$link = (isset($_SERVER['HTTPS']) ? "https" : "http") . "://$_SERVER[HTTP_HOST]";
+print $link.":".$_SERVER['SERVER_PORT']."/MockITup/published/".$filename.".html";
 
 /*Delete all files older than 24h */
   $path = '../published/';
