@@ -55,6 +55,8 @@ the event "test-on-device-started" gest fired, when the user clicks on the test 
 
 function testondevice()
 {
+	general_screenchange_cleanup();
+
     /*event fired after test on device gets loadet*/
 	fireEvent("test-on-device-started", document);
 	
@@ -62,8 +64,6 @@ function testondevice()
 	var url = "php/publish.php";
 	var params = "data=" + encodeURIComponent(get_html());
 	http.open("POST", url, true);
-
-	general_screenchange_cleanup();
 
       for(m of document.getElementsByClassName("elementbar")) m.style.display = "none";	
 

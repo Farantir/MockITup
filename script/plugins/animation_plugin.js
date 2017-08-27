@@ -41,7 +41,6 @@ document.addEventListener("initialize",initializeAnimationPlugin);
 /*event listener used to remomove animation icons when testcreen is loadet*/
 document.addEventListener("testview started",hide_animation_icons);
 document.addEventListener("test-on-device-started",hide_animation_icons);
-
 /*div that displays animation previews*/
 var aniamtion_preview_container = null;
 
