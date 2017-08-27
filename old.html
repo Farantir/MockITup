@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta charset="utf-8">
+    <title>MockITup</title>
+    <link rel="stylesheet" type="text/css" href="style/main.css">
+    <link rel="stylesheet" type="text/css" href="style/plugins/animation_plugin.css">
+    <link rel="shortcut icon" href="Mockingbird_Illustration_Color4.png"/>
+    <script src="script/main.js"></script>
+    <script src="script/onLoad.js"></script>
+    <script src="script/elements.js"></script>
+    <script src="script/testrenderer.js"></script>
+    <script src="script/logik.js"></script>
+    <script src="script/test_logick.js"></script>
+    <!--<script src="script/newElement.js"></script>-->
+    <script src="script/save.js"></script>
+    <script src="script/qrcode.js"></script>
+    <script src="script/editPictures.js"></script>
+<style>
+.toggle_boundrys_checkbox{ display:none;} 
+</style>
+    </head>
+    
+   <body onload="portraitPosition()" onResize="portraitPosition()">   
+   
+   <button class="hvr-border-fade" id="loadbutton" onclick="load()">Load</button>
+   <button class="hvr-border-fade" id="savebutton" onclick="save()">Save</button>
+    
+   <div class="portrait hvr-border-fade" id="portrait" >
+    portrait
+    </div>
+
+	<div class="landscape hvr-border-fade" id="landscape">
+    landscape
+    </div>	
+    
+ 	<img id="logo" class="rotating" src="Mockingbird_Illustration_Color4.png"></img>
+
+ 	<div id="screencontainer" class="screencontainer">
+        <div class="createnewscreen" id="createnewscreenportrait">
+        +
+        </div>
+        
+        <div class="createnewscreen" id="createnewscreenlandscape">
+        +
+        </div>
+    </div>
+    </body>
+</html>
