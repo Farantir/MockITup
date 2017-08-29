@@ -4,8 +4,6 @@ var canvas_canbescaled = true;
 var editImage_FillColor = document.createElement("input");
 var editImage_StrokeColor = document.createElement("input");
 var editImage_strokesize = document.createElement("input");
-
-
 var currenttool = "hand";
 var s;
 var tools = new function(){};
@@ -16,11 +14,6 @@ editImage_StrokeColor.type = "color";
 editImage_strokesize.style.width = "50px";
 editImage_strokesize.value = "5";
 editImage_strokesize.type = "number";
-
-editImage_FillColorLabel.value = "Fill Color";
-editImage_StrokeColorLabel.value = "Stroke Color";
-editImage_strokesizeLabel.value = "Stroke Size";
-
 
 
 
@@ -653,7 +646,7 @@ function CanvasState(canvas) {
   }, true);
 
   canvas.addEventListener('mouseup', function(e) {
-   // undoStack.push(myState); 
+    undoStack.push(myState); 
     myState.dragging = false;
     myState.drawing = false;
   }, true);
