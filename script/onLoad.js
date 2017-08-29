@@ -3,6 +3,7 @@ var newscreenbutton;
 var grafic_elements;
 var logick_elements;
 var newElement_menubar;
+var editPicture_menubar;
 var notifikationbar;
 var pictureEdit;
 var preloadetimages = [];
@@ -98,17 +99,24 @@ function initialize(selection)
    logick_elements.add(menubar_Item("Text Changed",settextchanged));
 
     //Creates the menu bar for the Edit picture screen
-	editPicture_menubar = menubar();
+    editPicture_menubar = menubar();
  	editPicture_menubar.add(menubar_Item("Save",savePicture));
     editPicture_menubar.add(menubar_Item("Back",grafik));
+   // editPicture_menubar.add(menubar_Item("Undo", undo));
+
 
    //creates the menu bar containing the elements for Editing a picture
    pictureEdit = elementbar();
-   pictureEdit.add(menubar_Item("Mouse",edit_image_back_to_mouse));
-   pictureEdit.add(menubar_Item("Draw",draw_on_canvas));
-   pictureEdit.add(menubar_Item("Erase",erase_from_canvas));
-   pictureEdit.add(menubar_Item("Color",null,null,null,editImage_DrawingColor));
-   pictureEdit.add(menubar_Item("Size",null,null,null,editImage_strokesize));
+   pictureEdit.add(menubar_Item("Canvas Transformation",edit_image_back_to_mouse));
+   pictureEdit.appendChild(menubar_Item("Shape Transformation", set_tool_hand));
+   pictureEdit.appendChild(menubar_Item("Rectangle", set_tool_rectangle));  
+   pictureEdit.appendChild(menubar_Item("Circle", set_tool_circle));
+   pictureEdit.appendChild(menubar_Item("Line", set_tool_line));
+   pictureEdit.appendChild(menubar_Item("Pencil", set_tool_pencil));
+   pictureEdit.appendChild(menubar_Item("Duplicate", set_tool_duplicate));
+   pictureEdit.add(menubar_Item("Fill Color",null,null,null,editImage_FillColor));
+   pictureEdit.add(menubar_Item("Stroke Color",null,null,null,editImage_StrokeColor));
+   pictureEdit.add(menubar_Item("Stroke Size",null,null,null,editImage_strokesize));
    pictureEdit.add(menubar_Item("Clear Canvas",canvas_erase_picture));
    pictureEdit.add(menubar_Item("Toggle Background Color",toggel_dark_mode));
 
