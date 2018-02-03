@@ -28,6 +28,9 @@ Array.prototype.min = function() {
 
 function gotoeditPicture(picture)
 {
+/*Disables the moving of the screens, if plugin for screen movement is enabled*/
+if(screen_moving_plugin_enabled) disable_screen_dragging();
+
 /*Initialises the view*/
 	$("screencontainer").style.display="none";
     grafic_elements.style.display = "none";
