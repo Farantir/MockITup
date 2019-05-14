@@ -30,6 +30,9 @@ extrackt the .zip file into your web directory and you are ready to go.
 if you dont have a webserver you can still use the application by doubleclicking
 the index.html. However, you wont be able to use the "Test on device" function.
 
+### Why PHP?
+dont worry. The Projekt is written entirely as a static Webpage in Javascript. The php file has only 45 loc and can be easyly replaced by another backend. Its sole purpouse is, to accept Mockups for the "test on device" feature and themporary store them on the server.
+
 ### Licensing
 It is intendet, that MockITup is free to use and modify for non comertial applications.
 If you want to use MockITup in your buisness please contact us *jakob.hippe@googlemail.com*, 
