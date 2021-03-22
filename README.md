@@ -6,8 +6,6 @@ You can use custom images and desing nice looking prototypes
 with a lot of funktionality, or you can build very simple
 early prototypes in a few Seconds.
 
-A live version can be found [here](https://jhippe.de/MockITup/)
-
 ### How to use it
 select the orientation of your app (landscape/portrait).
 You can add different screens by pressing the + and add components to existing ones by dragging them from the manu on the left onto a screen.
